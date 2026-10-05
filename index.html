@@ -208,6 +208,33 @@ mark{background:linear-gradient(transparent 45%,var(--hl) 45%);color:inherit;pad
 .step b{display:block;font-family:var(--display);font-size:15px;line-height:1.2}
 .step small{display:block;font-size:11px;color:var(--muted);line-height:1.3}
 .steps .arrow{color:var(--muted)}
+.goro8{font-family:var(--display);font-size:clamp(16px,4.2vw,19px);line-height:1.7;text-align:center;padding:10px 8px 14px}
+.goro8 b{color:var(--maru)}
+.goro{border-radius:12px;padding:10px 14px;background:var(--hl-fill);font-size:14px;line-height:1.75}
+.goro .lbl{display:block;font-size:12px;color:var(--muted);letter-spacing:.06em}
+.goro .g{font-family:var(--display);font-size:16px}
+.goro .g b{color:var(--maru)}
+.resume{display:flex;flex-direction:column;gap:8px}
+.resume h2{font-size:16px}
+.resitem{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--fc);border-radius:12px;padding:10px 12px}
+.resitem .t{font-weight:700;font-size:15px;line-height:1.4;min-width:0}
+.resitem .t small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.resitem .btn{padding:8px 14px;font-size:14px}
+.resitem .ghost{font-size:12px}
+.qtools{display:flex;justify-content:flex-end;gap:8px;margin-top:-10px}
+.qtools .ghost{font-size:12px;padding:4px 12px}
+
+.flead{margin:0 4px 10px;font-weight:700;font-size:15px;line-height:1.6}
+.fnote{margin:8px 4px 0;font-size:13px;color:var(--muted);line-height:1.6}
+.point::before{content:none}
+.point{flex-direction:column;gap:2px}
+.plbl{display:inline-block;font-size:11px;background:var(--maru);color:var(--card);border-radius:6px;padding:1px 8px;margin-bottom:4px;letter-spacing:.06em}
+.point > span{display:flex;flex-direction:column;align-items:flex-start}
+.ft td{text-align:left}
+.ft td:has(.y:only-child),.ft td:has(.n:only-child){text-align:center}
+.ft{font-size:13.5px}
+.ft th:not(:first-child),.ft td{min-width:5.2em}
+.ft tbody th.l{min-width:7em;max-width:14em}
 
 .brand .seal{font-size:15px}
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -224,13 +251,17 @@ mark{background:linear-gradient(transparent 45%,var(--hl) 45%);color:inherit;pad
 .mini{font-size:12px;color:var(--muted)}
 .btn[disabled]{opacity:.45;cursor:default}
 .panel .words dd{color:var(--ink)}
-.steps{margin:0;padding-left:1.4em;font-size:14px;line-height:1.8;text-align:left}
-.steps li{margin:2px 0}
+.flow{margin:0;padding-left:1.4em;font-size:14px;line-height:1.8;text-align:left}
+.flow li{margin:2px 0}
 .fig .ft{margin-bottom:8px}
 .fig .ft:last-child{margin-bottom:0}
 .ft.hk td:last-child{font-weight:700}
 .ngbox{background:var(--batsu-soft);border-left:5px solid var(--batsu);border-radius:10px;padding:10px 14px;font-size:15px;line-height:1.75}
 .ngbox .lbl{display:block;font-size:12px;font-weight:700;color:var(--batsu);letter-spacing:.06em}
+.resitem small b{color:var(--acc)}
+.field .stat b.cont{color:var(--acc)}
+.field .stat{flex-wrap:wrap;gap:0 10px}
+.field .stat>span{white-space:nowrap}
 .tower{display:flex;flex-direction:column;gap:4px;font-size:13px;text-align:center;min-width:300px}
 .tower small{display:block;font-size:11px;color:var(--muted);font-weight:400;line-height:1.4}
 .tower .fl2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
@@ -304,7 +335,7 @@ nisa:{cap:"今のNISA（2024年から）",html:()=>tb(["","つみたて投資枠
  ["年間の上限","<b>120万円</b>","<b>240万円</b>"],["生涯の上限","合計<b>1,800万円</b>（買った金額で管理）","そのうち<b>1,200万円</b>まで"],
  ["買えるもの","国が選んだ長期・積立・分散向けの投資信託など","上場株式・投資信託など（毎月分配型などは除く）"],
  ["非課税の期間","無期限","無期限"],["使える人","18歳以上","18歳以上"],["損が出たら","損益通算・繰越控除<b>できない</b>","同じ"]])},
-taxFlow:{cap:"所得税の計算の流れ",html:()=>`<ol class="steps"><li><b>10種類の所得</b>をそれぞれ計算（収入−必要経費など）</li><li><b>合計</b>する（損益通算・繰越控除）</li><li><b>所得控除</b>を引く（基礎・配偶者・扶養・社会保険料・生命保険料・医療費など）</li><li><b>税率</b>をかける（5%〜45%の超過累進税率）</li><li><b>税額控除</b>を引く（配当控除・住宅ローン控除など）→ 納める税金</li></ol>`},
+taxFlow:{cap:"所得税の計算の流れ",html:()=>`<ol class="flow"><li><b>10種類の所得</b>をそれぞれ計算（収入−必要経費など）</li><li><b>合計</b>する（損益通算・繰越控除）</li><li><b>所得控除</b>を引く（基礎・配偶者・扶養・社会保険料・生命保険料・医療費など）</li><li><b>税率</b>をかける（5%〜45%の超過累進税率）</li><li><b>税額控除</b>を引く（配当控除・住宅ローン控除など）→ 納める税金</li></ol>`},
 shotoku10:{cap:"所得の10種類",html:()=>tb(["所得","例","課税のしかた（主なもの）"],[
  ["利子所得","預金の利息","源泉分離（20.315%）"],["配当所得","株の配当","総合／申告不要／申告分離"],["不動産所得","アパートの家賃・地代","総合"],["事業所得","お店・農業・個人の商売","総合"],
  ["給与所得","給料・ボーナス","総合"],["退職所得","退職金","分離（1/2にする）"],["山林所得","山の木を売ったもうけ","分離"],["譲渡所得","土地・株・ゴルフ会員権を売ったもうけ","分離（土地・株）／総合"],
@@ -1709,11 +1740,18 @@ Q.forEach(q=>{const k=q.g+"-"+q.c;cnt[k]=(cnt[k]||0)+1;q.n=cnt[k];q.id=k+"-"+q.n
 const KEY="fp-ox-v1";
 let store={res:{},grade:3};
 try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.res)store=Object.assign({grade:3},s)}catch(e){}
+if(!store.ses)store.ses={};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}};
+/* 途中の状態（どこまで解いたか）を、セットごとに保存する */
+function saveSes(){if(!S.key)return;store.ses[S.key]={list:S.list,i:S.i,picked:S.picked,results:S.results,label:S.label,ts:Date.now()};save()}
+function dropSes(key){if(key&&store.ses[key]){delete store.ses[key];save()}}
+const nextNo=v=>v.i+1+(v.picked!==null&&v.i+1<v.list.length?1:0);
+const doneNo=v=>v.i+(v.picked!==null?1:0);
+const validSes=k=>{const v=store.ses[k];return !!(v&&Array.isArray(v.list)&&v.list.length&&v.list.every(id=>Q.some(q=>q.id===id))&&v.i<v.list.length)};
 
 /* ---------- 画面 ---------- */
 const app=document.getElementById("app");
-let S={view:"home",list:[],i:0,picked:null,results:[],label:""};
+let S={view:"home",list:[],i:0,picked:null,results:[],label:"",key:null};
 const G=()=>store.grade===2?2:3;
 const qsOf=(g,c)=>Q.filter(q=>q.g===g&&(!c||q.c===c));
 
@@ -1754,16 +1792,20 @@ function home(){
     <div class="total"><span><strong>${s.ok}</strong> / ${s.n}問 正解ずみ（${GRADES[g].name}）</span><span>${pct}%</span></div>
     <div class="meter" aria-hidden="true"><i style="width:${pct}%"></i></div>
   </section>
-  <div class="fields">${Object.entries(FIELDS).map(([k,f],ix)=>{const st=stat(qsOf(g,k));return `
+  ${(()=>{const ks=Object.keys(store.ses).filter(validSes).sort((a,b)=>store.ses[b].ts-store.ses[a].ts);if(!ks.length)return"";
+    return `<section class="resume"><h2>続きから解く</h2>${ks.map(k=>{const v=store.ses[k];return `
+      <div class="resitem" style="--fc:${keyColor(k)}"><span class="t">${v.label}<small>全${v.list.length}問のうち${doneNo(v)}問を解答ずみ。<b>次は${nextNo(v)}問目から</b></small></span>
+      <button class="btn" data-act="resume" data-k="${k}">続きから</button><button class="ghost" data-act="drop" data-k="${k}" aria-label="${v.label}の途中の記録を消す">やめる</button></div>`}).join("")}</section>`})()}
+  <div class="fields">${Object.entries(FIELDS).map(([k,f],ix)=>{const st=stat(qsOf(g,k));const sk=g+":"+k;return `
     <button class="field" style="--fc:${f.color}" data-act="field" data-c="${k}">
       <span class="tag">分野${ix+1}・${f.tag}</span><h3>${f.name}</h3><p>${f.desc}</p>
       <div class="meter" aria-hidden="true"><i style="width:${st.n?Math.round(st.ok/st.n*100):0}%"></i></div>
-      <span class="stat"><span>正解 ${st.ok} / ${st.n}問</span><span>${st.done?`${st.done}問やった`:"まだ"}</span></span>
-      <span class="go">はじめる →</span></button>`}).join("")}</div>
+      <span class="stat"><span>正解 ${st.ok} / ${st.n}問</span><span>${validSes(sk)?`<b class="cont">続きは${nextNo(store.ses[sk])}問目から</b>`:st.done?`${st.done}問やった`:"まだ"}</span></span>
+      <span class="go">${validSes(sk)?"続きから →":"はじめる →"}</span></button>`}).join("")}</div>
   <div class="row">
     <button class="btn" data-act="all">${GRADES[g].name}の全${s.n}問をシャッフル</button>
-    <button class="btn sub" data-act="yet" ${y?"":"disabled"}>まだの問題（${y}問）</button>
-    <button class="btn sub" data-act="wrong" ${w?"":"disabled"}>まちがえた問題だけ（${w}問）</button>
+    <button class="btn sub" data-act="yet" ${y||validSes(g+":yet")?"":"disabled"}>まだの問題（${y}問）</button>
+    <button class="btn sub" data-act="wrong" ${w||validSes(g+":wrong")?"":"disabled"}>まちがえた問題だけ（${w}問）</button>
   </div>
   ${examInfo(g)}
   <details class="panel">
@@ -1779,7 +1821,16 @@ function home(){
 }
 
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function start(ids,label){S={view:"quiz",list:ids,i:0,picked:null,results:[],label};render();window.scrollTo(0,0)}
+function start(ids,label,key){S={view:"quiz",list:ids,i:0,picked:null,results:[],label,key:key||null};saveSes();render();window.scrollTo(0,0)}
+/* 保存があれば続きから、なければ最初から */
+function resumeOr(key,make,label){
+  if(validSes(key)){const v=store.ses[key];let i=v.i,picked=v.picked;
+    /* 答えた問題で止まっていたら、次のまだ解いていない問題から */
+    if(picked!==null&&i+1<v.list.length){i++;picked=null}
+    S={view:"quiz",list:v.list,i,picked,results:v.results||[],label:v.label,key};saveSes();render();window.scrollTo(0,0)}
+  else{const ids=make();if(ids.length)start(ids,label,key)}
+}
+const keyColor=k=>{const c=k.split(":")[1];return FIELDS[c]?FIELDS[c].color:"var(--acc)"};
 
 function quiz(){
   const q=Q.find(x=>x.id===S.list[S.i]);const f=FIELDS[q.c];const answered=S.picked!==null;
@@ -1830,26 +1881,28 @@ function pick(v){
   if(S.picked!==null)return;
   const q=Q.find(x=>x.id===S.list[S.i]);S.picked=v;
   const ok=v===q.a;const r=store.res[q.id]||{n:0};
-  store.res[q.id]={ok,n:r.n+1};save();S.results.push({id:q.id,ok});
+  store.res[q.id]={ok,n:r.n+1};S.results.push({id:q.id,ok});saveSes();save();
   render();
   const v2=document.querySelector(".verdict");if(v2&&v2.scrollIntoView)v2.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
 }
-function next(){if(S.i+1<S.list.length){S.i++;S.picked=null;render();window.scrollTo(0,0)}else{S.view="end";render();window.scrollTo(0,0)}}
+function next(){if(S.i+1<S.list.length){S.i++;S.picked=null;saveSes();render();window.scrollTo(0,0)}else{dropSes(S.key);S.view="end";render();window.scrollTo(0,0)}}
 
 app.addEventListener("click",e=>{
   const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;const g=G();
   if(a==="home"){S.view="home";render();window.scrollTo(0,0)}
   else if(a==="grade"){store.grade=+b.dataset.g;save();render()}
-  else if(a==="field"){start(qsOf(g,b.dataset.c).map(q=>q.id),GRADES[g].name+"・"+FIELDS[b.dataset.c].short)}
-  else if(a==="all"){start(shuffle(qsOf(g).map(q=>q.id)),GRADES[g].name+"・全問シャッフル")}
-  else if(a==="yet"){const y=yetIds(g);if(y.length)start(y,GRADES[g].name+"・まだの問題")}
-  else if(a==="wrong"){const w=wrongIds(g);if(w.length)start(shuffle(w),GRADES[g].name+"・まちがえた問題")}
+  else if(a==="field"){const c=b.dataset.c;resumeOr(g+":"+c,()=>qsOf(g,c).map(q=>q.id),GRADES[g].name+"・"+FIELDS[c].short)}
+  else if(a==="all"){resumeOr(g+":all",()=>shuffle(qsOf(g).map(q=>q.id)),GRADES[g].name+"・全問シャッフル")}
+  else if(a==="yet"){resumeOr(g+":yet",()=>yetIds(g),GRADES[g].name+"・まだの問題")}
+  else if(a==="wrong"){resumeOr(g+":wrong",()=>shuffle(wrongIds(g)),GRADES[g].name+"・まちがえた問題")}
+  else if(a==="resume"){const k=b.dataset.k;if(validSes(k))resumeOr(k,()=>[],"")}
+  else if(a==="drop"){dropSes(b.dataset.k);render()}
   else if(a==="retry"){start(S.results.filter(r=>!r.ok).map(r=>r.id),"やり直し")}
   else if(a==="one"){start([b.dataset.id],"1問だけ")}
   else if(a==="pick"){pick(b.dataset.v==="1")}
   else if(a==="next"){next()}
   else if(a==="reset"){
-    if(b.dataset.sure){store={res:{},grade:g};save();render()}
+    if(b.dataset.sure){store={res:{},ses:{},grade:g};save();render()}
     else{b.dataset.sure="1";b.textContent="本当に消す？（もう一度押す）"}
   }
 });
@@ -1862,6 +1915,7 @@ document.addEventListener("keydown",e=>{
 render();
 
 </script>
+<p class="offline">第2版（2026年10月5日更新：続きから解けるようになりました）</p>
 <p class="offline" id="offline">オフライン利用：準備中…</p>
 <script>
 (function(){
@@ -1869,8 +1923,8 @@ render();
   function ok(){el.innerHTML="オフライン利用：<b>準備OK</b>（電波がなくても使えます）"}
   if(!("serviceWorker" in navigator)){el.textContent="オフライン利用：この環境では使えません";return}
   navigator.serviceWorker.register("sw.js").then(function(){return navigator.serviceWorker.ready}).then(function(){
-    return caches.open("fp-ox-v1").then(function(c){return c.match("index.html")})
-  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v1").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
+    return caches.open("fp-ox-v2").then(function(c){return c.match("index.html")})
+  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v2").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
   .catch(function(){el.textContent="オフライン利用：準備できませんでした（通信を確認して開き直してください）"});
 })();
 </script>
