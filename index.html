@@ -1,0 +1,1878 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>はじめてのFP○×</title>
+<meta name="description" content="FP（ファイナンシャル・プランナー）3級・2級を超基礎から学べる○×一問一答">
+<meta name="theme-color" content="#1f6b5c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="FP○×">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=BIZ+UDPGothic:wght@400;700&display=swap" media="print" onload="this.media='all'">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+.offline{max-width:680px;margin-inline:auto;font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
+.offline b{color:var(--c2)}
+</style>
+<style>
+/* Layout: 家計簿の方眼ノートの上に、1枚ずつめくる問題カード。採点は赤ペンの○ */
+:root{
+  --paper:#f5f4ee; --grid:rgba(31,107,92,.07); --card:#ffffff; --ink:#1f2a2a; --muted:#5b6866; --line:#d9ddd6;
+  --acc:#1f6b5c; --acc-soft:#e1efeb; --maru:#cf3b2a; --maru-soft:#fbe7e3; --batsu:#46566a; --batsu-soft:#e8ecf1;
+  --hl:#ffe9a0; --hl-ink:#1f2a2a; --hl-fill:#fff7d6;
+  --c1:#1f6b5c; --c2:#2c5d8a; --c3:#a5661a; --c4:#7a4f8f; --c5:#8a5a3c; --c6:#b0405a;
+  --display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --body:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#121716; --grid:rgba(120,200,180,.06); --card:#1a2221; --ink:#e4ecea; --muted:#9aa9a6; --line:#2e3a38;
+  --acc:#7cc7b3; --acc-soft:#1b332e; --maru:#ff7b67; --maru-soft:#3a201c; --batsu:#a9b8cc; --batsu-soft:#253039;
+  --hl:#5c4e10; --hl-ink:#fff6cf; --hl-fill:#332c12;
+  --c1:#7cc7b3; --c2:#82b2df; --c3:#e3a75c; --c4:#c59ed8; --c5:#d9a27e; --c6:#ec8ea3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#121716; --grid:rgba(120,200,180,.06); --card:#1a2221; --ink:#e4ecea; --muted:#9aa9a6; --line:#2e3a38;
+  --acc:#7cc7b3; --acc-soft:#1b332e; --maru:#ff7b67; --maru-soft:#3a201c; --batsu:#a9b8cc; --batsu-soft:#253039;
+  --hl:#5c4e10; --hl-ink:#fff6cf; --hl-fill:#332c12;
+  --c1:#7cc7b3; --c2:#82b2df; --c3:#e3a75c; --c4:#c59ed8; --c5:#d9a27e; --c6:#ec8ea3; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.8;
+  padding-inline:16px; padding-block:12px 48px;
+}
+.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.35}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+mark{background:linear-gradient(transparent 45%,var(--hl) 45%);color:inherit;padding:0 2px}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:4px}
+.brand{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;text-align:left}
+.brand .seal{width:40px;height:40px;border-radius:50%;border:3px solid var(--maru);color:var(--maru);display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:13px;line-height:1;transform:rotate(-8deg);flex:none}
+.brand b{font-family:var(--display);font-size:20px;font-weight:900;letter-spacing:.02em}
+.brand small{display:block;font-size:11px;color:var(--muted);letter-spacing:.08em}
+.ghost{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+
+/* home */
+.hero{display:flex;flex-direction:column;gap:10px;padding-block:8px}
+.hero h1{font-size:clamp(26px,6vw,34px);font-weight:900}
+.hero h1 .ox{color:var(--maru)}
+.hero p{margin:0;color:var(--muted);max-width:34em}
+.total{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;font-size:14px;color:var(--muted)}
+.total strong{font-family:var(--display);font-size:28px;color:var(--ink);font-variant-numeric:tabular-nums}
+.meter{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--maru);border-radius:99px;transition:width .4s}
+
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:520px){.fields{grid-template-columns:1fr}}
+.field{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;text-align:left;border-top:5px solid var(--fc)}
+.field:hover{border-color:var(--fc)}
+.field .tag{font-size:12px;letter-spacing:.08em;color:var(--fc);font-weight:700}
+.field h3{font-size:19px}
+.field p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+.field .stat{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.field .meter i{background:var(--fc)}
+.field .go{margin-top:2px;font-family:var(--display);font-weight:700;color:var(--fc);font-size:15px}
+
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-family:var(--display);font-weight:700;font-size:16px;background:var(--acc);color:var(--card)}
+.btn.sub{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn[disabled]{opacity:.45;cursor:default}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.panel summary{font-family:var(--display);font-weight:700;font-size:17px;cursor:pointer}
+.panel[open] summary{margin-bottom:10px}
+.panel p{margin:.4em 0}
+.stack{display:flex;height:34px;border-radius:8px;overflow:hidden;margin:10px 0 6px}
+.stack span{display:grid;place-items:center;color:var(--card);font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;font-size:13px}
+.legend div{display:flex;gap:6px;align-items:center}
+.legend i{width:12px;height:12px;border-radius:3px;flex:none}
+.legend b{margin-left:auto;font-variant-numeric:tabular-nums}
+
+/* quiz */
+.qhead{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted)}
+.qhead .fl{color:var(--fc);font-weight:700}
+.qhead .n{margin-left:auto;font-variant-numeric:tabular-nums}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;display:flex;flex-direction:column;gap:18px;position:relative}
+.qno{font-family:var(--display);font-size:13px;color:var(--fc);letter-spacing:.1em;font-weight:700}
+.qtext{font-size:clamp(18px,4.6vw,21px);line-height:1.75;font-weight:700;font-family:var(--body)}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice{border:2px solid var(--line);background:var(--paper);border-radius:16px;padding:14px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .08s}
+.choice:active{transform:scale(.97)}
+.choice .mk{font-family:var(--display);font-size:46px;font-weight:900;line-height:1}
+.choice .lb{font-size:13px;color:var(--muted)}
+.choice.o .mk{color:var(--maru)}
+.choice.x .mk{color:var(--batsu)}
+.choice:hover{border-color:var(--acc)}
+.choice.picked{border-color:var(--ink)}
+.choice[disabled]{cursor:default}
+.choice.dim{opacity:.4}
+
+.verdict{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px}
+.verdict.ok{background:var(--maru-soft)}
+.verdict.ng{background:var(--batsu-soft)}
+.verdict .big{font-family:var(--display);font-weight:900;font-size:52px;line-height:1;flex:none;width:58px;text-align:center}
+.verdict.ok .big{color:var(--maru)}
+.verdict.ng .big{color:var(--batsu)}
+.verdict h3{font-size:20px}
+.verdict p{margin:0;font-size:14px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.verdict .big{animation:stamp .35s ease-out}}
+@keyframes stamp{from{transform:scale(1.8) rotate(-15deg);opacity:0}to{transform:none;opacity:1}}
+
+.exp{display:flex;flex-direction:column;gap:14px}
+.exp h4{font-family:var(--display);font-size:15px;margin:0;color:var(--acc);letter-spacing:.04em}
+.exp .body p{margin:0 0 .6em}
+.point{border:2px dashed var(--maru);border-radius:12px;padding:10px 14px;font-weight:700;display:flex;gap:10px;align-items:flex-start}
+.point::before{content:"覚える";flex:none;font-size:11px;background:var(--maru);color:var(--card);border-radius:6px;padding:2px 6px;margin-top:4px;letter-spacing:.06em}
+.hon{background:var(--paper);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.75}
+.hon .lbl{display:block;font-size:12px;color:var(--muted);letter-spacing:.06em;margin-bottom:2px}
+.words{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.words div{display:grid;grid-template-columns:auto 1fr;gap:4px 10px}
+.words dt{font-weight:700;margin:0}
+.words dt rt{font-size:10px;color:var(--muted);font-weight:400}
+.words dd{margin:0;color:var(--muted)}
+.fig{border:1px solid var(--line);border-radius:12px;padding:14px 10px;background:var(--paper);overflow-x:auto}
+.fig .cap{font-size:12px;color:var(--muted);text-align:center;margin-top:6px}
+.qnav{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.qnav .btn{flex:1 1 auto}
+.kbd{font-size:12px;color:var(--muted);text-align:center}
+
+/* figures */
+.fig-svg{width:100%;max-width:520px;height:auto;display:block;margin:0 auto}
+.fig-svg text{fill:var(--ink);font-size:13px;font-family:var(--body)}
+.fig-svg text.sm{font-size:11px;fill:var(--muted)}
+.fig-svg text.b{font-weight:700}
+.fig-svg text.red{fill:var(--maru);font-weight:700}
+.fig-svg text.acc{fill:var(--acc);font-weight:700}
+.fig-svg .bx{fill:var(--card);stroke:var(--ink);stroke-width:1.4}
+.fig-svg .ax{fill:var(--acc-soft);stroke:var(--acc);stroke-width:1.4}
+.fig-svg .hx{fill:var(--hl-fill);stroke:var(--maru);stroke-width:1.6}
+.fig-svg .gx{fill:var(--line);stroke:none}
+.fig-svg .ln{stroke:var(--ink);stroke-width:1.4;fill:none}
+.fig-svg .ln.d{stroke-dasharray:5 4}
+.fig-svg .ln.red{stroke:var(--maru);stroke-width:2}
+.fig-svg .ln.thick{stroke-width:5}
+.fig-svg .ah{fill:var(--ink)}
+.fig-svg .ah.red{fill:var(--maru)}
+.fig-svg .dot{fill:var(--maru)}
+.fig-svg .tree{fill:var(--c2)}
+.ft{width:100%;border-collapse:collapse;font-size:14px;min-width:300px;background:var(--card)}
+.ft th,.ft td{border:1px solid var(--line);padding:7px 8px;text-align:center;vertical-align:middle;line-height:1.5}
+.ft th{background:var(--acc-soft);font-weight:700}
+.ft td.l,.ft th.l{text-align:left}
+.ft .y{color:var(--maru);font-weight:700;font-size:17px}
+.ft .n{color:var(--batsu);font-weight:700;font-size:17px}
+.ft .hit{background:var(--hl-fill)}
+
+/* end */
+.end{display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+.score{font-family:var(--display);font-weight:900;font-size:56px;line-height:1;color:var(--maru);font-variant-numeric:tabular-nums}
+.score small{font-size:22px;color:var(--muted)}
+.miss{display:flex;flex-direction:column;gap:8px;width:100%}
+.miss button{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.6}
+.miss button b{color:var(--batsu);margin-right:6px}
+.foot{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* levels */
+.lvls{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+.lvbtn{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 10px;font-size:14px;text-align:left;line-height:1.3}
+.lvbtn:hover{border-color:var(--fc)}
+.lvbtn .nm{font-weight:700}
+.lvbtn .nm small{font-weight:400;color:var(--muted);margin-left:6px;font-size:12px}
+.lvbtn .sc{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.lvbtn .done{color:var(--maru)}
+.lvdot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:13px;color:var(--card);flex:none}
+.lvdot.l1,.chip.l1{background:var(--c2)}
+.lvdot.l2,.chip.l2{background:var(--c3)}
+.lvdot.l3,.chip.l3{background:var(--maru)}
+.chip{color:var(--card);font-size:12px;font-weight:700;border-radius:999px;padding:1px 10px}
+.lvsum{font-size:13px}
+.steps{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.step{display:flex;align-items:center;gap:8px;min-width:0}
+.step b{display:block;font-family:var(--display);font-size:15px;line-height:1.2}
+.step small{display:block;font-size:11px;color:var(--muted);line-height:1.3}
+.steps .arrow{color:var(--muted)}
+
+.brand .seal{font-size:15px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tab{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:0;text-align:left}
+.tab b{font-family:var(--display);font-size:22px;line-height:1.2}
+.tab small{font-size:12px;color:var(--muted)}
+.tab.on{border-color:var(--acc);background:var(--acc-soft)}
+.tab.on b{color:var(--acc)}
+.fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+.qhead .gb{background:var(--acc);color:var(--card);border-radius:6px;padding:0 8px;font-weight:700;font-size:12px}
+.qhead{flex-wrap:wrap}
+.ab{color:var(--muted);font-weight:400;font-size:.88em}
+.en{font-family:var(--body);letter-spacing:0}
+.mini{font-size:12px;color:var(--muted)}
+.btn[disabled]{opacity:.45;cursor:default}
+.panel .words dd{color:var(--ink)}
+.steps{margin:0;padding-left:1.4em;font-size:14px;line-height:1.8;text-align:left}
+.steps li{margin:2px 0}
+.fig .ft{margin-bottom:8px}
+.fig .ft:last-child{margin-bottom:0}
+.ft.hk td:last-child{font-weight:700}
+.ngbox{background:var(--batsu-soft);border-left:5px solid var(--batsu);border-radius:10px;padding:10px 14px;font-size:15px;line-height:1.75}
+.ngbox .lbl{display:block;font-size:12px;font-weight:700;color:var(--batsu);letter-spacing:.06em}
+.tower{display:flex;flex-direction:column;gap:4px;font-size:13px;text-align:center;min-width:300px}
+.tower small{display:block;font-size:11px;color:var(--muted);font-weight:400;line-height:1.4}
+.tower .fl2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
+.tower .cell{border-radius:8px;padding:8px 4px;line-height:1.4}
+.tower .cell.up{background:var(--acc-soft);border:2px solid var(--acc);font-weight:700}
+.tower .cell.em{border:1px dashed var(--line);color:var(--muted)}
+.tower .fl1{background:var(--hl-fill);border:2px solid var(--maru);border-radius:8px;padding:8px;font-weight:700}
+.tower .fl0{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
+.tower .fl0 span{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 4px;font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="app"></div>
+
+<script>
+/* ---------- 図のための小さな道具 ---------- */
+const svg=(w,h,label,body)=>`<svg class="fig-svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">${body}</svg>`;
+const T=(x,y,s,c="",a="middle")=>`<text x="${x}" y="${y}" text-anchor="${a}" class="${c}">${s}</text>`;
+const R=(x,y,w,h,c="bx",r=8)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" class="${c}"/>`;
+const L=(x1,y1,x2,y2,c="ln")=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${c}"/>`;
+function Ar(x1,y1,x2,y2,c=""){
+  const a=Math.atan2(y2-y1,x2-x1),h=9,w=5;
+  const bx=x2-h*Math.cos(a),by=y2-h*Math.sin(a);
+  const p1=[bx+w*Math.sin(a),by-w*Math.cos(a)],p2=[bx-w*Math.sin(a),by+w*Math.cos(a)];
+  return L(x1,y1,bx,by,"ln "+c)+`<polygon points="${x2},${y2} ${p1[0].toFixed(1)},${p1[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}" class="ah ${c}"/>`;
+}
+
+/* ---------- 図・表 ---------- */
+const tb=(head,rows,cls="")=>`<table class="ft ${cls}"><thead><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>i===0?`<th class="l">${c}</th>`:`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+const Y=`<span class="y">○</span>`,N=`<span class="n">×</span>`;
+const FIGS={
+fpLaw:{cap:"FPができること・できないこと（資格のない場合）",html:()=>tb(["分野","できる（一般的な説明）","できない（資格が必要）"],[
+ ["税金（税理士法）","税金のしくみの一般的な説明","具体的な税額計算・申告書の作成（<b>無料でもダメ</b>）"],
+ ["法律（弁護士法）","法律の一般的な説明、遺言の<b>証人</b>、任意後見人","具体的な法律判断・交渉"],
+ ["保険（保険業法）","保険の一般的な説明、必要保障額の計算","保険の<b>募集・勧誘</b>（保険募集人の登録が必要）"],
+ ["投資（金融商品取引法）","景気や投資の一般的な説明","具体的な投資判断の助言（投資助言・代理業の登録が必要）"]])},
+cf:{cap:"キャッシュフロー表のイメージ（数字は例）",html:()=>tb(["","今年","1年後","2年後"],[
+ ["収入（可処分所得）","500","500","505"],["基本生活費（変動率1%）","300","303","306"],["その他の支出","150","150","150"],
+ ["年間収支（収入−支出）","50","47","49"],["貯蓄残高（前年×(1+運用率)＋年間収支）","300","350","402"]])+`<p class="cap" style="text-align:left">可処分所得＝年収−（所得税＋住民税＋社会保険料）。単位は万円。</p>`},
+keisu:{cap:"6つの係数の使い分け",html:()=>tb(["係数","わかっていること → 知りたいこと","例"],[
+ ["終価係数","今のお金（一括） → 将来いくら","100万円を10年運用すると？"],
+ ["現価係数","将来の目標（一括） → 今いくら必要","10年後に500万円ほしい。今いくら？"],
+ ["年金終価係数","毎年の積立額 → 将来いくら","毎年10万円積み立てると？"],
+ ["減債基金係数","将来の目標 → 毎年いくら積み立てる","10年後1,000万円。毎年いくら？"],
+ ["資本回収係数","今のお金 → 毎年いくら受け取れる（ローン返済額）","2,000万円を20年で取り崩すと毎年？"],
+ ["年金現価係数","毎年の受取額 → 今いくら必要","毎年120万円を20年もらうには？"]])},
+loan:{cap:"住宅ローンの返し方",html:()=>tb(["","元利均等返済","元金均等返済"],[
+ ["毎回の返済額","ずっと<b>同じ</b>","最初が多く、だんだん<b>減る</b>"],["最初のころの返済額","少なめ","多め"],
+ ["総返済額（同じ条件）","多い","<b>少ない</b>"],["元金の減り方","最初はゆっくり","一定のペース"]])+tb(["繰上げ返済","期間短縮型","返済額軽減型"],[
+ ["変わるもの","返済<b>期間</b>が短くなる","毎回の<b>返済額</b>が減る"],["利息を減らす効果","<b>大きい</b>","小さい"]])},
+nenkin:{cap:"日本の公的年金は「2階建て」",html:()=>`<div class="tower">
+ <div class="fl2"><div class="cell em">（なし）<small>国民年金基金・iDeCoで自分で上乗せ</small></div><div class="cell up">厚生年金<small>会社員・公務員</small></div><div class="cell em">（なし）<small>配偶者の制度でカバー</small></div></div>
+ <div class="fl1">国民年金（基礎年金）＝ 20歳以上60歳未満の全員</div>
+ <div class="fl0"><span>第1号<small>自営業・学生など<br>保険料は自分で</small></span><span>第2号<small>会社員・公務員<br>給料から天引き</small></span><span>第3号<small>第2号の被扶養配偶者<br>自己負担なし</small></span></div>
+ </div>`},
+kuriage:{cap:"年金をもらい始める時期（原則65歳）",html:()=>tb(["","繰上げ（早くもらう）","繰下げ（遅くもらう）"],[
+ ["選べる年齢","60歳〜64歳","66歳〜75歳"],["1か月あたり","<b>0.4%減</b>","<b>0.7%増</b>"],["最大","60か月×0.4%＝<b>24%減</b>","120か月×0.7%＝<b>84%増</b>"],
+ ["基礎と厚生","<b>同時に</b>しなければならない","<b>別々に</b>選べる"],["注意","一生減ったまま・障害基礎年金が請求できない等","繰下げ中は加給年金も出ない"]])},
+seiho:{cap:"生命保険の基本の3つの形",html:()=>tb(["","定期保険","終身保険","養老保険"],[
+ ["保障の期間","一定期間","<b>一生涯</b>","一定期間"],["満期保険金",N,"（満期なし）","<b>あり（死亡保険金と同額）</b>"],
+ ["解約返戻金","ない・少ない","あり（だんだん増える）","あり"],["保険料","<b>安い</b>","高め","<b>いちばん高い</b>"]])},
+hokenTax:{cap:"死亡保険金・満期保険金にかかる税金（契約者＝保険料を払う人）",html:()=>tb(["契約者","被保険者","受取人","かかる税金"],[
+ ["夫","夫","妻（子）","<b>相続税</b>"],["夫","妻","夫","<b>所得税・住民税</b>（一時所得）"],["夫","妻","子","<b>贈与税</b>"]],"hk")+`<p class="cap" style="text-align:left">入院・手術給付金、高度障害保険金、リビング・ニーズ特約の保険金、火災保険の保険金などは<b>非課税</b>。</p>`},
+kabu:{cap:"株の指標（すべて「割り算」で出す）",html:()=>tb(["指標","計算式","見方"],[
+ ["PER（株価収益率）","株価 ÷ 1株あたり純利益","低いほど割安"],["PBR（株価純資産倍率）","株価 ÷ 1株あたり純資産","1倍割れは割安"],
+ ["ROE（自己資本利益率）","当期純利益 ÷ 自己資本 × 100","高いほど効率よくもうけている"],["配当利回り","1株配当 ÷ 株価 × 100","高いほど配当が多い"],["配当性向","配当 ÷ 当期純利益 × 100","もうけのうち配当に回した割合"]])},
+gaika:{cap:"為替レートと円安・円高（1ドル＝TTMを100円とした例）",html:()=>tb(["レート","使うとき","例"],[
+ ["TTS（対顧客電信売相場）","円 → 外貨（預けるとき）","101円（TTMより高い）"],["TTM（仲値）","基準","100円"],["TTB（対顧客電信買相場）","外貨 → 円（もどすとき）","99円（TTMより安い）"]])+tb(["","円安（100円→120円）","円高（100円→80円）"],[["外貨預金を円にもどすと","<b>為替差益</b>（もうけ）","<b>為替差損</b>（損）"]])},
+nisa:{cap:"今のNISA（2024年から）",html:()=>tb(["","つみたて投資枠","成長投資枠"],[
+ ["年間の上限","<b>120万円</b>","<b>240万円</b>"],["生涯の上限","合計<b>1,800万円</b>（買った金額で管理）","そのうち<b>1,200万円</b>まで"],
+ ["買えるもの","国が選んだ長期・積立・分散向けの投資信託など","上場株式・投資信託など（毎月分配型などは除く）"],
+ ["非課税の期間","無期限","無期限"],["使える人","18歳以上","18歳以上"],["損が出たら","損益通算・繰越控除<b>できない</b>","同じ"]])},
+taxFlow:{cap:"所得税の計算の流れ",html:()=>`<ol class="steps"><li><b>10種類の所得</b>をそれぞれ計算（収入−必要経費など）</li><li><b>合計</b>する（損益通算・繰越控除）</li><li><b>所得控除</b>を引く（基礎・配偶者・扶養・社会保険料・生命保険料・医療費など）</li><li><b>税率</b>をかける（5%〜45%の超過累進税率）</li><li><b>税額控除</b>を引く（配当控除・住宅ローン控除など）→ 納める税金</li></ol>`},
+shotoku10:{cap:"所得の10種類",html:()=>tb(["所得","例","課税のしかた（主なもの）"],[
+ ["利子所得","預金の利息","源泉分離（20.315%）"],["配当所得","株の配当","総合／申告不要／申告分離"],["不動産所得","アパートの家賃・地代","総合"],["事業所得","お店・農業・個人の商売","総合"],
+ ["給与所得","給料・ボーナス","総合"],["退職所得","退職金","分離（1/2にする）"],["山林所得","山の木を売ったもうけ","分離"],["譲渡所得","土地・株・ゴルフ会員権を売ったもうけ","分離（土地・株）／総合"],
+ ["一時所得","懸賞金・満期保険金","総合（1/2にする）"],["雑所得","公的年金・副業・外貨預金の為替差益","総合"]])},
+taikin:{cap:"退職所得の計算",html:()=>tb(["勤続年数","退職所得控除額"],[["20年以下","40万円 × 勤続年数（最低80万円）"],["20年超","800万円 ＋ 70万円 ×（勤続年数 − 20年）"]])+`<p class="cap" style="text-align:left">退職所得 ＝（退職金 − 退職所得控除額）× 1/2 。勤続年数の1年未満の端数は切り上げ。</p>`},
+tsusan:{cap:"損益通算できる損失「富士山上（ふ・じ・さん・じょう）」",html:()=>tb(["損失","損益通算","できない例外"],[
+ ["<b>不</b>動産所得",Y,"土地を買うための借入金の利子"],["<b>事</b>業所得",Y,"—"],["<b>山</b>林所得",Y,"—"],["<b>譲</b>渡所得",Y,"ゴルフ会員権・別荘、土地建物（一部特例を除く）、株式（上場株式は配当等とだけ）"],
+ ["雑所得・一時所得など",N,"—"]])},
+fuyo:{cap:"配偶者控除・扶養控除の金額（所得税）",html:()=>tb(["区分","年齢など","控除額"],[
+ ["配偶者控除","配偶者の合計所得58万円以下","38万円（70歳以上48万円）"],["配偶者特別控除","配偶者の合計所得58万円超133万円以下","最高38万円から段階的に減る"],
+ ["扶養控除（年少）","16歳未満","<b>なし</b>"],["一般の扶養親族","16〜18歳・23〜69歳","38万円"],["特定扶養親族","<b>19〜22歳</b>","<b>63万円</b>"],["老人扶養親族","70歳以上","48万円（同居老親等58万円）"]])+`<p class="cap" style="text-align:left">本人の合計所得が1,000万円を超えると配偶者控除・配偶者特別控除は受けられない。年齢は12月31日時点。</p>`},
+kakaku:{cap:"土地の4つの価格（一物四価）",html:()=>tb(["価格","決める所","基準日","公示価格に対する水準"],[
+ ["公示価格","国土交通省","1月1日","100%"],["基準地標準価格","都道府県","7月1日","100%"],["相続税路線価","国税庁","1月1日","<b>約80%</b>"],["固定資産税評価額","市町村","1月1日（3年ごとに評価替え）","<b>約70%</b>"]])},
+toki:{cap:"不動産登記記録のしくみ",html:()=>tb(["部分","書かれていること"],[["表題部","所在・地番・地目・面積など（物そのもの）"],["権利部（甲区）","<b>所有権</b>（だれの物か、差押えなど）"],["権利部（乙区）","所有権<b>以外</b>（抵当権・賃借権など）"]])+`<p class="cap" style="text-align:left">登記に<b>公信力はない</b>（信じても守られるとは限らない）。<b>対抗力</b>はある。仮登記は順位を保全するが対抗力はない。</p>`},
+baikai:{cap:"媒介契約の3つの種類",html:()=>tb(["","一般媒介","専任媒介","専属専任媒介"],[
+ ["ほかの業者にも頼める",Y,N,N],["自分で見つけた相手と契約",Y,Y,N],["契約の期間","決まりなし","3か月以内","3か月以内"],["業者からの報告","決まりなし","2週間に1回以上","<b>1週間に1回以上</b>"],["レインズへの登録","義務なし","7日以内","5日以内"]])},
+shakuchi:{cap:"借地権の種類",html:()=>tb(["種類","期間","使い道","契約の方法"],[
+ ["普通借地権","<b>30年以上</b>（更新あり）","自由","決まりなし"],["一般定期借地権","<b>50年以上</b>","自由","書面（電磁的記録も可）"],
+ ["事業用定期借地権等","<b>10年以上50年未満</b>","事業用のみ（住宅は不可）","<b>公正証書</b>に限る"],["建物譲渡特約付借地権","<b>30年以上</b>","自由","決まりなし"]])},
+setsudo:{cap:"接道義務とセットバック",html:()=>svg(420,190,"接道義務とセットバックの図",
+ R(20,20,180,110,"ax")+T(110,70,"敷地","b")+T(110,92,"道路に2m以上接する","sm")+
+ R(0,140,220,40,"gx",0)+T(110,165,"幅4m以上の道路","b")+L(80,130,140,130,"ln red thick")+T(110,124,"2m以上","red")+
+ R(240,20,170,80,"ax")+T(325,60,"敷地","b")+R(240,100,170,22,"hx",0)+T(325,116,"セットバック部分","sm")+
+ R(240,122,170,58,"gx",0)+L(240,151,410,151,"ln d")+T(325,140,"4m未満の道（2項道路）","sm")+T(325,174,"中心線から2m下がる","red"))},
+kenpei:{cap:"建蔽率と容積率",html:()=>tb(["","計算","制限するもの"],[["建蔽率","建築面積 ÷ 敷地面積","建物の<b>広がり</b>（真上から見た広さ）"],["容積率","延べ面積 ÷ 敷地面積","建物の<b>大きさ</b>（全部の階の合計）"]])+tb(["建蔽率がゆるくなる場合","加算"],[["防火地域内の耐火建築物等（準防火地域は耐火・準耐火建築物等）","＋10%"],["特定行政庁が指定する角地","＋10%"],["建蔽率80%の地域の防火地域内の耐火建築物等","制限なし（100%）"]])},
+youseki:{cap:"前面道路の幅による容積率の制限（幅12m未満のとき）",html:()=>tb(["用途地域","前面道路の幅 × ○","例：道路6m・指定300%"],[["住居系","× <b>4/10</b>","6×4/10＝240% → <b>240%</b>"],["商業系・工業系など","× <b>6/10</b>","6×6/10＝360% → <b>300%</b>"]])+`<p class="cap" style="text-align:left">指定容積率と比べて<b>小さいほう</b>が上限。道路が2つ以上なら広いほうの幅。敷地が2つの地域にまたがるとき、用途制限は<b>過半</b>、建蔽率・容積率は<b>加重平均</b>。</p>`},
+fudoTax:{cap:"不動産にかかる主な税金",html:()=>tb(["税金","だれが課す","かかる時","主なポイント"],[
+ ["不動産取得税","都道府県","取得した時（1回）","相続ではかからない。土地・住宅は3%。新築住宅1,200万円控除"],["登録免許税","国","登記する時","課税標準は固定資産税評価額（抵当権は債権金額）"],
+ ["印紙税","国","契約書を作る時","貼らなくても契約は有効（過怠税）"],["固定資産税","市町村","毎年（1月1日の所有者）","1.4%。住宅用地200㎡以下1/6。新築住宅3年間1/2"],["都市計画税","市町村","毎年","上限0.3%。住宅用地200㎡以下1/3"]])},
+jotoFudo:{cap:"土地・建物を売ったときの税金",html:()=>tb(["区分","条件（売った年の1月1日時点）","税率"],[
+ ["短期譲渡所得","所有5年以下","39.63%"],["長期譲渡所得","所有5年超","20.315%"],["居住用の軽減税率","所有10年超・6,000万円以下の部分","14.21%"]])+tb(["マイホームの特例","主な条件"],[
+ ["3,000万円特別控除","所有期間を問わない・3年に1回・親族への売却は不可"],["軽減税率","所有10年超（3,000万円控除と併用可）"],["買換え特例","売却代金1億円以下・所有10年超・居住10年以上（上の2つとは選択）"]])+`<p class="cap" style="text-align:left">譲渡所得＝売った値段−（取得費＋譲渡費用）。取得費がわからないときは売った値段の5%。</p>`},
+zoyo:{cap:"贈与税の2つの課税方法",html:()=>tb(["","暦年課税","相続時精算課税"],[
+ ["あげる人・もらう人","だれでも","60歳以上の父母・祖父母 → 18歳以上の子・孫"],["非課税枠","毎年<b>110万円</b>","毎年<b>110万円</b>＋累計<b>2,500万円</b>"],
+ ["超えた分の税率","10〜55%（特例税率・一般税率）","一律<b>20%</b>"],["相続のとき","亡くなる前<b>7年</b>以内の贈与を加算（段階的に）","110万円を超えた分を<b>すべて</b>加算（贈与時の価額）"],["注意","—","一度選ぶと暦年課税にもどれない"]])+tb(["主な特例","非課税額"],[["贈与税の配偶者控除（婚姻20年以上・居住用）","2,000万円（＋110万円）"],["住宅取得等資金（直系尊属から）","省エネ等1,000万円・その他500万円"]])},
+souzokunin:{cap:"相続人になる人と順位",html:()=>tb(["順位","相続人","いないときは"],[
+ ["つねに","<b>配偶者</b>（内縁は×）","—"],["第1順位","<b>子</b>（養子・非嫡出子も同じ）","孫・ひ孫が代襲"],["第2順位","<b>父母</b>（直系尊属）","祖父母"],["第3順位","<b>兄弟姉妹</b>","おい・めいまで代襲"]])+`<p class="cap" style="text-align:left">上の順位の人が1人でもいれば、下の順位の人は相続人にならない。相続放棄した人の子は代襲しない。</p>`},
+souzokubun:{cap:"法定相続分",html:()=>tb(["相続人の組み合わせ","配偶者","ほかの相続人"],[
+ ["配偶者と子","1/2","1/2（人数で等分）"],["配偶者と父母","2/3","1/3"],["配偶者と兄弟姉妹","3/4","1/4（半血は全血の1/2）"],["配偶者だけ","すべて","—"]])+tb(["遺留分（全体）","割合"],[["父母だけが相続人","財産の1/3"],["それ以外","財産の1/2"],["兄弟姉妹","<b>なし</b>"]])},
+igon:{cap:"遺言の3つの種類",html:()=>tb(["","自筆証書遺言","公正証書遺言","秘密証書遺言"],[
+ ["書く人","本人が手書き（財産目録はパソコン可）","公証人","本人（パソコン・代筆も可）"],["証人","不要","<b>2人以上</b>","2人以上"],["家庭裁判所の検認","必要（<b>法務局保管なら不要</b>）","<b>不要</b>","必要"]])},
+sozokuzei:{cap:"相続税のおもな数字",html:()=>tb(["項目","金額・内容"],[
+ ["基礎控除","3,000万円 ＋ 600万円 × 法定相続人の数"],["死亡保険金の非課税","500万円 × 法定相続人の数"],["死亡退職金の非課税","500万円 × 法定相続人の数（別枠）"],
+ ["配偶者の税額軽減","1億6,000万円か法定相続分の多いほうまで非課税"],["2割加算","配偶者・子・父母以外（兄弟姉妹、孫（代襲を除く）など）"],["債務控除","借金・葬式費用はOK、香典返し・法要・墓地の未払金は対象外"],["申告期限","知った日の翌日から10か月以内"]])},
+hyoka:{cap:"土地・建物の相続税評価",html:()=>tb(["種類","評価額の計算"],[
+ ["自用地","路線価 × 面積（各種補正）"],["借地権","自用地評価額 × 借地権割合"],["貸宅地（底地）","自用地評価額 ×（1 − 借地権割合）"],
+ ["貸家建付地","自用地評価額 ×（1 − 借地権割合 × 借家権割合 × 賃貸割合）"],["自用家屋","固定資産税評価額 × 1.0"],["貸家","固定資産税評価額 ×（1 − 借家権割合30% × 賃貸割合）"]])},
+shokibo:{cap:"小規模宅地等の特例",html:()=>tb(["区分","限度面積","減額割合"],[
+ ["特定居住用宅地等（自宅）","<b>330㎡</b>","<b>80%</b>"],["特定事業用宅地等（お店・工場）","<b>400㎡</b>","<b>80%</b>"],["貸付事業用宅地等（アパート等）","<b>200㎡</b>","<b>50%</b>"]])+`<p class="cap" style="text-align:left">自宅は、配偶者なら無条件。同居親族は申告期限まで住み続け・持ち続けること。税額がゼロでも申告が必要。</p>`},
+hojinHoken:{cap:"法人が払う保険料の経理（主なもの）",html:()=>tb(["保険","受取人","保険料の扱い"],[
+ ["定期保険（最高解約返戻率50%以下）","法人","全額<b>損金</b>"],["終身保険","法人","全額<b>資産</b>"],["養老保険","死亡・満期とも法人","全額<b>資産</b>"],
+ ["養老保険（福利厚生プラン）","死亡＝遺族／満期＝法人","<b>1/2資産・1/2損金</b>"]])}
+};
+
+const GRADES={3:{name:"3級",sub:"はじめの一歩"},2:{name:"2級",sub:"3級の次のステップ"}};
+const FIELDS={
+  life:{name:"ライフプランニングと資金計画",short:"ライフプラン",tag:"お金の計画・社会保険・年金",desc:"一生のお金の計画、FPのルール、健康保険・年金・雇用保険など。",color:"var(--c1)"},
+  risk:{name:"リスク管理",short:"リスク管理",tag:"保険",desc:"生命保険・医療保険・火災保険・自動車保険と、保険の税金。",color:"var(--c2)"},
+  kin:{name:"金融資産運用",short:"金融",tag:"預金・債券・株・投資信託",desc:"景気の指標、債券・株・投資信託・外貨、NISA（ニーサ）など。",color:"var(--c3)"},
+  tax:{name:"タックスプランニング",short:"税金",tag:"所得税・法人税・消費税",desc:"所得の10種類、所得控除、確定申告など、税金のしくみ。",color:"var(--c4)"},
+  fudo:{name:"不動産",short:"不動産",tag:"土地・建物",desc:"登記、売買・借地借家のルール、建築の制限、不動産の税金。",color:"var(--c5)"},
+  sozo:{name:"相続・事業承継",short:"相続",tag:"相続・贈与",desc:"だれがどれだけ相続する？ 相続税・贈与税、財産の評価。",color:"var(--c6)"}
+};
+/* 略語：最初に出てきた所に（日本語：英語のフル表記）をつける */
+const ABBR=[
+ ["J-REIT","上場不動産投資信託","Japan Real Estate Investment Trust"],
+ ["iDeCo","個人型確定拠出年金","individual-type Defined Contribution pension plan"],
+ ["e-Tax","国税電子申告・納税システム","electronic Tax filing system"],
+ ["TOPIX","東証株価指数","Tokyo Stock Price Index"],
+ ["NISA","少額投資非課税制度","Nippon Individual Savings Account"],
+ ["REIT","不動産投資信託","Real Estate Investment Trust"],
+ ["GDP","国内総生産","Gross Domestic Product"],
+ ["CPI","消費者物価指数","Consumer Price Index"],
+ ["PER","株価収益率","Price Earnings Ratio"],
+ ["PBR","株価純資産倍率","Price Book-value Ratio"],
+ ["ROE","自己資本利益率","Return On Equity"],
+ ["EPS","1株あたり純利益","Earnings Per Share"],
+ ["BPS","1株あたり純資産","Book-value Per Share"],
+ ["ETF","上場投資信託","Exchange Traded Fund"],
+ ["MRF","マネー・リザーブ・ファンド","Money Reserve Fund"],
+ ["MMF","マネー・マーケット・ファンド","Money Market Fund"],
+ ["TTS","対顧客電信売相場","Telegraphic Transfer Selling rate"],
+ ["TTB","対顧客電信買相場","Telegraphic Transfer Buying rate"],
+ ["TTM","仲値","Telegraphic Transfer Middle rate"],
+ ["NOI","純収益","Net Operating Income"],
+ ["DCF","割引キャッシュフロー","Discounted Cash Flow"],
+ ["OTC","一般用医薬品（市販薬）","Over The Counter"],
+ ["NPO","特定非営利活動法人","Non-Profit Organization"],
+ ["FP","ファイナンシャル・プランナー","Financial Planner"],
+ ["DC","確定拠出年金","Defined Contribution"],
+ ["CI","コンポジット・インデックス","Composite Index"],
+ ["DI","ディフュージョン・インデックス","Diffusion Index"],
+ ["PL","製造物責任","Product Liability"]
+];
+const isAl=c=>!!c&&/[A-Za-z\-]/.test(c);
+function expandAbbr(text,seen,found){
+  for(const [ab,jp,en] of ABBR){
+    let from=0;
+    while(true){
+      const i=text.indexOf(ab,from);if(i<0)break;
+      const pre=text[i-1],post=text[i+ab.length];
+      if(isAl(pre)||isAl(post)||(ab!=="J-REIT"&&pre==="-")){from=i+ab.length;continue}
+      if(!found.includes(ab))found.push(ab);
+      if(seen.has(ab))break;
+      seen.add(ab);
+      const rest=text.slice(i+ab.length);
+      if(rest.startsWith("（"+jp+"）")){text=text.slice(0,i+ab.length)+"（"+jp+"：<span class=\"en\">"+en+"</span>）"+rest.slice(jp.length+2)}
+      else if(rest.startsWith("（")){/* すでに説明あり */}
+      else{text=text.slice(0,i+ab.length)+"<span class=\"ab\">（"+jp+"：<span class=\"en\">"+en+"</span>）</span>"+rest}
+      break;
+    }
+  }
+  return text;
+}
+
+const Q=[];
+/* 3級・life */
+Q.push(...[
+{q:"FPは、お客さんのお金の「夢」や「心配ごと」を聞いて、一生のお金の計画（ライフプラン）を立てるお手伝いをする人である。",a:true,
+ exp:`<p>FPは「お金のお医者さん」のような人です。</p><p>「家を買いたい」「子どもを大学に行かせたい」「老後が心配」…こうした<b>夢や心配ごと</b>を聞いて、<mark>いつ・いくら必要で、どう準備するか</mark>という計画をいっしょに考えます。</p><p>FPの試験は、その計画に必要な<b>6つの分野</b>（ライフプラン、保険、金融、税金、不動産、相続）の知識を問うものです。</p>`,
+ pt:"FP＝一生のお金の計画（ライフプラン）を手伝う専門家",
+ hon:"ファイナンシャル・プランニングとは、顧客の夢や目標を実現するために、資金計画を立て、総合的にアドバイスすることである。",
+ w:[["ライフプラン","らいふぷらん","一生の生活設計。いつ・どんなことが起きて・お金がいくら要るかの計画"]]},
+{q:"税理士の資格を持たないFPが、お客さんから頼まれて、無料で確定申告書を作ってあげることは問題ない。",a:false,fig:"fpLaw",
+ exp:`<p>税金の書類を<b>代わりに作る</b>ことや、「あなたの場合は税金がいくらです」と<b>その人だけの具体的な相談</b>にのることは、<mark>税理士にしかできない仕事</mark>です（税理士法）。</p><p>大事なのは、<b>お金をもらわない「無料」でもダメ</b>ということ。ここがひっかけでよく出ます。</p><p>FPができるのは、「医療費控除というしくみがありますよ」のような<b>一般的な説明</b>までです。</p>`,
+ pt:"税理士でないFPは、無料でも「個別の税務相談・申告書の代理作成」はできない",
+ hon:"税理士資格を有しないFPが、顧客のために無償で確定申告書を作成する行為は、税理士法に抵触する。",
+ w:[["確定申告","かくていしんこく","1年間のもうけと税金を自分で計算して、税務署に届け出ること"]]},
+{q:"弁護士の資格を持たないFPでも、公正証書遺言（こうせいしょしょいごん）を作るときの「証人」になることはできる。",a:true,fig:"fpLaw",
+ exp:`<p>公正証書遺言は、公証人という専門家に作ってもらう遺言書です。作るときには<b>証人が2人以上</b>必要です。</p><p>証人になるのに<mark>特別な資格はいりません</mark>。だから、弁護士でないFPも証人になれます。</p><p>ただし、「あなたの遺産はこう分けるべき」と<b>具体的な法律判断</b>をすること（法律事務）は弁護士の仕事なので、FPはできません。</p>`,
+ pt:"遺言の証人には資格不要 → FPもなれる。具体的な法律判断は弁護士だけ",
+ hon:"弁護士資格を有しないFPが、顧客の依頼を受けて公正証書遺言の証人となることは、弁護士法に抵触しない。"},
+{q:"保険募集人の登録をしていないFPが、お客さんに特定の生命保険への加入をすすめて契約を取ること（募集）はできる。",a:false,fig:"fpLaw",
+ exp:`<p>保険の契約を取る仕事（<b>募集・勧誘</b>）は、<mark>保険募集人として登録した人だけ</mark>ができます（保険業法）。</p><p>登録のないFPができるのは、「終身保険とはこういうしくみです」といった<b>一般的な説明</b>や、「この家族なら必要な保障はこれくらい」という<b>必要保障額の計算</b>までです。</p>`,
+ pt:"保険の募集（勧誘して契約を取る）は、保険募集人の登録が必要",
+ hon:"生命保険募集人の登録を受けていないFPが、生命保険の募集を行う行為は、保険業法に抵触する。"},
+{q:"金融商品取引業（投資助言・代理業）の登録をしていないFPが、お金をもらって「今は○○社の株を買うべきです」と助言することはできない。",a:true,fig:"fpLaw",
+ exp:`<p>「この株を今買うべき」のように、<b>どの株・いつ・いくら</b>と具体的に投資のアドバイスをしてお金をもらうには、<mark>金融商品取引業（投資助言・代理業）の登録</mark>が必要です（金融商品取引法）。</p><p>登録のないFPができるのは、「株とは何か」「景気と株価の関係」といった<b>一般的な説明</b>までです。</p>`,
+ pt:"具体的な投資判断の助言をするには、投資助言・代理業の登録が必要",
+ hon:"金融商品取引業の登録を受けていないFPが、顧客と投資顧問契約を締結し、特定の銘柄の投資判断について助言を行う行為は、金融商品取引法に抵触する。"},
+{q:"キャッシュフロー表では、将来の生活費などを「今の金額 ×（1＋変動率）の年数乗」で計算する。",a:true,fig:"cf",
+ exp:`<p>キャッシュフロー表は、<b>これから先の毎年の「入るお金」「出るお金」「残るお金（貯金）」</b>を一覧にした表です。</p><p>物の値段は少しずつ上がるので、<mark>今の金額 ×（1＋上がる割合）を年数の回数だけかける</mark>と、将来の金額がわかります。</p><p>例：今300万円の生活費が毎年1%上がると、2年後は 300万×1.01×1.01＝<b>約306万円</b>です。</p>`,
+ pt:"n年後の金額 ＝ 今の金額 ×（1＋変動率）ⁿ",
+ hon:"キャッシュフロー表において、n年後の基本生活費は「現在の基本生活費×（1＋変動率）ⁿ」で計算する。",
+ w:[["キャッシュフロー","きゃっしゅふろー","お金の流れ。入ってくるお金と出ていくお金"],["変動率","へんどうりつ","1年にどれくらい増えたり減ったりするかの割合"]]},
+{q:"可処分所得（かしょぶんしょとく）とは、年収から「税金・社会保険料・生命保険料」を引いた残りのことである。",a:false,fig:"cf",
+ exp:`<p>可処分所得は、<b>自分で自由に使い道を決められるお金</b>のことです。</p><p>計算は、<mark>年収 －（所得税 ＋ 住民税 ＋ 社会保険料）</mark>。</p><p>生命保険料は、入るかどうか<b>自分で決められる</b>ものなので、<b>引きません</b>。ここがひっかけです。</p>`,
+ pt:"可処分所得 ＝ 年収 －（所得税・住民税・社会保険料）。生命保険料は引かない",
+ hon:"可処分所得は、年収から所得税、住民税および社会保険料を控除した金額である。",
+ w:[["社会保険料","しゃかいほけんりょう","健康保険・年金・雇用保険などのために給料から天引きされるお金"]]},
+{q:"今ある100万円を年2%で10年間ふやすといくらになるかは、「現価係数」を使って求める。",a:false,ha:true,ng:"今あるお金が将来いくらになるかは「<b>終価係数</b>」。現価係数は、将来の目標額から「今いくら必要か」を求める係数です。",fig:"keisu",
+ exp:`<p>お金の計算には<b>6つの係数（けいすう）</b>という便利な「かけ算用の数」があります。</p><p><mark>終価係数は「今あるお金が、将来いくらになるか」</mark>を求めるときに使います。「終」＝おわり（将来）の値段、と覚えましょう。</p><p>100万円 × 終価係数（2%・10年＝1.219）＝ <b>約121.9万円</b>。</p>`,
+ pt:"今のお金 → 将来いくら？ ＝ 終価係数",
+ hon:"現在保有する資金を一定期間、一定の利率で複利運用した場合の元利合計額を求めるには、終価係数を用いる。"},
+{q:"10年後に500万円を貯めたいとき、今いくら預ければよいかは「現価係数（げんかけいすう）」で求める。",a:true,fig:"keisu",
+ exp:`<p>「現」＝<b>今</b>の価値、です。</p><p><mark>将来ほしい金額から、今いくら必要かを逆算する</mark>のが現価係数。終価係数のちょうど反対の計算です。</p><p>500万円 × 現価係数 ＝ 今預けるべき金額、となります。</p>`,
+ pt:"将来の目標額 → 今いくら？ ＝ 現価係数",
+ hon:"一定期間後に目標とする金額を得るために、現在いくらの元本で複利運用を開始すればよいかを求めるには、現価係数を用いる。"},
+{q:"10年後に1,000万円を貯めるために「毎年いくらずつ積み立てればよいか」を求めるには、年金終価係数を使う。",a:false,fig:"keisu",
+ exp:`<p>「目標額のために毎年いくら積み立てる？」は<mark>減債基金係数（げんさいききんけいすう）</mark>です。</p><p>年金終価係数は反対に、「毎年○円ずつ積み立てたら、将来いくらになる？」を求めるときに使います。</p><p>覚え方：<b>「基金」をつくるための積み立て額</b> → 減債<b>基金</b>係数。</p>`,
+ pt:"目標額 → 毎年の積立額 ＝ 減債基金係数／毎年の積立 → 将来の合計 ＝ 年金終価係数",
+ hon:"一定期間後に一定金額を用意するための毎年の積立額を求めるには、減債基金係数を用いる。"},
+{q:"退職金2,000万円を年1%で運用しながら20年間で取り崩すとき、毎年いくら受け取れるかは「資本回収係数」で求める。",a:true,fig:"keisu",
+ exp:`<p>今あるまとまったお金（資本）を、<b>少しずつ取り崩して毎年いくらもらえるか</b>を求めるのが<mark>資本回収係数</mark>です。</p><p>住宅ローンの「借りた額から毎年の返済額を出す」計算にも使います（借りたお金を回収する、と考える）。</p><p>反対に「毎年○円もらうには、今いくら必要？」は<b>年金現価係数</b>です。</p>`,
+ pt:"今ある元手 → 毎年いくら受け取れる？ ＝ 資本回収係数（ローンの年返済額も）",
+ hon:"一定金額を一定期間、一定の利率で運用しながら取り崩す場合の毎年の受取額を求めるには、資本回収係数を用いる。"},
+{q:"毎年120万円を20年間受け取るために、今いくら必要かは「年金現価係数」で求める。",a:true,fig:"keisu",
+ exp:`<p>「毎年○円を△年もらいたい。そのためには<b>今</b>いくら用意すればいい？」を求めるのが<mark>年金現価係数</mark>です。</p><p>「年金（毎年もらうお金）」の「現価（今の価値）」と読めば意味がわかります。</p>`,
+ pt:"毎年の受取額 → 今いくら必要？ ＝ 年金現価係数",
+ hon:"毎年一定額を一定期間受け取るために必要な元本を求めるには、年金現価係数を用いる。"},
+{q:"住宅ローンの「元利均等返済（がんりきんとうへんさい）」は、毎回返す「元金」の額が同じになる返し方である。",a:false,ha:true,ng:"毎回の元金が同じなのは「<b>元金均等返済</b>」。元利均等返済は、元金と利息を<b>合わせた返済額</b>が毎回同じです。",fig:"loan",
+ exp:`<p>住宅ローンの返し方は2種類あります。</p><p>・<b>元利均等返済</b>：毎回の<mark>返済額（元金＋利息）がずっと同じ</mark>。計画が立てやすい。<br>・<b>元金均等返済</b>：毎回返す<b>元金</b>が同じ。最初は利息が多いので返済額が大きく、だんだん減っていく。</p><p>借りた額・金利・期間が同じなら、<b>総返済額は元金均等のほうが少なく</b>なります（元金が早く減るので、利息も早く減るから）。</p>`,
+ pt:"元利均等＝毎回の返済額が同じ／元金均等＝総返済額が少ない",
+ hon:"住宅ローンの返済方法において、借入額、金利、返済期間等の条件が同一であれば、総返済額は、元金均等返済のほうが元利均等返済よりも少ない。",
+ w:[["元金","がんきん","借りたお金そのもの"],["利息","りそく","お金を借りたお礼に払う上乗せのお金"]]},
+{q:"住宅ローンの繰上げ返済では、「返済期間短縮型」のほうが「返済額軽減型」よりも、利息を減らす効果が大きい。",a:true,fig:"loan",
+ exp:`<p>繰上げ返済とは、決まった返済とは別に、<b>まとまったお金で元金を早めに返す</b>ことです。</p><p>・<b>期間短縮型</b>：毎月の返済額はそのまま、<b>返す期間が短く</b>なる。<br>・<b>返済額軽減型</b>：期間はそのまま、<b>毎月の返済額が少なく</b>なる。</p><p>条件が同じなら、<mark>期間短縮型のほうが、払う利息がより多く減ります</mark>。</p>`,
+ pt:"利息を減らす効果：期間短縮型 ＞ 返済額軽減型",
+ hon:"住宅ローンの一部繰上げ返済では、返済期間短縮型のほうが返済額軽減型よりも利息軽減効果が大きい（他の条件は同一とする）。"},
+{q:"フラット35は、借りたときから返し終わるまで金利が変わらない「全期間固定金利」の住宅ローンである。",a:true,
+ exp:`<p>フラット35は、民間の銀行などと<b>住宅金融支援機構（じゅうたくきんゆうしえんきこう）</b>が協力して出している住宅ローンです。</p><p>特ちょうは<mark>ずっと金利が同じ（全期間固定金利）</mark>こと。返済期間は<b>最長35年</b>です。</p><p>金利は、借りた日ではなく<b>お金を受け取る日（融資実行日）</b>の金利が使われます。</p>`,
+ pt:"フラット35＝全期間固定金利・最長35年・融資実行時の金利",
+ hon:"フラット35の借入金利は全期間固定金利であり、融資実行時点の金利が適用される。",
+ w:[["融資","ゆうし","お金を貸すこと"]]},
+{q:"日本政策金融公庫の「国の教育ローン」は、学生1人あたり原則500万円まで借りられる。",a:false,ha:true,ng:"原則<b>350万円</b>まで（海外留学など一定の場合は450万円）です。",
+ exp:`<p>子どもの入学金や授業料のために、<b>親が借りる</b>のが国の教育ローン（教育一般貸付）です。</p><p>借りられる額は<mark>学生1人あたり原則350万円まで</mark>（海外留学など一定の場合は450万円まで）。</p><p>使い道は授業料だけでなく、<b>受験料や通学の定期代、アパート代</b>などにも使えます。</p>`,
+ pt:"国の教育ローン＝日本政策金融公庫・1人350万円まで（親が借りる）",
+ hon:"日本政策金融公庫の教育一般貸付（国の教育ローン）の融資限度額は、所定の海外留学資金等を除き、学生・生徒1人につき350万円である。"},
+{q:"日本学生支援機構の奨学金で、「第一種奨学金」は利息がつかない（無利息の）貸与型の奨学金である。",a:true,
+ exp:`<p>日本学生支援機構の奨学金は、<b>学生本人が借りて、卒業後に返す</b>ものが中心です。</p><p>・<b>第一種</b>：<mark>利息なし</mark>（そのぶん成績や家計の基準がきびしい）<br>・<b>第二種</b>：<b>利息あり</b>（在学中は利息がかからない）</p><p>返さなくてよい<b>給付型</b>もあります。国の教育ローン（親が借りる）とあわせて使うこともできます。</p>`,
+ pt:"奨学金：第一種＝無利息／第二種＝利息あり（学生本人が借りる）",
+ hon:"日本学生支援機構の貸与型奨学金には、無利息の第一種奨学金と利息付き（在学中は無利息）の第二種奨学金がある。"},
+{q:"会社員の健康保険で、病院の窓口で払う自己負担の割合は、小学校入学後から70歳になるまでの人は原則2割である。",a:false,ha:true,ng:"70歳未満（小学校入学後）は原則<b>3割</b>。2割なのは小学校入学前と、70〜74歳（現役並み所得者を除く）です。",
+ exp:`<p>病院の代金は、全部を自分で払うわけではありません。残りは健康保険が払ってくれます。</p><p>自分で払う割合（自己負担）は、<br>・<b>小学校に入る前</b>：2割<br>・<mark>小学校入学後〜70歳未満：3割</mark><br>・70歳〜74歳：2割（現役なみに収入がある人は3割）</p><p>75歳からは<b>後期高齢者医療制度</b>という別のしくみに入ります。</p>`,
+ pt:"自己負担：就学前2割／70歳未満3割／70〜74歳2割（現役並み3割）",
+ hon:"健康保険の被保険者が保険医療機関で療養の給付を受けた場合の一部負担金の割合は、原則として、70歳未満の者（義務教育就学前の者を除く）は3割である。"},
+{q:"健康保険の「傷病手当金（しょうびょうてあてきん）」は、病気やけがで会社を休んだ1日目から支給される。",a:false,
+ exp:`<p>傷病手当金は、会社員が病気やけがで<b>働けず、給料が出ないとき</b>の生活を助けるお金です。</p><p>もらえるのは、<mark>連続して3日休んだあと（待期期間）、4日目から</mark>。1日目からではありません。</p><p>金額は、だいたい<b>給料の日額の3分の2</b>。もらえる期間は<b>通算1年6か月</b>までです。</p><p>なお、自営業の人の国民健康保険には、ふつうこの手当はありません。</p>`,
+ pt:"傷病手当金：連続3日休んだ後の4日目から・日額の2/3・通算1年6か月",
+ hon:"傷病手当金は、業務外の事由による療養のため労務に服することができなくなった日から起算して3日を経過した日から支給される。",
+ w:[["待期","たいき","手当が出るまでに待つ期間"]]},
+{q:"会社をやめたあと、それまでの健康保険を「任意継続（にんいけいぞく）」で続ける場合、保険料は今までどおり会社が半分払ってくれる。",a:false,
+ exp:`<p>会社をやめても、条件を満たせば、今までの健康保険に<b>最長2年</b>入り続けられます。これが任意継続です。</p><p>でも会社員のときは会社が半分払ってくれていた保険料を、<mark>やめたあとは全額自分で払います</mark>。</p><p>手続きは<b>やめた日の翌日から20日以内</b>。入れるのは、やめる前に<b>2か月以上</b>入っていた人です。</p>`,
+ pt:"任意継続：退職後20日以内に手続き・最長2年・保険料は全額自己負担",
+ hon:"任意継続被保険者の保険料は、全額が被保険者の負担となる。"},
+{q:"国民年金には、日本に住んでいる20歳以上60歳未満の人は全員加入しなければならない。",a:true,fig:"nenkin",
+ exp:`<p>日本の年金は<b>2階建ての家</b>のようなしくみです。</p><p>1階が<mark>国民年金（みんなが入る）</mark>、2階が<b>厚生年金（会社員や公務員がプラスで入る）</b>です。</p><p>国民年金に入る人は3つのグループに分かれます。<br>・<b>第1号</b>：自営業・学生など<br>・<b>第2号</b>：会社員・公務員<br>・<b>第3号</b>：第2号に養ってもらっている配偶者（専業主婦など）</p>`,
+ pt:"国民年金＝20歳以上60歳未満の全員が加入（第1号・第2号・第3号）",
+ hon:"日本国内に住所を有する20歳以上60歳未満の者は、原則として国民年金の被保険者となる。",
+ w:[["被保険者","ひほけんしゃ","保険に入っていて、守られる人"]]},
+{q:"国民年金の第3号被保険者（会社員の妻・夫で養ってもらっている人）は、自分で保険料を払う必要がない。",a:true,fig:"nenkin",
+ exp:`<p>第3号被保険者は、会社員・公務員（第2号）に<b>養ってもらっている20歳以上60歳未満の配偶者</b>です。</p><p>保険料は、<mark>自分で払わなくてよい</mark>しくみになっています（配偶者が入っている厚生年金の制度全体で負担しています）。</p><p>反対に、自営業や学生などの<b>第1号は、自分で毎月の保険料を払います</b>。</p>`,
+ pt:"第3号は保険料の自己負担なし／第1号は自分で払う",
+ hon:"国民年金の第3号被保険者は、国民年金の保険料を自ら納付する必要はない。"},
+{q:"老齢基礎年金（国民年金から老後にもらう年金）を受け取るには、保険料を納めた期間などが25年以上必要である。",a:false,
+ exp:`<p>昔は25年必要でしたが、今は<mark>10年以上</mark>あればもらえます（受給資格期間）。</p><p>この10年には、保険料を払った期間のほか、<b>免除された期間</b>や<b>学生の納付特例の期間</b>なども数えられます。</p><p>ただし、もらえる金額は、<b>40年（480か月）きちんと払うと満額</b>。払った月が少ないと、そのぶん減ります。</p>`,
+ pt:"老齢基礎年金の受給資格期間は10年以上。満額は40年（480か月）納付",
+ hon:"老齢基礎年金の受給資格期間は、保険料納付済期間、保険料免除期間および合算対象期間を合計して10年以上である。"},
+{q:"老齢基礎年金は原則65歳からもらうが、受け取りを遅らせる（繰下げ）と、1か月あたり0.4%ずつ年金が増える。",a:false,ha:true,ng:"繰下げは1か月<b>0.7%増</b>。0.4%は、繰上げ（早くもらう）で<b>減る</b>割合です。",fig:"kuriage",
+ exp:`<p>年金は原則<b>65歳</b>から。でも、もらい始める時期を選べます。</p><p>・<b>繰上げ（早くもらう）</b>：60歳からOK。<mark>1か月早めるごとに0.4%減る</mark>（一生そのまま）。<br>・<b>繰下げ（遅くもらう）</b>：75歳まで遅らせられる。<mark>1か月遅らせるごとに0.7%増える</mark>。</p><p>75歳まで10年（120か月）遅らせると、0.7%×120＝<b>84%も増え</b>ます。</p>`,
+ pt:"繰上げ：1か月0.4%減（最大24%減）／繰下げ：1か月0.7%増（最大84%増）",
+ hon:"老齢基礎年金の繰下げ支給の増額率は、繰り下げた月数1か月当たり0.7%である。"},
+{q:"国民年金の第1号被保険者が「付加年金（ふかねんきん）」に入ると、毎月200円を上乗せして払い、将来「400円×払った月数」が毎年の年金に上乗せされる。",a:false,ha:true,ng:"逆です。払うのが<b>月400円</b>、ふえるのが「<b>200円×払った月数</b>」です。",
+ exp:`<p>付加年金は、自営業など<b>第1号被保険者だけ</b>が入れる、年金のおまけです。</p><p>毎月<mark>400円</mark>多く払うと、将来の年金が毎年<mark>200円×払った月数</mark>ふえます。</p><p>たとえば10年（120か月）払うと、払うのは 400×120＝4.8万円。もらえるのは毎年 200×120＝2.4万円。<b>2年もらえば元がとれる</b>おトクな制度です。</p><p>なお、国民年金基金に入っている人は付加年金には入れません。</p>`,
+ pt:"付加年金：月400円払う → 年金が「200円×月数」ふえる（2年で元がとれる）",
+ hon:"付加年金を受給できる者が受け取る付加年金の額は、200円に付加保険料納付済期間の月数を乗じて得た額である。"},
+{q:"国民年金の「遺族基礎年金」は、子どもがいない妻でも受け取ることができる。",a:false,fig:"nenkin",
+ exp:`<p>遺族基礎年金は、国民年金に入っていた人が亡くなったとき、<b>残された家族</b>がもらう年金です。</p><p>もらえるのは、<mark>「子のある配偶者」または「子」</mark>だけ。子どもがいない妻（夫）はもらえません。</p><p>ここでの「子」とは、<b>18歳になった年度の3月31日まで</b>の子（障害がある子は20歳未満）のことです。</p><p>会社員だった人の場合は、2階の<b>遺族厚生年金</b>なら子がいない配偶者ももらえます。</p>`,
+ pt:"遺族基礎年金は「子のある配偶者」か「子」だけ",
+ hon:"遺族基礎年金を受給することができる遺族は、国民年金の被保険者等の死亡の当時その者によって生計を維持されていた「子のある配偶者」または「子」である。"},
+{q:"雇用保険の基本手当（失業手当）を受け取るには、原則として、やめる前の1年間に雇用保険に入っていた期間が通算6か月以上あればよい。",a:false,ha:true,ng:"原則は「やめる前の<b>2年間に12か月以上</b>」。「1年間に6か月以上」でよいのは、倒産・解雇など会社の都合でやめた人の場合です。",
+ exp:`<p>会社をやめて次の仕事を探している間にもらえるのが<b>基本手当</b>です。</p><p>条件は原則、<mark>やめる前の2年間に、雇用保険に入っていた期間が12か月以上</mark>あること。</p><p>会社の倒産や解雇など<b>自分のせいでなくやめた場合</b>は、やめる前の1年間に6か月以上でOKです。</p><p>自分の都合でやめた場合は、すぐにはもらえず、<b>7日の待期のあと原則1か月</b>（2025年4月から）待ちます。</p>`,
+ pt:"基本手当：原則「離職前2年間に被保険者期間12か月以上」",
+ hon:"雇用保険の基本手当を受給するためには、原則として、離職の日以前2年間に被保険者期間が通算して12か月以上あることが必要である。"},
+{q:"労災保険（労働者災害補償保険）の保険料は、会社と働く人が半分ずつ負担する。",a:false,
+ exp:`<p>労災保険は、<b>仕事中や通勤中のけが・病気</b>を守る保険です。</p><p>保険料は<mark>会社（事業主）が全額</mark>払います。働く人の負担はゼロです。</p><p>また、正社員だけでなく、<b>パート・アルバイトも含めてすべての労働者</b>が対象です。</p><p>なお、労災の病院代は自己負担なし。健康保険は使いません。</p>`,
+ pt:"労災保険料は事業主が全額負担。パート・アルバイトも対象",
+ hon:"労働者災害補償保険の保険料は、その全額を事業主が負担する。"},
+{q:"介護保険で、40歳以上65歳未満の人（第2号被保険者）が介護サービスを受けられるのは、老化が原因の特定の病気（特定疾病）で介護が必要になった場合に限られる。",a:true,
+ exp:`<p>介護保険には<b>40歳から</b>入ります。</p><p>・<b>第1号</b>：65歳以上 → 原因を問わず、介護が必要と認められればサービスを受けられる<br>・<b>第2号</b>：40〜64歳 → <mark>がん（末期）や脳卒中など、老化が原因の特定の病気（特定疾病）のときだけ</mark></p><p>たとえば第2号の人が<b>交通事故</b>で介護が必要になっても、介護保険は使えません。</p><p>サービスを使うときの自己負担は原則1割です（所得が多い人は2割・3割）。</p>`,
+ pt:"介護保険：第1号＝65歳以上／第2号＝40〜64歳（特定疾病のみ）",
+ hon:"介護保険の第2号被保険者は、特定疾病が原因で要介護状態または要支援状態となった場合に限り、保険給付を受けることができる。"},
+{q:"1か月の病院代の自己負担が高額になり、決められた上限額をこえた場合、こえた分があとで戻ってくる制度を「高額療養費制度」という。",a:true,
+ exp:`<p>大きな病気で入院すると、3割負担でも何十万円にもなることがあります。</p><p>そこで、<mark>1か月（1日〜末日）の自己負担に上限</mark>が決められていて、こえた分は戻ってきます。これが高額療養費です。</p><p>上限額は、<b>年齢と収入</b>によって変わります。</p><p>注意：入院中の<b>食事代</b>や<b>差額ベッド代</b>（個室代など）は、計算に入りません。</p>`,
+ pt:"高額療養費＝1か月の自己負担の上限をこえた分が戻る（食事代・差額ベッド代は対象外）",
+ hon:"高額療養費の計算上、入院時の食事療養に係る標準負担額や差額ベッド代は、自己負担額に含まれない。"},
+{q:"iDeCo（イデコ）で積み立てた掛金は、全額が所得控除の対象になり、所得税や住民税が安くなる。",a:true,
+ exp:`<p>iDeCoは、<b>自分で掛金を出して、自分で運用し、老後に受け取る</b>年金です。</p><p>いちばんのメリットは税金。<mark>掛金が全額「小規模企業共済等掛金控除」になる</mark>ので、そのぶん所得税・住民税が安くなります。</p><p>さらに、運用でふえた利益にも税金がかかりません。</p><p>ただし、原則<b>60歳まで引き出せない</b>ので注意しましょう。</p>`,
+ pt:"iDeCoの掛金は全額が所得控除（小規模企業共済等掛金控除）。原則60歳まで引き出せない",
+ hon:"確定拠出年金の個人型年金の掛金は、その全額が小規模企業共済等掛金控除の対象となる。",
+ w:[["所得控除","しょとくこうじょ","税金を計算する前のもうけから差し引ける金額。多いほど税金が安くなる"]]},
+{q:"小規模企業共済は、個人事業主や小さな会社の社長が、やめるときのための「退職金」を自分で準備する制度である。",a:true,
+ exp:`<p>会社員には会社から退職金が出ることがありますが、<b>個人事業主には退職金がありません</b>。</p><p>そこで、<mark>自分で積み立てて自分の退職金を作る</mark>のが小規模企業共済です。</p><p>掛金は<b>月1,000円〜7万円</b>で、iDeCoと同じく<b>全額が所得控除</b>になります。</p>`,
+ pt:"小規模企業共済＝個人事業主などの退職金づくり。掛金は月1,000円〜7万円・全額所得控除",
+ hon:"小規模企業共済の掛金は、月額1,000円から7万円までの範囲内で、500円単位で選択することができる。"}
+].map(o=>Object.assign({g:3,c:"life"},o)));
+/* 3級・risk */
+Q.push(...[
+{q:"保険は、みんなで少しずつお金（保険料）を出し合い、困ったことが起きた人にまとめて渡す「助け合い」のしくみである。",a:true,
+ exp:`<p>保険のもとの考え方は<b>助け合い</b>です。</p><p>たくさんの人が少しずつ<mark>保険料</mark>を出し合い、病気・事故・死亡などで困った人に<mark>保険金</mark>を渡します。</p><p>保険の世界には、似た言葉がたくさん出てきます。下の「ことばメモ」で、まず登場人物を覚えましょう。</p>`,
+ pt:"保険＝保険料を出し合い、困った人に保険金を払う助け合い",
+ hon:"保険は、多数の者が保険料を拠出し、偶然の事故により損害を被った者に保険金を支払う相互扶助の仕組みである。",
+ w:[["契約者","けいやくしゃ","保険会社と契約して、保険料を払う人"],["被保険者","ひほけんしゃ","その人に何かあったら保険金が出る、という対象の人"],["受取人","うけとりにん","保険金を受け取る人"]]},
+{q:"生命保険会社が倒産したとき、生命保険契約者保護機構によって、原則として「責任準備金の80%」までが守られる。",a:false,ha:true,ng:"生命保険は、責任準備金の<b>90%</b>まで守られます。",
+ exp:`<p>保険会社がつぶれても、お客さんの契約がすべてなくなるわけではありません。</p><p>生命保険の場合、<mark>責任準備金（保険会社が将来の支払いのために積み立てているお金）の90%</mark>までが守られます。</p><p>つまり、保険金が全額もらえるとは限らないということ。銀行の預金（1,000万円まで）とは守られ方がちがいます。</p>`,
+ pt:"生命保険会社の破綻：責任準備金の90%まで補償",
+ hon:"生命保険契約者保護機構による補償の対象となる保険契約は、原則として、破綻時点の責任準備金等の90%まで補償される。",
+ w:[["責任準備金","せきにんじゅんびきん","保険会社が将来の保険金の支払いにそなえて積み立てているお金"]]},
+{q:"生命保険の「定期保険」は、決められた期間内に亡くなると保険金が出る保険で、満期まで生きていれば、死亡保険金と同じ額の満期保険金が出る。",a:false,ha:true,ng:"定期保険には<b>満期保険金はありません</b>（掛け捨て）。死亡保険金と同じ額の満期保険金が出るのは「<b>養老保険</b>」です。",fig:"seiho",
+ exp:`<p>生命保険の基本の形は3つです。</p><p>・<b>定期保険</b>：<mark>決まった期間だけ</mark>の保障。満期保険金なし。保険料が安い（いわゆる「掛け捨て」）<br>・<b>終身保険</b>：<b>一生涯</b>の保障。解約すると解約返戻金（かいやくへんれいきん）が戻る<br>・<b>養老保険</b>：期間内に亡くなれば死亡保険金、満期まで生きていれば<b>同じ額の満期保険金</b></p>`,
+ pt:"定期＝一定期間・掛け捨て／終身＝一生涯／養老＝死亡保険金と満期保険金が同額",
+ hon:"定期保険は、保険期間中に被保険者が死亡または高度障害状態になった場合に保険金が支払われ、満期保険金はない。"},
+{q:"養老保険（ようろうほけん）は、期間中に亡くなった場合の死亡保険金と、満期まで生きていた場合の満期保険金が同じ金額である。",a:true,fig:"seiho",
+ exp:`<p>養老保険は「<b>死んでも生きてもお金が出る</b>」保険です。</p><p>期間中に亡くなれば死亡保険金、満期まで生きていれば満期保険金。<mark>どちらも同じ金額</mark>です。</p><p>そのぶん、保険料は定期保険よりずっと高くなります。貯金のような性格があります。</p>`,
+ pt:"養老保険：死亡保険金＝満期保険金（同額）",
+ hon:"養老保険は、被保険者が保険期間中に死亡した場合には死亡保険金が支払われ、満期まで生存した場合には死亡保険金と同額の満期保険金が支払われる。"},
+{q:"収入保障保険の死亡保険金を一括（一度にまとめて）で受け取ると、年金形式（分けて）受け取る場合よりも、受け取る合計額は多くなる。",a:false,ha:true,ng:"一括で受け取ると、受取総額は年金形式より<b>少なく</b>なります。",fig:"seiho",
+ exp:`<p>収入保障保険は、お父さん・お母さんが亡くなったとき、<b>毎月のお給料の代わり</b>に保険金を受け取る保険です。</p><p>期間が進むほど「残りの受取期間」が短くなるので、<mark>受け取れる合計額はだんだん減って</mark>いきます。そのぶん保険料は安めです。</p><p>一括（まとめて）受け取ることもできますが、その場合は<b>分けて受け取るより合計額が少なく</b>なります。</p>`,
+ pt:"収入保障保険：年金形式で受け取る。一括受取にすると総額は少なくなる",
+ hon:"収入保障保険の死亡保険金を一時金で受け取る場合の受取額は、一般に、年金形式で受け取る場合の受取総額よりも少なくなる。"},
+{q:"生命保険の契約をやめたいとき、契約した日から20日以内なら「クーリング・オフ」で、申し込みを取り消せる。",a:false,ha:true,ng:"生命保険のクーリング・オフは<b>8日以内</b>（申込日か書面を受け取った日の遅いほうから）です。",
+ exp:`<p>クーリング・オフは、<b>頭を冷やして考え直す</b>ための制度です。</p><p>生命保険の場合、<mark>申し込んだ日または書面を受け取った日の、遅いほうから8日以内</mark>なら取り消せます。</p><p>方法は<b>書面</b>か<b>電磁的方法（メールやWebなど）</b>。電話だけではダメです。</p><p>ただし、保険期間が1年以内の契約や、医師の診査が終わった後などはできません。</p>`,
+ pt:"保険のクーリング・オフ：8日以内・書面または電磁的方法",
+ hon:"生命保険契約の申込者は、契約の申込日または契約申込みの撤回等に関する事項を記載した書面の交付日のいずれか遅い日を含めて8日以内であれば、書面または電磁的方法により申込みの撤回等をすることができる。"},
+{q:"保険料を払わずに払込猶予期間（はらいこみゆうよきかん）が過ぎると契約は「失効」するが、一定期間内なら手続きをして元にもどす「復活」ができる場合がある。",a:true,
+ exp:`<p>保険料を払い忘れても、すぐに契約がなくなるわけではありません。<b>払込猶予期間</b>という待ってもらえる期間があります。</p><p>それも過ぎると契約は<mark>失効（しっこう）</mark>＝効力がなくなります。</p><p>でも、失効から一定期間（多くは3年）内なら、たまっている保険料を払い、もう一度健康状態を告知すれば<mark>復活</mark>できます。保険料は<b>失効前と同じ</b>です。</p>`,
+ pt:"失効しても一定期間内なら「復活」できる（保険料は元のまま。告知・診査が必要）",
+ hon:"失効した生命保険契約を復活させる場合、延滞保険料を払い込む必要があり、保険料率は失効前の保険料率が適用される。"},
+{q:"保険料の払込みをやめて、そのときの解約返戻金で、保険金額はそのままに保険期間を短くする方法を「払済保険（はらいずみほけん）」という。",a:false,ha:true,ng:"保険金額はそのまま・期間が短くなるのは「<b>延長保険</b>」。払済保険は、期間はそのまま・<b>保険金額が小さく</b>なります。",
+ exp:`<p>保険料を払うのをやめても、保障を残す方法が2つあります。</p><p>・<b>払済保険</b>：<mark>保険期間はそのまま、保険金額が小さく</mark>なる<br>・<b>延長保険</b>：<b>保険金額はそのまま、保険期間が短く</b>なる（定期保険に変わる）</p><p>どちらも、それまでについていた<b>特約（おまけの保障）はなくなる</b>のがふつうです。</p>`,
+ pt:"払済＝期間そのまま・金額が小さく／延長＝金額そのまま・期間が短く",
+ hon:"払済保険とは、保険料の払込みを中止して、その時点の解約返戻金をもとに、元の契約の保険期間を変えずに保障額の少ない保険に変更するものである。"},
+{q:"生命保険料控除（2012年以後の契約）は、一般・介護医療・個人年金の3つで、所得税ではそれぞれ最高5万円、合計で最高15万円である。",a:false,ha:true,ng:"2012年以後の契約は、所得税で<b>各4万円・合計12万円</b>まで。「各5万円・合計10万円」は2011年以前の古い契約のルールです。",
+ exp:`<p>生命保険料を払うと、そのぶん税金が安くなる<b>生命保険料控除</b>があります。</p><p>2012年以後の新しい契約では3つの枠があり、<mark>所得税はそれぞれ最高4万円・合計12万円</mark>まで差し引けます。</p><p>住民税は、それぞれ最高2.8万円・合計<b>7万円</b>です。</p>`,
+ pt:"生命保険料控除：所得税 各4万円・合計12万円／住民税 各2.8万円・合計7万円",
+ hon:"2012年1月1日以後に締結した保険契約に係る生命保険料控除の控除限度額は、所得税では、一般・介護医療・個人年金の各4万円、合計12万円である。"},
+{q:"契約者（保険料を払う人）と被保険者が夫、死亡保険金の受取人が妻の場合、夫が亡くなって妻が受け取る死亡保険金には「相続税」がかかる。",a:true,fig:"hokenTax",
+ exp:`<p>死亡保険金にどの税金がかかるかは、<b>「誰がお金（保険料）を出して、誰がもらったか」</b>で決まります。</p><p>・契約者＝被保険者（夫が自分に保険をかけて亡くなった）→ <mark>相続税</mark><br>・契約者＝受取人（自分で払って自分がもらう）→ <b>所得税・住民税</b>（一時所得）<br>・3人とも別の人 → <b>贈与税</b></p><p>夫のお金で夫の命に保険をかけた → 夫の財産が残された家族に移る → 相続税、と考えます。</p>`,
+ pt:"契約者＝被保険者 → 相続税／契約者＝受取人 → 所得税／三者別 → 贈与税",
+ hon:"契約者（＝保険料負担者）および被保険者が夫、死亡保険金受取人が妻である生命保険契約において、妻が受け取った死亡保険金は相続税の課税対象となる。"},
+{q:"病気で入院したときに受け取る入院給付金は、所得税がかからない（非課税）。",a:true,fig:"hokenTax",
+ exp:`<p>病気やけがのときに受け取る<b>入院給付金・手術給付金・通院給付金</b>には、<mark>税金がかかりません（非課税）</mark>。</p><p>体の治療のためのお金にまで税金をかけるのはかわいそう、という考え方です。</p><p>がんと診断されたときの<b>診断給付金</b>や、高度障害保険金、リビング・ニーズ特約の保険金なども非課税です。</p>`,
+ pt:"入院・手術・通院給付金、診断給付金、高度障害保険金などは非課税",
+ hon:"被保険者が受け取る入院給付金や手術給付金は、非課税である。"},
+{q:"リビング・ニーズ特約は、余命1年以内と診断されたとき、死亡保険金の一部または全部を生きているうちに受け取れる特約である。",a:false,ha:true,ng:"リビング・ニーズ特約は「余命<b>6か月</b>以内」と判断されたときに受け取れます。",
+ exp:`<p>重い病気で<mark>余命6か月以内</mark>と言われたとき、死亡保険金を<b>前もって受け取れる</b>のがリビング・ニーズ特約です。</p><p>受け取ったお金で、治療や家族との時間に使えます。</p><p>この特約は<b>保険料が無料</b>でつけられるのがふつう。受け取ったお金は<b>非課税</b>です。</p>`,
+ pt:"リビング・ニーズ特約：余命6か月以内で死亡保険金を前払い。特約保険料は不要・非課税",
+ hon:"リビング・ニーズ特約は、被保険者の余命が6か月以内と判断された場合に、所定の範囲内で死亡保険金の全部または一部を受け取ることができる特約であり、特約保険料は不要である。"},
+{q:"先進医療特約では、先進医療を受けたときの「技術料」が保障されるが、その先進医療は「契約したときに」先進医療とされていた治療に限られる。",a:false,
+ exp:`<p>先進医療とは、国が認めた新しい治療のことです。健康保険がきかないので、<b>技術料は全額自己負担</b>になります（数百万円になることも）。</p><p>先進医療特約は、その技術料を保障してくれます。</p><p>対象になるのは、<mark>治療を受けた「時点」で先進医療とされているもの</mark>。契約したときではありません。先進医療のリストは入れ替わるからです。</p>`,
+ pt:"先進医療特約の対象は「療養を受けた時点」で先進医療とされているもの",
+ hon:"先進医療特約で保障の対象となる先進医療は、療養を受けた時点において厚生労働大臣が承認しているものである。"},
+{q:"「失火責任法（しっかせきにんほう）」により、うっかり（軽い過失で）自分の家から火事を出して隣の家を燃やしても、原則として隣の家に損害賠償をしなくてよい。",a:true,
+ exp:`<p>日本は木造の家が多く、もらい火で大きな被害になることがあります。そこで昔から、<mark>軽いうっかり（軽過失）の火事なら、隣の家への賠償責任はない</mark>というルールがあります。</p><p>ただし、<b>重大な過失</b>（寝たばこ、天ぷら油を火にかけたまま外出など）や、わざとの場合は賠償しなければなりません。</p><p>だから、<b>自分の家は自分の火災保険で守る</b>のが大切です。</p><p>また、<b>借りている部屋</b>を燃やした場合は、大家さんには返す約束（契約）を守れないので賠償責任があります。</p>`,
+ pt:"軽過失の失火 → 隣家への賠償責任なし（重過失は責任あり）。借家の大家さんへは責任あり",
+ hon:"失火責任法によれば、軽過失により隣家を焼失させた場合、隣家に対して損害賠償責任を負わない。"},
+{q:"地震保険は、火災保険とは別に、地震保険だけで単独で入ることができる。",a:false,ha:true,ng:"地震保険は<b>単独では入れません</b>。必ず<b>火災保険とセット</b>で入ります（保険金額は火災保険の30〜50%）。",
+ exp:`<p>火災保険だけでは、<b>地震・噴火・津波が原因の火事や倒壊</b>は補償されません。そのための保険が<b>地震保険</b>です。</p><p>・<mark>火災保険とセットで入る</mark>（単独では入れない）<br>・保険金額：<mark>火災保険の30〜50%</mark><br>・上限：<b>建物5,000万円、家財1,000万円</b></p><p>地震保険は、国と保険会社が共同で運営しているので、どの保険会社で入っても<b>保険料は同じ</b>です。</p>`,
+ pt:"地震保険：火災保険に付帯・30〜50%・建物5,000万円/家財1,000万円まで",
+ hon:"地震保険の保険金額は、主契約である火災保険の保険金額の30%から50%の範囲内で設定し、建物は5,000万円、家財は1,000万円が上限となる。"},
+{q:"自動車損害賠償責任保険（自賠責保険）では、事故で相手の車をこわしたときの修理代（物の損害）も補償される。",a:false,
+ exp:`<p>自賠責保険は、車やバイクを持つ人が<b>必ず入らなければならない</b>保険（強制保険）です。</p><p>補償されるのは<mark>人の死亡やけが（対人賠償）だけ</mark>。相手の車の修理代（対物）や、自分のけがは対象外です。</p><p>上限は、死亡<b>3,000万円</b>、後遺障害<b>4,000万円</b>（常に介護が必要な場合）、けが<b>120万円</b>（被害者1人あたり）。</p><p>足りない分や物の損害は、<b>任意の自動車保険</b>でカバーします。</p>`,
+ pt:"自賠責保険は対人賠償のみ（死亡3,000万円・後遺障害最高4,000万円・傷害120万円）",
+ hon:"自動車損害賠償責任保険は、対人賠償事故のみを補償の対象とし、死亡による損害の支払限度額は被害者1人につき3,000万円である。"},
+{q:"任意の自動車保険の「対人賠償保険」は、自分が運転する車の事故で、自分の家族（配偶者・子・親）がけがをした場合も補償される。",a:false,
+ exp:`<p>対人賠償保険は、<b>他人</b>をケガさせたり死なせたりしたときに、相手への賠償に使う保険です。</p><p>運転していた人の<mark>配偶者・親・子</mark>は「他人」ではないので、<b>対人賠償の対象外</b>です。</p><p>家族のケガには、<b>人身傷害補償保険</b>や<b>搭乗者傷害保険</b>で備えます。</p><p>なお、兄弟姉妹や友人は対人賠償の対象になります。</p>`,
+ pt:"対人賠償は、運転者本人・その配偶者・父母・子のけがは対象外",
+ hon:"自動車保険の対人賠償保険では、被保険自動車の運転者の配偶者や子が死傷した場合は、補償の対象とならない。"},
+{q:"人身傷害補償保険は、自分や同乗者がけがをしたとき、自分の過失（自分が悪かった割合）の分も含めて、損害額が補償される。",a:true,
+ exp:`<p>事故では、相手と自分の<b>悪かった割合（過失割合）</b>で賠償額が決まります。自分も悪い場合、その分は相手からもらえません。</p><p>人身傷害補償保険なら、<mark>自分の過失の分も含めて、実際の損害額を補償</mark>してもらえます。しかも、示談（話し合い）が終わるのを待たずに受け取れます。</p>`,
+ pt:"人身傷害補償保険：自分の過失分も含めて損害額を補償",
+ hon:"人身傷害補償保険では、被保険者が自動車事故により死傷した場合、自己の過失部分を含めた損害額が保険金額の範囲内で補償される。"},
+{q:"個人賠償責任保険は、自転車で人にけがをさせた事故の賠償は補償するが、自動車の運転中の事故は補償しない。",a:true,
+ exp:`<p>個人賠償責任保険は、<b>日常生活でうっかり他人にケガをさせたり、物をこわしたり</b>したときの賠償に使える保険です。</p><p>例：自転車で歩行者にぶつかった、ベランダから物を落とした、マンションで水もれさせた…など。</p><p>でも、<mark>自動車の事故は対象外</mark>（自動車保険で備える）。<b>仕事中の事故</b>や、<b>人から借りた物</b>をこわした場合も対象外です。</p><p>家族全員が補償されるタイプが多く、保険料も安いのが特ちょうです。</p>`,
+ pt:"個人賠償責任保険：日常生活の賠償（自転車OK）。自動車事故・業務中・借りた物は対象外",
+ hon:"個人賠償責任保険では、被保険者が自転車を運転中に歩行者に接触してけがを負わせた場合の損害賠償責任は補償の対象となるが、自動車の運転による事故は対象とならない。"},
+{q:"地震保険料控除の最高額は、所得税で10万円、住民税で5万円である。",a:false,ha:true,ng:"地震保険料控除は、所得税<b>5万円</b>・住民税<b>2.5万円</b>が最高です。",
+ exp:`<p>地震保険の保険料を払うと、<b>地震保険料控除</b>で税金が安くなります。</p><p>最高額は<mark>所得税5万円、住民税2.5万円</mark>。</p><p>注意：<b>火災保険の保険料は控除の対象外</b>です（地震保険の分だけ）。</p>`,
+ pt:"地震保険料控除：所得税 最高5万円／住民税 最高2.5万円（火災保険料は対象外）",
+ hon:"地震保険料控除の控除限度額は、所得税では5万円、住民税では2万5,000円である。"},
+{q:"火事で家が焼けて受け取った火災保険の保険金には、所得税がかからない（非課税）。",a:true,fig:"hokenTax",
+ exp:`<p>損害保険の保険金は、<b>なくなった物の穴うめ</b>です。もうけたわけではないので、<mark>税金はかかりません（非課税）</mark>。</p><p>火災保険の保険金、自動車保険で受け取った<b>賠償金</b>（相手からの）、ケガの保険金なども非課税です。</p><p>ただし、<b>積立型の損害保険の満期返戻金</b>は「もうけ」になるので、一時所得として所得税がかかります。</p>`,
+ pt:"損害の穴うめの保険金は非課税。積立型の満期返戻金は一時所得",
+ hon:"個人が自宅の火災により受け取った火災保険の保険金は、非課税となる。"},
+{q:"がん保険には、契約してから一定期間（一般に90日間）は、がんと診断されても保障されない「免責期間（待ち期間）」がある。",a:true,
+ exp:`<p>がん保険は、病気やケガ全般ではなく<b>がんに特化</b>した保険です。</p><p>多くのがん保険には、<mark>契約してから約3か月（90日）、保障が始まらない期間</mark>があります。体調に不安がある人が、駆けこみで入るのをふせぐためです。</p><p>また、がん保険の<b>入院給付金は日数無制限</b>のものが多いのも特ちょうです。</p>`,
+ pt:"がん保険：90日程度の免責期間あり。入院給付金の日数は無制限が多い",
+ hon:"がん保険では、一般に、責任開始日前に90日程度の免責期間が設けられている。"},
+{q:"ケガや病気にそなえる「第三分野の保険」には、医療保険・がん保険・介護保険などがある。",a:true,
+ exp:`<p>保険は3つのグループに分かれます。</p><p>・<b>第一分野</b>：人の生死（生命保険会社）＝ 終身保険・定期保険など<br>・<b>第二分野</b>：物の損害（損害保険会社）＝ 火災保険・自動車保険など<br>・<mark>第三分野</mark>：その中間 ＝ <b>医療保険・がん保険・介護保険・傷害保険</b>など</p><p>第三分野は、<b>生命保険会社も損害保険会社も</b>売ることができます。</p>`,
+ pt:"第三分野＝医療・がん・介護・傷害保険など（生保も損保も扱える）",
+ hon:"医療保険やがん保険などの第三分野の保険は、生命保険会社と損害保険会社のいずれも引き受けることができる。"},
+{q:"普通傷害保険（ふつうしょうがいほけん）では、細菌性食中毒やウイルス性食中毒は、原則として補償の対象外である。",a:true,
+ exp:`<p>傷害保険は、<b>「急に・たまたま・外から」</b>起きたケガを補償する保険です（急激・偶然・外来）。</p><p>食中毒は「外からの事故によるケガ」ではないので、<mark>普通傷害保険では対象外</mark>です。また、<b>地震・噴火・津波</b>によるケガも対象外です。</p><p>ただし、旅行中のケガを補償する<b>国内旅行傷害保険</b>では、細菌性食中毒も補償されます。</p>`,
+ pt:"普通傷害保険：食中毒・地震によるケガは対象外（国内旅行傷害保険なら食中毒OK）",
+ hon:"普通傷害保険では、細菌性食中毒は補償の対象とならない。",
+ w:[["急激・偶然・外来","きゅうげき・ぐうぜん・がいらい","急に、たまたま、体の外からの原因で起きること。傷害保険の3つの条件"]]},
+{q:"銀行の窓口で入った生命保険は、銀行の預金と同じく、預金保険制度で1,000万円まで守られる。",a:false,ha:true,ng:"銀行窓口で入っても、契約の相手は保険会社。守るのは<b>生命保険契約者保護機構</b>で、預金保険制度ではありません。",
+ exp:`<p>銀行で保険に入っても、契約の相手は<b>保険会社</b>です。銀行は窓口になっているだけです。</p><p>だから補償は、銀行の預金保険（1,000万円まで）ではなく、<mark>生命保険契約者保護機構</mark>が受け持ちます。</p><p>同じように、少額短期保険業者（ミニ保険）や共済は、保険契約者保護機構の対象外なので注意しましょう。</p>`,
+ pt:"銀行窓口で入った保険も、補償するのは保険契約者保護機構（預金保険ではない）",
+ hon:"銀行の窓口で加入した生命保険契約は、預金保険制度ではなく、生命保険契約者保護機構の補償の対象となる。"},
+{q:"必要保障額（もしものときに必要な死亡保障の額）は、「遺族に必要なお金の合計」から「遺族が受け取れるお金や貯金の合計」を引いて求める。",a:true,
+ exp:`<p>生命保険にいくら入ればいいかは、<b>必要保障額</b>で考えます。</p><p><mark>必要保障額 ＝ 遺族の支出の合計 － 遺族の収入（遺族年金・貯金など）の合計</mark></p><p>子どもが小さいほど、これから必要なお金が多いので、必要保障額は大きくなります。子どもが大きくなるにつれ、<b>必要保障額は少しずつ減って</b>いきます。</p><p>住宅ローンを団体信用生命保険（団信）つきで借りている場合、亡くなるとローンがなくなるので、その分は支出に入れません。</p>`,
+ pt:"必要保障額 ＝ 遺族の支出総額 － 遺族の収入総額（子が成長するほど減る）",
+ hon:"必要保障額は、遺族に必要な生活資金等の総額から、遺族の収入見込額の総額を差し引いて算出する。",
+ w:[["団体信用生命保険","だんたいしんようせいめいほけん","住宅ローンを借りた人が亡くなったら、残りのローンを保険で返してくれるしくみ。略して団信"]]}
+].map(o=>Object.assign({g:3,c:"risk"},o)));
+/* 3級・kin */
+Q.push(...[
+{q:"GDP（国内総生産）は、日本銀行が調べて発表している。",a:false,ha:true,ng:"GDPを発表しているのは<b>内閣府</b>です。",
+ exp:`<p>GDPは、<b>国の経済の大きさ</b>を表す数字です。</p><p>日本の中で、1年（または3か月）の間に<mark>新しく生み出されたもうけ（付加価値）の合計</mark>です。発表しているのは<b>内閣府</b>です。</p><p>GDPが前の期よりどれだけ増えたかの割合を<b>経済成長率</b>といいます。物価の影響を取り除いたものを「実質」、取り除かないものを「名目」といいます。</p>`,
+ pt:"GDP＝国内で生み出された付加価値の合計（内閣府が発表）",
+ hon:"国内総生産（GDP）は、一定期間内に国内で生産された財やサービスの付加価値の合計額であり、内閣府が公表している。",
+ w:[["付加価値","ふかかち","新しく生まれた価値。売った値段から材料代などを引いたもうけ"]]},
+{q:"景気動向指数のCI（コンポジット・インデックス）の一致指数が上がっているときは、景気が良くなっている（拡張している）と考える。",a:true,
+ exp:`<p>景気動向指数は、景気の様子を数字で表すもので、<b>内閣府</b>が発表しています。</p><p>指標は3種類：<b>先行指数</b>（景気より先に動く）、<mark>一致指数（景気と同時に動く）</mark>、<b>遅行指数</b>（あとから動く）。</p><p>CIは景気の<b>強さ・勢い</b>を見るもの。<mark>一致指数が上がっていれば景気は拡張中</mark>です。</p><p>DI（ディフュージョン・インデックス）は景気の<b>方向</b>を見るもので、一致指数が<b>50%を上回る</b>と景気拡張とみます。</p>`,
+ pt:"CI一致指数が上昇 → 景気拡張。DIは50%超で拡張",
+ hon:"景気動向指数のコンポジット・インデックス（CI）は、主に景気変動の大きさやテンポを把握することを目的としており、一致指数の上昇は景気の拡張局面を示す。"},
+{q:"日銀短観（全国企業短期経済観測調査）は、日本銀行が企業に景気の感じ方などをアンケートした調査である。",a:true,
+ exp:`<p>日銀短観は、<b>日本銀行</b>が<mark>約1万社の企業にアンケート</mark>して、景気をどう感じているかなどを調べたものです。年に4回発表されます。</p><p>いちばん注目されるのは<b>業況判断DI</b>。「景気が良い」と答えた会社の割合 －「悪い」と答えた割合 で計算します。</p>`,
+ pt:"日銀短観＝日本銀行が企業にアンケート（年4回）。業況判断DIに注目",
+ hon:"全国企業短期経済観測調査（日銀短観）は、日本銀行が企業を対象に四半期ごとに実施するアンケート調査である。"},
+{q:"消費者物価指数（CPI）は、日本銀行が発表している。",a:false,ha:true,ng:"消費者物価指数は<b>総務省</b>。日本銀行が発表するのは「<b>企業物価指数</b>」です。",
+ exp:`<p>物価を表す指数は2つ覚えましょう。</p><p>・<mark>消費者物価指数（CPI）</mark>：私たち<b>消費者が買う</b>モノやサービスの値段の動き → <b>総務省</b>が発表<br>・<b>企業物価指数</b>：<b>企業どうし</b>で取引するモノの値段の動き → <b>日本銀行</b>が発表</p><p>企業物価指数は、原油などの影響を受けやすく、消費者物価指数より<b>動きが大きい</b>のが特ちょうです。</p>`,
+ pt:"消費者物価指数＝総務省／企業物価指数＝日本銀行",
+ hon:"消費者物価指数は、全国の世帯が購入する財およびサービスの価格等を総合した物価の変動を時系列的に測定したものであり、総務省が公表している。"},
+{q:"日本銀行が「売りオペレーション（売りオペ）」を行うと、世の中に出回るお金が増え、金利は下がりやすくなる。",a:false,ha:true,ng:"売りオペはお金を<b>吸い上げる</b>ので、お金が減り、金利は<b>上がり</b>やすくなります。お金を増やすのは「買いオペ」です。",
+ exp:`<p>日本銀行は、世の中に出回るお金の量を調整して、景気や物価を安定させます（<b>金融政策</b>）。</p><p>・<mark>買いオペ</mark>：日銀が銀行から国債などを<b>買う</b> → 代金のお金が世の中に出る → お金が増える → <b>金利が下がる</b>（景気を良くしたいとき）<br>・<b>売りオペ</b>：日銀が国債などを<b>売る</b> → お金を吸い上げる → <b>金利が上がる</b>（景気の過熱をおさえたいとき）</p>`,
+ pt:"買いオペ → お金が増える → 金利低下／売りオペ → お金が減る → 金利上昇",
+ hon:"日本銀行が買いオペレーションを行うと、市中の資金量が増加し、市場金利は低下しやすくなる。"},
+{q:"一般に、金利が上がると、すでに発行されている債券の値段（価格）も上がる。",a:false,ha:true,ng:"金利と債券価格は<b>逆</b>に動きます。金利が上がると債券価格は<b>下がり</b>ます。",
+ exp:`<p>債券（さいけん）は、国や会社にお金を貸して、<b>利息（利子）</b>をもらう「借用証書」のようなものです。</p><p>たとえば、利率1%の債券を持っているとき、世の中の金利が3%に上がったら…あとから出る債券は3%もらえます。<b>1%の古い債券は人気がなくなり、値段が下がります</b>。</p><p>つまり<mark>金利↑なら債券価格↓、金利↓なら債券価格↑</mark>。シーソーのような関係です。</p>`,
+ pt:"金利と債券価格は逆に動く（シーソー）",
+ hon:"一般に、市場金利が上昇すると、既発債券の価格は下落する。",
+ w:[["債券","さいけん","国や会社がお金を借りるときに発行する証書。決まった利息がもらえ、満期にお金が返る"]]},
+{q:"債券の格付けで「BB（ダブルB）」以上のものは「投資適格債」と呼ばれる。",a:false,ha:true,ng:"投資適格債は「<b>BBB（トリプルB）以上</b>」。BB以下は投機的格付債（ハイ・イールド債）です。",
+ exp:`<p>格付けは、お金を貸した相手が<b>ちゃんと返してくれるか</b>（信用度）を、専門の会社がA・B・Cなどの記号で表したものです。</p><p><mark>BBB以上 → 投資適格債</mark>（返してもらえる可能性が高い）<br><b>BB以下 → 投機的格付債</b>（ハイ・イールド債・ジャンク債とも）</p><p>格付けが低い債券は、返してもらえない危険（<b>信用リスク</b>）が高いぶん、<b>利回りが高く</b>なります。</p>`,
+ pt:"BBB以上＝投資適格債／BB以下＝投機的（利回りは高い）",
+ hon:"一般に、BBB（トリプルB）格相当以上の格付けが付された債券は、投資適格債とされる。"},
+{q:"債券の発行時の利回り計算で、額面100円、利率2%、購入価格98円、期間5年の債券を満期まで持つと、利回りは約2.45%である。",a:true,
+ exp:`<p>利回りは、<b>1年あたり、払ったお金に対して何%もうかるか</b>です。</p><p>計算の手順：<br>① 1年の利息：100円×2%＝<b>2円</b><br>② 1年あたりの差益：(100円−98円)÷5年＝<b>0.4円</b><br>③ 1年のもうけ合計：2＋0.4＝<b>2.4円</b><br>④ 買った値段で割る：2.4÷98×100＝<mark>約2.45%</mark></p><p>式でまとめると：<b>｛利率＋(額面−買値)÷年数｝÷買値×100</b></p>`,
+ pt:"利回り（%）＝｛利率＋(額面−買値)÷年数｝÷買値×100",
+ hon:"表面利率2%、残存期間5年の固定利付債券を額面100円当たり98円で購入した場合の最終利回り（単利・年率）は、約2.45%である。"},
+{q:"株式のPER（株価収益率）は、「株価 ÷ 1株あたり純資産」で計算する。",a:false,ha:true,ng:"「株価÷1株あたり純資産」は<b>PBR</b>。PERは「株価÷<b>1株あたり純利益</b>」です。",fig:"kabu",
+ exp:`<p>PERは、<b>株価が「会社のもうけ」の何倍か</b>を表します。</p><p><mark>PER ＝ 株価 ÷ 1株あたり純利益（EPS）</mark></p><p>たとえば株価1,000円、1株のもうけが50円なら、1,000÷50＝<b>20倍</b>。</p><p>同じ業種の会社とくらべて、<b>PERが低いほど「もうけのわりに株価が安い（割安）」</b>と考えます。</p>`,
+ pt:"PER＝株価÷1株あたり純利益（低いほど割安）",
+ hon:"株価収益率（PER）は、株価を1株当たり純利益で除して算出し、一般に、PERが低いほど株価は割安と判断される。"},
+{q:"PBR（株価純資産倍率）は「株価 ÷ 1株あたり純資産（BPS）」で計算し、1倍を下回ると、株価が会社の解散価値より安いといえる。",a:true,fig:"kabu",
+ exp:`<p>純資産とは、会社の財産から借金を引いた、<b>会社が本当に持っている財産</b>です。会社をたたんで分けたときの価値（解散価値）とも考えられます。</p><p><mark>PBR ＝ 株価 ÷ 1株あたり純資産（BPS）</mark></p><p>PBRが<b>1倍より低い</b>と、株価が解散価値より安い＝<b>割安</b>と考えます。</p>`,
+ pt:"PBR＝株価÷1株あたり純資産（1倍割れは割安）",
+ hon:"株価純資産倍率（PBR）は、株価を1株当たり純資産で除して算出し、PBRが1倍を下回る場合、株価は解散価値を下回っているとされる。"},
+{q:"ROE（自己資本利益率）は「当期純利益 ÷ 自己資本 × 100」で計算し、株主のお金を使ってどれだけ効率よくもうけたかを表す。",a:true,fig:"kabu",
+ exp:`<p>自己資本は、株主が出したお金などの、<b>会社が返さなくてよいお金</b>です。</p><p><mark>ROE ＝ 当期純利益 ÷ 自己資本 × 100（%）</mark></p><p>ROEが<b>高いほど</b>、株主のお金で上手にかせいでいる会社、といえます。</p>`,
+ pt:"ROE（%）＝当期純利益÷自己資本×100（高いほど効率よくもうけている）",
+ hon:"自己資本利益率（ROE）は、当期純利益を自己資本で除して求められ、株主の資本を使って効率的に利益を上げているかを示す指標である。"},
+{q:"配当利回り（%）は「1株あたりの年間配当金 ÷ 株価 × 100」で計算する。",a:true,fig:"kabu",
+ exp:`<p>配当（はいとう）は、会社がもうけの一部を株主に配るお金です。</p><p><mark>配当利回り ＝ 1株配当 ÷ 株価 × 100</mark><br>例：株価2,000円で配当が年50円なら、50÷2,000×100＝<b>2.5%</b>。</p><p>似た言葉の<b>配当性向（はいとうせいこう）</b>は、もうけのうちどれだけを配当に回したか（配当÷純利益×100）。区別しましょう。</p>`,
+ pt:"配当利回り＝1株配当÷株価×100／配当性向＝配当÷純利益×100",
+ hon:"配当利回りは、1株当たり年間配当金を株価で除して算出する。"},
+{q:"日経平均株価は、東京証券取引所プライム市場に上場している銘柄のうち、代表的な225銘柄から計算する株価指数である。",a:true,
+ exp:`<p>株価指数は、株式市場全体の調子を表す数字です。</p><p>・<mark>日経平均株価</mark>：プライム市場の<b>代表的な225銘柄</b>の株価をもとに計算。株価が高い（値がさ株）銘柄の影響を受けやすい。<br>・<b>TOPIX（東証株価指数）</b>：東京証券取引所に上場している<b>幅広い銘柄の時価総額</b>をもとに計算。時価総額が大きい会社の影響を受けやすい。</p>`,
+ pt:"日経平均＝225銘柄の株価から計算／TOPIX＝時価総額の加重平均",
+ hon:"日経平均株価は、東京証券取引所プライム市場に上場している銘柄のうち、代表的な225銘柄を対象とした株価指数である。"},
+{q:"国内の上場株式を売買したとき、代金を受け渡しするのは、売買が成立した日（約定日）から数えて5営業日目である。",a:false,ha:true,ng:"受渡日は、約定日を含めて<b>3営業日目</b>です。",
+ exp:`<p>株を買う注文が成立した日を<b>約定日（やくじょうび）</b>といいます。</p><p>お金と株を実際にやりとりする<b>受渡日（うけわたしび）</b>は、<mark>約定日を含めて3営業日目</mark>です（土日・祝日は数えない）。</p><p>例：月曜日に買ったら、受渡しは水曜日。</p><p>配当や株主優待をもらうには、<b>権利確定日に受渡しが済んでいる</b>必要があるので、その2営業日前（権利付き最終日）までに買う必要があります。</p>`,
+ pt:"上場株式の受渡日＝約定日を含めて3営業日目",
+ hon:"国内上場株式の普通取引の受渡しは、約定日から起算して3営業日目に行われる。"},
+{q:"株の注文方法で、「指値注文（さしねちゅうもん）」は、値段を指定せずに買う（売る）注文のことである。",a:false,
+ exp:`<p>株の注文は2種類です。</p><p>・<mark>指値注文</mark>：「1,000円以下なら買う」のように<b>値段を指定</b>する注文<br>・<b>成行注文（なりゆきちゅうもん）</b>：値段を<b>指定しない</b>注文。すぐに売買が成立しやすい</p><p>成行注文は指値注文より<b>優先</b>して売買が成立します（成行優先の原則）。</p>`,
+ pt:"指値＝値段を指定／成行＝値段を指定しない（成行が優先）",
+ hon:"成行注文は、指値注文に優先して売買が成立する。"},
+{q:"投資信託（とうししんたく）は、たくさんの投資家から集めたお金を、運用の専門家がまとめて株や債券などに投資する商品である。",a:true,
+ exp:`<p>投資信託は、<b>「みんなのお金を集めて、プロが運用する」</b>しくみです。ファンドともいいます。</p><p>少ないお金から始められ、たくさんの銘柄に<b>分散投資</b>できるのが良いところ。</p><p>ただし、<mark>元本は保証されません</mark>。値下がりして損をすることもあります。</p><p>かかる費用は主に、買うときの<b>購入時手数料</b>、持っている間ずっとかかる<b>運用管理費用（信託報酬）</b>、売るときの<b>信託財産留保額</b>です。</p>`,
+ pt:"投資信託＝集めたお金をプロが運用。元本保証なし。保有中は信託報酬がかかる",
+ hon:"投資信託の運用管理費用（信託報酬）は、投資信託を保有している期間中、信託財産から継続的に差し引かれる。"},
+{q:"「インデックス型（パッシブ型）」の投資信託は、日経平均株価などの指数（ベンチマーク）を上回る成績をめざして運用する。",a:false,
+ exp:`<p>投資信託の運用方法は2種類です。</p><p>・<mark>パッシブ型（インデックス型）</mark>：日経平均などの指数と<b>同じような動き</b>をめざす。手数料が安め。<br>・<b>アクティブ型</b>：指数を<b>上回る</b>成績をめざす。プロが銘柄を選ぶので手数料は高め。</p><p>アクティブ型の銘柄の選び方には、<b>トップダウン</b>（景気など大きな流れから考える）と<b>ボトムアップ</b>（1社ずつ調べて選ぶ）があります。</p>`,
+ pt:"パッシブ＝指数と同じ動き／アクティブ＝指数を上回るのが目標",
+ hon:"パッシブ運用は、日経平均株価などのベンチマークに連動する運用成果を目指す運用手法である。"},
+{q:"ETF（上場投資信託）は、証券取引所に上場していて、株式と同じように、取引時間中いつでもその時の値段で売買できる。",a:true,
+ exp:`<p>ふつうの投資信託は、1日1回決まる値段（<b>基準価額</b>）でしか買えません。</p><p>ETFは<mark>取引所に上場</mark>しているので、株と同じく<b>リアルタイムの値段で、指値・成行注文</b>もできます。信用取引も可能です。</p><p>不動産に投資する投資信託で上場しているものは<b>REIT（不動産投資信託）</b>といいます。</p>`,
+ pt:"ETF＝上場している投資信託。株と同じように売買（指値・成行OK）",
+ hon:"上場投資信託（ETF）は、証券取引所に上場しており、上場株式と同様に指値注文や成行注文により売買することができる。"},
+{q:"外貨預金で、円をドルに替えて預けるときの為替レートは、TTB（対顧客電信買相場）である。",a:false,ha:true,ng:"円→外貨（預けるとき）は<b>TTS</b>。TTBは外貨→円（もどすとき）に使います。",fig:"gaika",
+ exp:`<p>為替（かわせ）レートには3つあります。</p><p>・<b>TTM</b>：真ん中の基準のレート<br>・<mark>TTS</mark>：円 → 外貨 にするとき（銀行が外貨を<b>売る</b>＝Selling）<br>・<b>TTB</b>：外貨 → 円 にもどすとき（銀行が外貨を<b>買う</b>＝Buying）</p><p>レートは<b>銀行から見た言い方</b>なので、お客さんは「預けるときTTS、もどすときTTB」と覚えます。TTSはTTMより高く、TTBは低く、その差が手数料になります。</p>`,
+ pt:"円→外貨はTTS（高い）／外貨→円はTTB（安い）",
+ hon:"円貨を外貨に換えて外貨預金に預け入れる際に適用される為替レートは、TTSである。"},
+{q:"外貨預金は、預金保険制度で守られる対象である。",a:false,
+ exp:`<p>預金保険制度は、銀行がつぶれたときに預金を守るしくみです（<b>1人1つの銀行につき元本1,000万円とその利息</b>まで）。</p><p>でも、<mark>外貨預金は預金保険の対象外</mark>です。銀行がつぶれると、戻ってこない可能性があります。</p><p>また、利息がつかない・いつでも引き出せる・決済に使える<b>決済用預金</b>（当座預金など）は、<b>全額</b>守られます。</p>`,
+ pt:"預金保険：元本1,000万円＋利息まで。外貨預金は対象外。決済用預金は全額",
+ hon:"外貨預金は、預金保険制度の保護の対象とならない。"},
+{q:"円をドルに替えて外貨預金をしたあと、円安（1ドル100円 → 120円など）になると、円にもどしたときに為替差益（もうけ）が出る。",a:true,fig:"gaika",
+ exp:`<p>円安とは、<b>円の価値が下がり、外貨の価値が上がる</b>ことです。</p><p>1ドル100円のとき100万円をドルに替えると1万ドル。1ドル120円の円安になってから円にもどすと、1万ドル×120円＝<b>120万円</b>。<mark>20万円の為替差益</mark>です。</p><p>反対に<b>円高</b>（1ドル100円 → 80円）になると、損（<b>為替差損</b>）が出ます。</p>`,
+ pt:"外貨預金：円安 → 為替差益／円高 → 為替差損",
+ hon:"外貨預金の預入時に比べて満期時の為替レートが円安になれば、円換算の投資利回りは向上する。"},
+{q:"NISA（少額投資非課税制度）の「つみたて投資枠」は年間120万円、「成長投資枠」は年間240万円まで投資できる。",a:true,fig:"nisa",
+ exp:`<p>ふつうは、投資でもうけると約20%の税金がかかります。NISAの口座で投資すれば、<mark>もうけに税金がかかりません</mark>。</p><p>2024年から始まった今のNISAは：<br>・<b>つみたて投資枠</b>：年<mark>120万円</mark>（国が選んだ長期向けの投資信託など）<br>・<b>成長投資枠</b>：年<mark>240万円</mark>（株や投資信託など）<br>・2つを合わせて年<b>360万円</b>まで、両方同時に使える</p><p>使えるのは<b>18歳以上</b>で、非課税の期間は<b>無期限</b>です。</p>`,
+ pt:"NISA：つみたて枠 年120万円＋成長枠 年240万円（合計年360万円）・非課税期間は無期限",
+ hon:"NISAのつみたて投資枠の年間投資枠は120万円、成長投資枠の年間投資枠は240万円であり、両者は併用することができる。"},
+{q:"NISAでは、一生のうちに非課税で持てる金額（生涯非課税限度額）は1,800万円で、そのうち成長投資枠は1,200万円までである。",a:true,fig:"nisa",
+ exp:`<p>NISAには、一生で使える上限があります。</p><p><mark>生涯の上限＝1,800万円</mark>（買ったときの金額で数える）。そのうち<b>成長投資枠で使えるのは1,200万円まで</b>です。</p><p>売ると、その<b>買った金額分の枠が翌年に復活</b>し、また使えるようになります。</p>`,
+ pt:"NISAの生涯上限1,800万円（うち成長投資枠1,200万円）。売ったら枠は翌年復活",
+ hon:"NISAの非課税保有限度額（総枠）は1,800万円であり、そのうち成長投資枠は1,200万円である。"},
+{q:"NISA口座で値下がりした株を売って出た損は、ほかの一般の口座（課税口座）で出たもうけと相殺（損益通算）できる。",a:false,fig:"nisa",
+ exp:`<p>NISAは、もうけに税金がかからない代わりに、<mark>損が出ても「なかったこと」</mark>として扱われます。</p><p>そのため、ほかの口座のもうけとの差し引き（<b>損益通算</b>）や、損を翌年以降に持ち越す<b>繰越控除</b>はできません。</p><p>これはNISAのデメリットとしてよく出題されます。</p>`,
+ pt:"NISAの損は、損益通算も繰越控除もできない",
+ hon:"NISA口座内で生じた譲渡損失は、特定口座や一般口座で生じた譲渡益や配当等と損益通算することができない。"},
+{q:"分散投資で、2つの資産の値動きの関係を表す「相関係数」が＋1（プラス1）のとき、リスクを減らす効果がもっとも大きい。",a:false,ha:true,ng:"＋1は「まったく同じ動き」で、分散の効果は<b>ありません</b>。効果が最大なのは<b>−1</b>のときです。",
+ exp:`<p>「卵を1つのカゴに盛るな」という言葉があります。いろいろな資産に分けて持つと、損をする危険（リスク）を小さくできます。</p><p>相関係数は、2つの資産が<b>同じ動きをするか</b>を−1〜＋1で表します。<br>・<b>＋1</b>：まったく同じ動き → 分散の効果<b>なし</b><br>・<mark>−1</mark>：まったく逆の動き → 分散の効果が<mark>最大</mark></p><p>片方が下がるときにもう片方が上がるので、全体のゆれが小さくなります。</p>`,
+ pt:"相関係数−1でリスク低減効果が最大／＋1で効果なし",
+ hon:"2資産で構成されるポートフォリオにおいて、2資産間の相関係数が−1である場合、ポートフォリオのリスク低減効果は最大となる。"},
+{q:"「ドルコスト平均法」とは、値段が上がっても下がっても、毎月同じ「数量（口数）」ずつ買い続ける方法である。",a:false,ha:true,ng:"ドルコスト平均法は、毎回同じ「<b>金額</b>」で買う方法です。だから安いときに多く買えます。",
+ exp:`<p>ドルコスト平均法は、<mark>毎回同じ「金額」</mark>で買い続ける方法です（同じ「数」ではありません）。</p><p>1万円ずつ買う場合、1個1,000円なら10個、500円なら20個買えます。<b>安いときにたくさん、高いときに少し</b>買うことになり、平均の買値を下げやすくなります。</p><p>つみたてNISAやiDeCoは、この方法と相性がいいです。</p>`,
+ pt:"ドルコスト平均法＝定額で買い続ける → 安いときに多く買える",
+ hon:"ドルコスト平均法は、価格が変動する商品を定期的に一定金額ずつ購入する方法であり、価格が低いときに多くの口数を購入することができる。"},
+{q:"72の法則では、年利6%で複利運用すると、お金が2倍になるのにおよそ6年かかる。",a:false,ha:true,ng:"72÷6＝<b>12年</b>です。",
+ exp:`<p>複利（ふくり）は、<b>利息にもまた利息がつく</b>ふやし方です。雪だるまのように増えていきます。</p><p>お金が2倍になる年数は、<mark>72 ÷ 金利（%）</mark>でだいたいわかります。これを72の法則といいます。</p><p>72÷6＝<b>12年</b>。年利3%なら72÷3＝24年です。</p>`,
+ pt:"72の法則：72÷利率（%）≒ 2倍になる年数",
+ hon:"年利6%の1年複利で運用した場合、元本が2倍になるまでの期間は、72の法則によればおよそ12年である。",
+ w:[["複利","ふくり","元本だけでなく、ついた利息にも利息がつくこと"],["単利","たんり","最初の元本にだけ利息がつくこと"]]},
+{q:"金融サービス提供法では、金融商品を売る業者が大事なこと（重要事項）の説明をしなかったためにお客さんが損をした場合、業者は損害賠償の責任を負う。",a:true,
+ exp:`<p>金融サービス提供法（正式名：金融サービスの提供及び利用環境の整備等に関する法律）は、<b>金融商品を買うお客さんを守る</b>法律です。</p><p>業者が「元本割れするかもしれない」などの<b>重要事項を説明しなかった</b>り、「絶対もうかる」と<b>断定的に言った</b>りしてお客さんが損をしたら、<mark>業者は損害賠償しなければなりません</mark>。</p><p>似た法律の<b>消費者契約法</b>は、だまされたりして結んだ契約を<b>取り消せる</b>法律です。</p>`,
+ pt:"金融サービス提供法＝説明義務違反・断定的判断の提供 → 業者に損害賠償責任",
+ hon:"金融サービス提供法では、金融サービス提供業者が顧客に対して重要事項の説明をしなかったことにより顧客に損害が生じた場合、当該業者は損害賠償責任を負う。"},
+{q:"金融商品取引法の「適合性の原則」とは、お客さんの知識・経験・財産・目的に合わない金融商品をすすめてはいけない、というルールである。",a:true,
+ exp:`<p>投資の経験がない人や、生活費しか持っていない人に、危険の大きい商品をすすめるのはよくありませんよね。</p><p><mark>適合性の原則</mark>は、お客さんの<b>知識・経験・財産の状況・投資の目的</b>に照らして、ふさわしくない勧誘をしてはいけない、というルールです。金融商品取引法に定められています。</p>`,
+ pt:"適合性の原則＝顧客の知識・経験・財産・目的に合わない勧誘はダメ",
+ hon:"金融商品取引法に定める適合性の原則とは、顧客の知識、経験、財産の状況および契約締結の目的に照らして不適当な勧誘を行ってはならないというものである。"}
+].map(o=>Object.assign({g:3,c:"kin"},o)));
+/* 3級・tax */
+Q.push(...[
+{q:"所得税は、個人が1月1日から12月31日までの1年間に得た「所得（もうけ）」にかかる税金である。",a:true,fig:"taxFlow",
+ exp:`<p>所得税は、<b>1年間（1月1日〜12月31日）</b>の個人のもうけにかかる国の税金です。</p><p>ここで大事なのが「収入」と「所得」のちがい。<br>・<b>収入</b>：入ってきたお金の全部<br>・<mark>所得</mark>：収入から、かせぐためにかかった費用（必要経費など）を<b>引いた残り</b></p><p>税金は「所得」をもとに計算します。</p>`,
+ pt:"所得税は1/1〜12/31の個人の所得（収入−必要経費など）にかかる",
+ hon:"所得税は、原則として、個人が1月1日から12月31日までの1年間に得た所得に対して課される。"},
+{q:"所得税では、所得をその性質によって10種類に分けて計算する。",a:true,fig:"shotoku10",
+ exp:`<p>同じ「もうけ」でも、給料、家賃、株のもうけ…と性質がちがいます。そこで所得税では<mark>10種類</mark>に分けます。</p><p><b>利子・配当・不動産・事業・給与・退職・山林・譲渡・一時・雑</b>の10種類です。</p><p>覚え方の例：「<b>リハ（利・配）ビリ、不動（不）の事業（事）、給（給）料で隊（退）長、三（山）上（譲）で一（一）雑（雑）</b>」など、自分なりのゴロで覚えるのもおすすめです。</p>`,
+ pt:"所得は10種類：利子・配当・不動産・事業・給与・退職・山林・譲渡・一時・雑",
+ hon:"所得税法では、所得をその源泉や性質に応じて10種類に区分している。"},
+{q:"所得税の税率は、所得が多くなるほど税率が高くなる「超過累進税率」で、5%から40%までの5段階である。",a:false,ha:true,ng:"所得税の税率は<b>5%〜45%の7段階</b>です。",fig:"taxFlow",
+ exp:`<p>所得税は、<b>たくさんかせぐ人ほど高い税率</b>になるしくみです。</p><p>ただし、全部に高い税率がかかるのではなく、<mark>決められた金額をこえた「部分だけ」</mark>に高い税率がかかります。これを<b>超過累進税率</b>といいます。</p><p>税率は<b>5%・10%・20%・23%・33%・40%・45%</b>の7段階です。</p><p>なお、住民税はふつう<b>一律10%</b>です。</p>`,
+ pt:"所得税＝超過累進税率5〜45%（7段階）／住民税＝一律10%",
+ hon:"所得税の税率は、課税総所得金額に対して5%から45%の7段階の超過累進税率となっている。"},
+{q:"銀行の預金の利息は「利子所得」で、20.315%の税金が差し引かれて（源泉分離課税）、確定申告はしない。",a:true,
+ exp:`<p>預金の利息は<b>利子所得</b>です。</p><p>利息を受け取るとき、銀行が<mark>20.315%</mark>（所得税15%＋復興特別所得税0.315%＋住民税5%）を先に差し引いてくれます。これで<b>税金の手続きは全部おしまい</b>（源泉分離課税）。自分で確定申告する必要はありません。</p><p>復興特別所得税は、東日本大震災の復興のための税金で、所得税額の2.1%です（15%×2.1%＝0.315%）。</p>`,
+ pt:"預金の利息＝利子所得・20.315%の源泉分離課税（申告不要）",
+ hon:"国内の預貯金の利子は、原則として、20.315%の税率による源泉分離課税の対象となる。",
+ w:[["源泉分離課税","げんせんぶんりかぜい","お金を受け取るときに税金が差し引かれ、それで手続きが終わるしくみ"]]},
+{q:"会社員の給与所得は「給与の収入金額 － 必要経費」で計算する。",a:false,
+ exp:`<p>会社員は、スーツ代や通勤の費用などを一つひとつ「必要経費」として計算するのは大変ですよね。</p><p>そこで給与所得は、<mark>給与の収入金額 － 給与所得控除額</mark>で計算します。給与所得控除は、<b>収入に応じて決まっている「みなし経費」</b>のようなものです。</p><p>必要経費を引くのは、事業所得や不動産所得などです。</p>`,
+ pt:"給与所得＝給与収入 － 給与所得控除額（必要経費ではない）",
+ hon:"給与所得の金額は、その年中の給与等の収入金額から給与所得控除額を控除した残額である。"},
+{q:"退職所得は「（退職金 － 退職所得控除額）× 1/2」で計算し、ほかの所得と分けて税金を計算する（分離課税）。",a:true,fig:"taikin",
+ exp:`<p>退職金は、長く働いたごほうび。老後の生活の大事なお金なので、<b>税金がとても安くなる</b>ようにできています。</p><p>① 退職金から<b>退職所得控除額</b>を引く<br>② さらに<mark>2分の1</mark>にする<br>③ ほかの所得と合わせずに税金を計算する（<b>分離課税</b>）</p><p>会社に「退職所得の受給に関する申告書」を出しておけば、正しい税金が差し引かれるので、<b>確定申告は不要</b>です。出さないと20.42%が差し引かれます（確定申告で精算できます）。</p>`,
+ pt:"退職所得＝（退職金−退職所得控除）×1/2・分離課税",
+ hon:"退職所得の金額は、原則として、その年中の退職手当等の収入金額から退職所得控除額を控除した残額の2分の1に相当する金額である。"},
+{q:"勤続年数が30年の人の退職所得控除額は、「40万円×30年＝1,200万円」である。",a:false,ha:true,ng:"20年をこえる部分は1年70万円。「800万円＋70万円×（30年−20年）＝<b>1,500万円</b>」です。",fig:"taikin",
+ exp:`<p>退職所得控除額は、<b>働いた年数（勤続年数）</b>で決まります。</p><p>・<b>20年以下</b>：40万円 × 勤続年数（最低80万円）<br>・<mark>20年超</mark>：800万円 ＋ 70万円 ×（勤続年数 − 20年）</p><p>30年なら 800万＋70万×10＝<b>1,500万円</b>。退職金が1,500万円以下なら、税金はかかりません。</p><p>勤続年数に<b>1年未満の端数があるときは切り上げ</b>ます（20年3か月→21年）。</p>`,
+ pt:"退職所得控除：20年以下40万円×年数／20年超800万円＋70万円×(年数−20)。端数は切り上げ",
+ hon:"勤続年数30年で退職した場合の退職所得控除額は、800万円＋70万円×（30年−20年）＝1,500万円となる。"},
+{q:"一時所得は「（収入 － 収入を得るために使ったお金 － 特別控除100万円）」で計算し、その2分の1を他の所得と合計する。",a:false,ha:true,ng:"一時所得の特別控除は<b>50万円</b>です。",
+ exp:`<p>一時所得は、<b>たまたま得た一時的なもうけ</b>です。例：懸賞や福引の賞金、競馬の払戻金、生命保険の満期保険金や解約返戻金（自分で保険料を払った場合）。</p><p>計算は：<br>① 収入 － 使ったお金 － <mark>50万円（特別控除）</mark><br>② その<mark>2分の1</mark>をほかの所得と合計（総合課税）</p><p>例：満期保険金600万円、払った保険料500万円なら、600−500−50＝50万円。その1/2の<b>25万円</b>が合計されます。</p>`,
+ pt:"一時所得＝（収入−支出−50万円）、合計するのはその1/2",
+ hon:"一時所得の金額は、総収入金額からその収入を得るために支出した金額の合計額を控除し、その残額から一時所得の特別控除額（最高50万円）を控除した金額であり、総所得金額にはその2分の1が算入される。"},
+{q:"会社員が副業でアパートを貸して得た家賃収入は、「事業所得」になる。",a:false,fig:"shotoku10",
+ exp:`<p>土地や建物を<b>貸して得たお金</b>は、<mark>不動産所得</mark>です。アパートの家賃、駐車場（月ぎめ）の料金、土地の地代などです。</p><p>ちなみに、たくさん貸しているかどうか（規模）にかかわらず、貸してもらうお金は不動産所得です。</p><p>一方で、<b>不動産屋さんが土地を売買して得たもうけ</b>は、商売なので<b>事業所得</b>になります。</p>`,
+ pt:"アパートの家賃・地代・月ぎめ駐車場代 ＝ 不動産所得",
+ hon:"アパートの貸付けによる賃貸収入は、その規模にかかわらず、不動産所得となる。"},
+{q:"国からもらう老齢年金だけでなく、遺族年金や障害年金にも、雑所得として所得税がかかる。",a:false,ha:true,ng:"老齢年金は雑所得ですが、<b>遺族年金・障害年金は非課税</b>です。",
+ exp:`<p>老後にもらう年金（老齢年金）は<mark>雑所得</mark>です。「公的年金等控除額」を引いて計算します。</p><p>一方、家族が亡くなってもらう<b>遺族年金</b>や、障害のある人がもらう<b>障害年金</b>は、<mark>非課税</mark>（税金なし）です。</p>`,
+ pt:"老齢年金＝雑所得（公的年金等控除あり）／遺族年金・障害年金＝非課税",
+ hon:"公的年金制度から支給される老齢給付は雑所得として課税されるが、遺族給付や障害給付は非課税である。"},
+{q:"損益通算（そんえきつうさん）で、ほかの所得のもうけと差し引きできる損失は、「不動産所得・事業所得・雑所得・譲渡所得」の4つの損失である。",a:false,ha:true,ng:"雑所得の損失は損益通算<b>できません</b>。できるのは「不動産・事業・<b>山林</b>・譲渡（富士山上）」です。",fig:"tsusan",
+ exp:`<p>損益通算とは、ある所得で出た<b>損（赤字）</b>を、ほかの所得の<b>もうけ</b>と差し引きすることです。そのぶん税金が安くなります。</p><p>差し引きできる損は<mark>不動産・事業・山林・譲渡</mark>の4つだけ。<br>覚え方：<b>「ふ・じ・さん・じょう（富士山上）」</b></p><p>雑所得や一時所得の損は、差し引きできません。</p>`,
+ pt:"損益通算できる損失は「不・事・山・譲（富士山上）」",
+ hon:"損益通算の対象となる損失は、不動産所得、事業所得、山林所得、譲渡所得の金額の計算上生じた損失である。"},
+{q:"不動産所得の赤字のうち、「土地を買うために借りたお金の利息」に相当する部分は、損益通算できない。",a:true,fig:"tsusan",
+ exp:`<p>富士山上（不・事・山・譲）の赤字でも、<b>損益通算できない例外</b>があります。</p><p>・不動産所得の赤字のうち、<mark>土地を買うための借入金の利息</mark>の部分<br>・<b>ゴルフ会員権や別荘</b>など、生活に必要でない資産を売った損<br>・<b>土地や建物を売った損</b>（マイホームの一定の特例を除く）<br>・<b>株を売った損</b>（上場株式は、配当などとだけ通算できる）</p>`,
+ pt:"不動産所得の赤字のうち「土地取得の借入金利子」は損益通算できない",
+ hon:"不動産所得の金額の計算上生じた損失のうち、土地の取得に要した負債の利子に相当する部分の金額は、損益通算の対象とならない。"},
+{q:"医療費控除は、1年間に払った医療費（保険金などで補てんされた分を除く）が10万円（総所得金額等が200万円未満の人はその5%）をこえた分を、最高200万円まで所得から差し引ける。",a:true,
+ exp:`<p>病院代がたくさんかかった年は、<b>医療費控除</b>で税金が安くなります。</p><p>計算：<mark>医療費 － 保険金などでもらった分 － 10万円</mark>（所得が200万円未満の人は所得の5%）。上限は<b>200万円</b>です。</p><p>自分の分だけでなく、<b>生計を一にする家族の分</b>もまとめられます。</p><p>対象になる例：治療のための薬、通院の電車・バス代。<br>対象外の例：健康診断（病気が見つからなかった場合）、美容整形、ビタミン剤など。</p>`,
+ pt:"医療費控除＝（医療費−保険金等−10万円）、上限200万円",
+ hon:"医療費控除の金額は、その年中に支払った医療費の額から保険金等で補塡される金額を控除し、さらに10万円（総所得金額等が200万円未満の場合はその5%）を控除した金額で、最高200万円である。",
+ w:[["生計を一にする","せいけいをいつにする","同じお財布で生活していること。同居していなくても、仕送りなどで生活費が同じならOK"]]},
+{q:"「セルフメディケーション税制」と「通常の医療費控除」は、同じ年に両方使うことができる。",a:false,
+ exp:`<p>セルフメディケーション税制は、ドラッグストアで買う<b>特定の市販薬（スイッチOTC医薬品など）</b>の購入費が<b>1万2,000円</b>をこえた分を、<b>最高8万8,000円</b>まで差し引ける制度です。健康診断などを受けていることが条件です。</p><p>ただし、<mark>通常の医療費控除とはどちらか一方しか選べません</mark>。</p>`,
+ pt:"セルフメディケーション税制（1.2万円超・上限8.8万円）は通常の医療費控除と選択",
+ hon:"セルフメディケーション税制による医療費控除の特例は、通常の医療費控除と選択適用であり、両方を同時に適用することはできない。"},
+{q:"会社員が、生計を一にする家族の国民年金や国民健康保険の保険料を代わりに払っても、自分の社会保険料控除にはできない。",a:false,ha:true,ng:"生計を一にする家族の分を<b>自分が払えば</b>、自分の社会保険料控除に<b>できます</b>（全額）。",
+ exp:`<p>健康保険・年金・介護保険・雇用保険などの<b>社会保険料</b>は、<mark>払った金額の全額</mark>を所得から差し引けます（社会保険料控除）。</p><p>自分の分だけでなく、<b>生計を一にする家族の分を自分が払った</b>場合も、自分の控除にできます。</p><p>生命保険料控除のように上限はありません。</p>`,
+ pt:"社会保険料控除＝払った額の全額（家族の分を払ってもOK）",
+ hon:"納税者が生計を一にする配偶者その他の親族の負担すべき社会保険料を支払った場合、その金額も社会保険料控除の対象となる。"},
+{q:"配偶者控除は、本人の合計所得金額が1,000万円をこえている場合でも受けられる。",a:false,
+ exp:`<p>配偶者控除は、所得が少ない妻（夫）を養っている人が受けられる控除で、最高<b>38万円</b>（配偶者が70歳以上なら48万円）です。</p><p>ただし、<mark>本人の合計所得金額が1,000万円をこえると受けられません</mark>（給与だけなら年収約1,195万円超）。また、本人の所得が900万円をこえると、控除額が段階的に減ります。</p><p>配偶者の合計所得金額が<b>58万円以下</b>（2025年分から）であることも条件です。</p>`,
+ pt:"配偶者控除：最高38万円。本人の合計所得1,000万円超は不可。配偶者の合計所得58万円以下",
+ hon:"納税者本人の合計所得金額が1,000万円を超える場合、配偶者控除の適用を受けることはできない。"},
+{q:"19歳以上23歳未満の子ども（特定扶養親族）を養っている場合の扶養控除は38万円である。",a:false,ha:true,ng:"特定扶養親族（19〜22歳）は<b>63万円</b>。38万円は一般の扶養親族です。",fig:"fuyo",
+ exp:`<p>扶養控除は、家族（配偶者以外）を養っているときに受けられる控除です。年齢で金額が変わります。</p><p>・<b>16歳未満</b>：なし（児童手当があるため）<br>・<b>16〜18歳</b>：38万円<br>・<mark>19〜22歳（特定扶養親族）：63万円</mark>（大学生のころはお金がかかるので多め）<br>・<b>23〜69歳</b>：38万円<br>・<b>70歳以上</b>：48万円（同居している親などは58万円）</p><p>年齢は<b>その年の12月31日</b>の時点で判断します。</p>`,
+ pt:"扶養控除：16歳未満なし／一般38万円／特定(19〜22歳)63万円／老人48万円(同居老親58万円)",
+ hon:"特定扶養親族（その年の12月31日現在の年齢が19歳以上23歳未満の扶養親族）に係る扶養控除の額は、63万円である。"},
+{q:"住宅ローン控除（住宅借入金等特別控除）は、所得から差し引く「所得控除」である。",a:false,fig:"taxFlow",
+ exp:`<p>税金を安くする「控除」には2種類あります。</p><p>・<b>所得控除</b>：税金を計算する<b>前</b>に、所得から引く（医療費控除、扶養控除など）<br>・<mark>税額控除</mark>：計算した<b>税金そのもの</b>から引く</p><p>住宅ローン控除は<mark>税額控除</mark>。税金から直接引けるので、効果が大きいです。</p><p>今の制度では、年末のローン残高の<b>0.7%</b>を、新築なら原則<b>13年間</b>、税金から差し引けます。</p>`,
+ pt:"住宅ローン控除は「税額控除」（年末残高×0.7%）",
+ hon:"住宅借入金等特別控除は税額控除であり、算出された所得税額から直接控除する。"},
+{q:"住宅ローン控除を受けるには、原則として、返済期間が10年以上の住宅ローンであることが必要である。",a:true,
+ exp:`<p>住宅ローン控除を受けるための主な条件：</p><p>・<mark>返済期間10年以上</mark>のローン<br>・家の床面積が<b>50㎡以上</b>（合計所得1,000万円以下の人は40㎡以上でもOKな特例あり）<br>・その年の合計所得金額が<b>2,000万円以下</b><br>・家を手に入れてから<b>6か月以内に住む</b></p><p>注意：繰上げ返済をして、最初から数えて返済期間が<b>10年未満</b>になると、その年から控除は受けられません。</p>`,
+ pt:"住宅ローン控除：返済期間10年以上・床面積50㎡以上・合計所得2,000万円以下",
+ hon:"住宅借入金等特別控除の適用を受けるためには、住宅ローンの返済期間が10年以上であることが必要であり、繰上げ返済により当初からの返済期間が10年未満となった場合は、以後適用を受けることができない。"},
+{q:"所得税の確定申告は、原則として、所得があった年の翌年1月1日から1月31日までに行う。",a:false,ha:true,ng:"確定申告は<b>翌年2月16日〜3月15日</b>です。",
+ exp:`<p>確定申告は、<b>1年間のもうけと税金を自分で計算して、税務署に届け出る</b>手続きです。</p><p>期間は<mark>翌年2月16日〜3月15日</mark>。e-Tax（国税電子申告・納税システム）を使えば、パソコンやスマホからもできます。</p><p>税金を返してもらうだけの申告（<b>還付申告</b>）は、翌年1月1日から5年間できます。</p>`,
+ pt:"確定申告は翌年2/16〜3/15。還付申告は5年間OK",
+ hon:"所得税の確定申告書は、原則として、その年の翌年2月16日から3月15日までの間に、納税者の住所地の所轄税務署長に提出しなければならない。"},
+{q:"会社員は年末調整があるので、給与の収入が2,000万円をこえていても、確定申告をする必要はない。",a:false,
+ exp:`<p>会社員は、会社が1年分の税金を最後に計算し直してくれる<b>年末調整</b>があるので、ふつうは確定申告はいりません。</p><p>でも、次のような人は<mark>確定申告が必要</mark>です。<br>・給与の収入が<mark>2,000万円をこえる</mark><br>・給与以外の所得（副業など）が<b>20万円をこえる</b><br>・2か所以上から給与をもらっている（一定の場合）</p><p>また、<b>医療費控除・寄附金控除（ふるさと納税）・住宅ローン控除の1年目</b>は、年末調整では受けられないので、確定申告をします。</p>`,
+ pt:"給与2,000万円超・給与以外の所得20万円超 → 確定申告が必要",
+ hon:"給与所得者であっても、その年中の給与等の金額が2,000万円を超える者は、確定申告をしなければならない。"},
+{q:"青色申告をしている個人事業主が、e-Taxで申告するなどの条件を満たすと、最高65万円の青色申告特別控除が受けられる。",a:true,
+ exp:`<p>青色申告は、帳簿をきちんとつける代わりに、税金で<b>いろいろな特典</b>がもらえる申告方法です。対象は<b>不動産所得・事業所得・山林所得</b>のある人です。</p><p>いちばんの特典が<b>青色申告特別控除</b>：<br>・<mark>65万円</mark>：複式簿記＋貸借対照表などを出し＋<b>e-Taxで申告（または電子帳簿保存）</b><br>・<b>55万円</b>：上の条件のうち電子の要件がない<br>・<b>10万円</b>：それ以外</p><p>ほかに、家族への給料を経費にできる、赤字を<b>3年間</b>くり越せる、などの特典もあります。</p>`,
+ pt:"青色申告特別控除：65万円（e-Tax等）／55万円／10万円。純損失は3年繰越し",
+ hon:"青色申告特別控除の控除額は、所定の要件を満たし、e-Taxにより申告すること等の要件を満たした場合、最高65万円である。"},
+{q:"新しく青色申告を始めたい人は、原則として、青色申告をしようとする年の3月15日までに「青色申告承認申請書」を税務署に出す。",a:true,
+ exp:`<p>青色申告は、<b>前もって税務署に申し込む</b>必要があります。</p><p>締め切りは<mark>その年の3月15日まで</mark>。<br>ただし、<b>1月16日以後に新しく仕事を始めた</b>場合は、<b>始めた日から2か月以内</b>です。</p>`,
+ pt:"青色申告承認申請：原則その年の3/15まで（1/16以後の開業は2か月以内）",
+ hon:"新たに青色申告の承認を受けようとする者は、原則として、青色申告をしようとする年の3月15日までに青色申告承認申請書を提出しなければならない。"},
+{q:"ふるさと納税をした会社員が「ワンストップ特例制度」を使うには、1年間の寄附先が5つの自治体以内である必要がある。",a:true,
+ exp:`<p>ふるさと納税は、好きな自治体に<b>寄附</b>すると、2,000円をこえる部分が所得税・住民税から差し引かれる制度です（寄附金控除）。</p><p>本来は確定申告が必要ですが、会社員など確定申告がいらない人は、<b>ワンストップ特例</b>を使えば申告なしでOK。</p><p>条件は<mark>1年の寄附先が5自治体以内</mark>であること。6つ以上なら確定申告が必要です。</p>`,
+ pt:"ワンストップ特例：確定申告不要の人・寄附先5自治体以内",
+ hon:"寄附金税額控除に係る申告特例（ワンストップ特例）の適用を受けるためには、その年の寄附先が5自治体以内であることが必要である。"},
+{q:"上場株式の配当は、確定申告をしないで、受け取るときに税金（20.315%）を差し引かれて終わりにする「申告不要」を選ぶことができる。",a:true,
+ exp:`<p>上場株式の配当（配当所得）の税金は、受け取るときに<b>20.315%</b>が差し引かれます。</p><p>そのあとは3つから選べます。<br>・<mark>申告不要</mark>：そのまま終わり<br>・<b>総合課税</b>で確定申告：<b>配当控除</b>が受けられる（所得が少ない人に有利）<br>・<b>申告分離課税</b>で確定申告：株の売却損と<b>損益通算</b>できる</p>`,
+ pt:"上場株式の配当：申告不要／総合課税（配当控除）／申告分離（損益通算）を選べる",
+ hon:"上場株式等の配当等については、確定申告不要制度を選択することができる。"},
+{q:"上場株式を売ったもうけ（譲渡所得）は、ほかの所得と合計せず、20.315%の税率で税金を計算する（申告分離課税）。",a:true,
+ exp:`<p>株を売ったもうけは<b>譲渡所得</b>で、<mark>20.315%（所得税15%＋復興特別所得税0.315%＋住民税5%）</mark>の<b>申告分離課税</b>です。</p><p>証券会社の<b>特定口座（源泉徴収あり）</b>を使えば、証券会社が税金を差し引いてくれるので、<b>確定申告をしなくてもOK</b>です。</p><p>売って損が出た場合は、確定申告をすれば翌年から<b>3年間くり越せます</b>（繰越控除）。</p>`,
+ pt:"上場株式の譲渡益＝20.315%の申告分離課税。損は3年繰越し可",
+ hon:"上場株式等の譲渡損失の金額は、確定申告により、翌年以後3年間にわたって繰り越すことができる。"}
+].map(o=>Object.assign({g:3,c:"tax"},o)));
+/* 3級・fudo */
+Q.push(...[
+{q:"土地の値段には、「公示価格」「基準地標準価格」「相続税路線価」「固定資産税評価額」など、目的のちがう複数の価格がある。",a:true,fig:"kakaku",
+ exp:`<p>土地の値段は1つではありません。使い道によって<b>4つの公的な価格</b>があり、「一物四価（いちぶつよんか）」といいます。</p><p>・<b>公示価格</b>：土地取引の目安（国土交通省）<br>・<b>基準地標準価格</b>：公示価格をおぎなう（都道府県）<br>・<b>相続税路線価</b>：相続税・贈与税の計算用（国税庁）<br>・<b>固定資産税評価額</b>：固定資産税などの計算用（市町村）</p><p>それぞれ<b>誰が決めるか・いつの時点か・公示価格の何%くらいか</b>がよく出ます。下の表で確認しましょう。</p>`,
+ pt:"一物四価：公示価格・基準地標準価格・相続税路線価・固定資産税評価額",
+ hon:"土地の公的な価格には、公示価格、基準地標準価格、相続税路線価、固定資産税評価額がある。"},
+{q:"公示価格は、都道府県が、毎年7月1日時点の価格を発表するものである。",a:false,ha:true,ng:"それは「<b>基準地標準価格</b>」。公示価格は<b>国土交通省</b>が<b>1月1日</b>時点で発表します。",fig:"kakaku",
+ exp:`<p>公示価格は、土地取引の<b>ものさし</b>になる価格です。</p><p>・決める人：<mark>国土交通省（土地鑑定委員会）</mark><br>・時点：<mark>毎年1月1日</mark><br>・発表：3月ごろ</p><p>これに対して<b>基準地標準価格</b>は、<b>都道府県</b>が<b>毎年7月1日</b>時点で決め、9月ごろ発表します。半年ずれているので、2つ合わせて土地の値動きがわかります。</p>`,
+ pt:"公示価格＝国土交通省・1月1日時点／基準地標準価格＝都道府県・7月1日時点",
+ hon:"公示価格は、国土交通省の土地鑑定委員会が毎年1月1日を価格判定の基準日として公表する価格である。"},
+{q:"相続税路線価は公示価格の約70%、固定資産税評価額は公示価格の約80%が目安である。",a:false,ha:true,ng:"逆です。相続税路線価が<b>約80%</b>、固定資産税評価額が<b>約70%</b>です。",fig:"kakaku",
+ exp:`<p>税金の計算に使う価格は、公示価格より低めになっています。</p><p>・<mark>相続税路線価：約80%</mark>（国税庁・毎年1月1日時点）<br>・<mark>固定資産税評価額：約70%</mark>（市町村・<b>3年に1度</b>見直し）</p><p>覚え方：「<b>相続はハチ（8）、固定はナナ（7）</b>」。</p>`,
+ pt:"路線価＝公示価格の80%（国税庁）／固定資産税評価額＝70%（市町村・3年ごと）",
+ hon:"相続税路線価は公示価格の80%程度、固定資産税評価額は公示価格の70%程度を目安に設定されている。"},
+{q:"不動産の登記記録で、所有権（だれの持ち物か）に関することは「権利部の乙区」に書かれている。",a:false,ha:true,ng:"所有権は「<b>甲区</b>」。乙区には抵当権など所有権<b>以外</b>の権利が書かれます。",fig:"toki",
+ exp:`<p>登記記録は、土地や建物の<b>戸籍</b>のようなものです。法務局で誰でも見られます。</p><p>・<b>表題部</b>：どこにあるか・広さ・種類など、<b>物そのものの情報</b><br>・権利部<mark>甲区</mark>：<mark>所有権</mark>（だれの物か）<br>・権利部<b>乙区</b>：所有権<b>以外</b>の権利（<b>抵当権</b>や借地権など）</p><p>覚え方：甲（こう）は「<b>こう</b>ゆう（所有）者」、乙（おつ）は「<b>おつ</b>ぎ（その他）」。</p>`,
+ pt:"表題部＝物の情報／甲区＝所有権／乙区＝抵当権など所有権以外",
+ hon:"不動産登記記録の権利部（乙区）には、抵当権など所有権以外の権利に関する事項が記録される。",
+ w:[["抵当権","ていとうけん","お金を借りるとき、返せなかったら家や土地を売って返してもらう、という約束の権利"]]},
+{q:"登記記録を信じて土地を買ったが、本当の持ち主が別にいた場合、登記を信じた買主は必ず保護され、その土地を自分の物にできる。",a:false,
+ exp:`<p>日本の登記には<mark>「公信力（こうしんりょく）」がありません</mark>。</p><p>公信力とは「登記を信じた人を必ず守る力」のこと。それがないので、<b>登記が本当とはかぎらず</b>、登記を信じて買っても、本当の持ち主に返さなければならないことがあります。</p><p>一方、登記には<b>対抗力</b>があります。「この土地は自分の物だ」と、ほかの人に主張できる力です。</p>`,
+ pt:"登記に公信力はない（信じても保護されるとは限らない）。対抗力はある",
+ hon:"不動産登記には公信力が認められていないため、登記記録を信頼して取引した者が、常に法的に保護されるとは限らない。"},
+{q:"不動産の売買で、買主が「解約手付」を払った場合、売主が契約の実行に取りかかる前なら、買主は手付金をあきらめれば契約を解除できる。",a:true,
+ exp:`<p>手付金（てつけきん）は、契約のときに買主が売主に払うお金です。ふつうは<b>解約手付</b>とされます。</p><p>・<b>買主</b>がやめたい → 払った<mark>手付金をあきらめる（放棄）</mark><br>・<b>売主</b>がやめたい → 受け取った<mark>手付金の2倍</mark>を返す（倍返し）</p><p>ただし、<b>相手が契約の実行に取りかかった（履行に着手した）後</b>は、この方法では解除できません。</p><p>売主が宅建業者の場合、手付金は<b>代金の2割まで</b>です。</p>`,
+ pt:"解約手付：買主は放棄、売主は倍返しで解除（相手の履行着手前まで）",
+ hon:"買主が売主に解約手付を交付した場合、相手方が契約の履行に着手するまでは、買主はその手付を放棄して、売主はその倍額を現実に提供して、契約を解除することができる。"},
+{q:"宅地建物取引業者（不動産屋さん）が、売買の仲介（媒介）でもらえる報酬の上限は、売買代金が400万円をこえる場合「代金×3%＋6万円」（＋消費税）である。",a:true,
+ exp:`<p>不動産屋さんの仲介手数料には<b>上限</b>があります。</p><p>代金が400万円をこえる場合の<mark>速算式：代金 × 3% ＋ 6万円</mark>（＋消費税）</p><p>例：3,000万円の家なら、3,000万×3%＋6万＝<b>96万円</b>（＋消費税）が上限です。</p>`,
+ pt:"仲介手数料の上限（400万円超）＝代金×3%＋6万円（＋消費税）",
+ hon:"宅地建物取引業者が売買の媒介により依頼者の一方から受け取ることができる報酬額の上限は、売買代金が400万円超の場合、売買代金の3%＋6万円に消費税を加えた額である。"},
+{q:"「専属専任媒介契約」では、依頼した人（売主など）は、自分で見つけた買主と直接契約することもできる。",a:false,fig:"baikai",
+ exp:`<p>家を売るとき、不動産屋さんと結ぶ<b>媒介契約</b>には3種類あります。</p><p>・<b>一般媒介</b>：何社にでも頼める。自分で見つけた相手とも契約OK<br>・<b>専任媒介</b>：1社だけに頼む。自分で見つけた相手とは契約OK<br>・<mark>専属専任媒介</mark>：1社だけ。<mark>自分で見つけた相手とも直接は契約できない</mark>（必ずその不動産屋さんを通す）</p><p>専属専任は縛りがいちばん強いぶん、不動産屋さんの報告も<b>1週間に1回以上</b>と多くなります（専任は2週間に1回以上）。</p>`,
+ pt:"専属専任は自己発見取引もダメ。報告：専属専任1週間に1回／専任2週間に1回",
+ hon:"専属専任媒介契約では、依頼者は、自ら発見した相手方と売買契約を締結することはできない。"},
+{q:"普通借地権（ふつうしゃくちけん）の存続期間（契約期間）は、最低20年である。",a:false,ha:true,ng:"普通借地権は<b>30年以上</b>です。",fig:"shakuchi",
+ exp:`<p>借地権は、<b>建物を建てるために土地を借りる権利</b>です（借地借家法）。</p><p><mark>普通借地権の期間は30年以上</mark>。30年より短く決めても、30年になります。期間がきても、建物があれば<b>更新</b>（契約を続ける）が基本です。地主は、正当な理由がなければ更新を断れません。</p><p>更新後の期間は、1回目は<b>20年以上</b>、2回目以降は<b>10年以上</b>です。</p>`,
+ pt:"普通借地権：30年以上（更新1回目20年以上、2回目以降10年以上）",
+ hon:"普通借地権の存続期間は30年とされ、契約でこれより長い期間を定めたときはその期間とする。"},
+{q:"「一般定期借地権」は、期間を50年以上とし、契約の更新がなく、期間が終わったら土地を更地にして返す借地権である。",a:true,fig:"shakuchi",
+ exp:`<p>定期借地権は、<b>更新がなく、期間が来たら必ず終わる</b>借地権です。3種類あります。</p><p>・<mark>一般定期借地権</mark>：<mark>50年以上</mark>。使い道は自由。契約は<b>書面</b>（公正証書でなくてもOK）<br>・<b>事業用定期借地権等</b>：<b>10年以上50年未満</b>。お店など<b>事業用だけ</b>（住宅はダメ）。契約は<b>公正証書</b>に限る<br>・<b>建物譲渡特約付借地権</b>：<b>30年以上</b>。期間が来たら地主が建物を買い取る</p>`,
+ pt:"一般定期借地権50年以上（書面）／事業用10年以上50年未満（公正証書）／建物譲渡特約付30年以上",
+ hon:"一般定期借地権の存続期間は50年以上とし、契約の更新や建物の築造による存続期間の延長がない旨を書面（電磁的記録を含む）で定める。"},
+{q:"普通借家契約（ふつうしゃっかけいやく）で期間を1年未満とした場合、期間の定めがない契約とみなされる。",a:true,
+ exp:`<p>借家（しゃっか）は、<b>建物を借りる</b>ことです。</p><p>普通借家契約では、<mark>1年未満の期間を決めると「期間の定めがない」契約</mark>になります。</p><p>大家さんは<b>正当な理由</b>がないと、更新を断ったり、出て行ってもらったりできません。借りている人がしっかり守られています。</p><p>一方、<b>定期借家契約</b>は、期間が来たら更新なしで終わる契約。<b>書面（電磁的記録も可）</b>で結び、1年未満の期間でもOKです。</p>`,
+ pt:"普通借家：1年未満は期間の定めなし／定期借家：更新なし・書面で・1年未満もOK",
+ hon:"普通借家契約において、1年未満の期間を定めた場合は、期間の定めがない建物の賃貸借とみなされる。"},
+{q:"都市計画区域のうち、「市街化区域」は、街になるのをおさえる（市街化を抑制する）区域である。",a:false,ha:true,ng:"市街化をおさえるのは「<b>市街化調整区域</b>」。市街化区域は、すでに街になっている区域や、おおむね10年以内に優先して街にする区域です。",
+ exp:`<p>まちづくりのルールを決めた法律が<b>都市計画法</b>です。</p><p>・<mark>市街化区域</mark>：どんどん<b>街にしていく</b>区域。建物をたくさん建てていい<br>・<b>市街化調整区域</b>：街になるのを<b>おさえる</b>区域。原則、建物を建てにくい</p><p>市街化区域には、必ず<b>用途地域</b>（住宅地・商業地・工業地など13種類）が決められます。</p>`,
+ pt:"市街化区域＝街を進める／市街化調整区域＝街をおさえる",
+ hon:"市街化区域は、すでに市街地を形成している区域およびおおむね10年以内に優先的かつ計画的に市街化を図るべき区域である。"},
+{q:"建築基準法では、建物の敷地は、原則として幅4m以上の道路に2m以上接していなければならない（接道義務）。",a:true,fig:"setsudo",
+ exp:`<p>火事や急病のとき、消防車や救急車が入れないと困りますよね。そこで<b>接道義務</b>があります。</p><p><mark>幅4m以上の道路に、敷地が2m以上接する</mark>ことが必要です。</p><p>昔からある<b>4m未満の道</b>（2項道路）に面した土地は、<b>道路の中心から2m下がった線</b>までを道路とみなします。これを<b>セットバック</b>といい、下がった部分には建物を建てられず、建蔽率・容積率の計算の面積にも入れられません。</p>`,
+ pt:"接道義務：幅4m以上の道路に2m以上接する。2項道路は中心から2mセットバック",
+ hon:"建築物の敷地は、原則として、建築基準法上の道路（幅員4m以上）に2m以上接していなければならない。"},
+{q:"建蔽率（けんぺいりつ）とは、敷地の面積に対する「建物の延べ面積（全部の階の床面積の合計）」の割合である。",a:false,fig:"kenpei",
+ exp:`<p>2つの言葉をしっかり区別しましょう。</p><p>・<mark>建蔽率</mark>：敷地に対する<b>建築面積</b>（建物を真上から見たときの広さ）の割合 → <b>平べったさ</b>の制限<br>・<mark>容積率</mark>：敷地に対する<b>延べ面積</b>（全部の階の床面積の合計）の割合 → <b>建物の大きさ（ボリューム）</b>の制限</p><p>例：100㎡の土地、建蔽率60%、容積率200%なら、建築面積は60㎡まで、延べ面積は200㎡まで。</p>`,
+ pt:"建蔽率＝建築面積÷敷地／容積率＝延べ面積÷敷地",
+ hon:"建蔽率とは、建築物の建築面積の敷地面積に対する割合をいう。"},
+{q:"建蔽率の上限が80%とされている地域以外で、防火地域の中に耐火建築物などを建てる場合、建蔽率は10%上乗せされる。",a:true,fig:"kenpei",
+ exp:`<p>建蔽率は、次の場合に<b>10%ずつ</b>ゆるくなります。</p><p>・<mark>防火地域に耐火建築物</mark>など（準防火地域なら耐火・準耐火建築物など）を建てる → ＋10%<br>・<b>特定行政庁が指定する角地</b> → ＋10%<br>・両方あてはまる → ＋20%</p><p>さらに、建蔽率80%の地域の防火地域内で耐火建築物などを建てる場合は、<b>建蔽率の制限がなくなり100%</b>になります。</p>`,
+ pt:"防火地域内の耐火建築物＋10%、角地＋10%（80%地域の防火地域内耐火は100%）",
+ hon:"建蔽率の限度が80%とされている地域外で、かつ防火地域内にある耐火建築物等については、建蔽率の限度が10%加算される。"},
+{q:"不動産取得税は、相続で土地や建物を手に入れた場合にもかかる。",a:false,fig:"fudoTax",
+ exp:`<p>不動産取得税は、土地や建物を<b>手に入れたときに1回だけ</b>かかる<b>都道府県</b>の税金です。</p><p>買った場合、もらった（贈与）場合、建てた場合にかかりますが、<mark>相続で手に入れた場合はかかりません</mark>。</p><p>税率は本来4%ですが、土地と住宅は<b>3%</b>に下げられています。新築住宅では<b>1,200万円</b>を引いてから計算できる特例もあります。</p>`,
+ pt:"不動産取得税は相続ではかからない（贈与ではかかる）",
+ hon:"相続により不動産を取得した場合、不動産取得税は課されない。"},
+{q:"固定資産税は、毎年1月1日に土地や建物を持っている人に、市町村がかける税金である。",a:true,fig:"fudoTax",
+ exp:`<p>固定資産税は、土地や家を<b>持っている間、毎年</b>かかる<b>市町村</b>の税金です。</p><p>払う人は、<mark>1月1日時点で固定資産課税台帳に登録されている持ち主</mark>。年のとちゅうで売っても、その年の分は1月1日の持ち主にかかります（売買では日割りで精算することが多い）。</p><p>税率は<b>標準税率1.4%</b>です。</p>`,
+ pt:"固定資産税＝市町村・1月1日の所有者・標準税率1.4%",
+ hon:"固定資産税は、毎年1月1日現在の固定資産課税台帳に所有者として登録されている者に対して課される。"},
+{q:"住宅を建てている土地（住宅用地）の固定資産税は、1戸あたり200㎡以下の部分は課税標準が3分の1になる。",a:false,ha:true,ng:"200㎡以下の部分は<b>6分の1</b>。3分の1は200㎡をこえる部分です。",fig:"fudoTax",
+ exp:`<p>住むための土地は、固定資産税が<b>とても安くなる特例</b>があります。</p><p>・<mark>200㎡以下の部分（小規模住宅用地）：6分の1</mark><br>・200㎡をこえる部分（一般住宅用地）：<b>3分の1</b></p><p>同じく市町村の税金の<b>都市計画税</b>（上限0.3%）でも、200㎡以下は3分の1、こえる部分は3分の2になります。</p>`,
+ pt:"住宅用地の固定資産税：200㎡以下1/6、超える部分1/3（都市計画税は1/3・2/3）",
+ hon:"住宅用地に係る固定資産税の課税標準については、小規模住宅用地（住宅1戸当たり200㎡以下の部分）は、固定資産税評価額の6分の1の額とする特例がある。"},
+{q:"土地や建物を売ったときの譲渡所得は、売った年の1月1日時点で持っていた期間が5年をこえていれば「長期譲渡所得」になる。",a:true,fig:"jotoFudo",
+ exp:`<p>土地・建物を売ったもうけ（譲渡所得）は、<b>持っていた期間</b>で税率が変わります。</p><p>注意点は、期間を<mark>「売った年の1月1日」時点で数える</mark>こと（売った日ではない）。</p><p>・<b>長期</b>（5年超）：<mark>20.315%</mark><br>・<b>短期</b>（5年以下）：<b>39.63%</b>（約2倍！）</p><p>たとえば2020年4月に買って2025年8月に売ると、2025年1月1日時点では4年9か月 → <b>短期</b>になります。</p>`,
+ pt:"土地・建物の譲渡：売った年の1/1時点で5年超＝長期20.315%／5年以下＝短期39.63%",
+ hon:"土地・建物等の譲渡所得は、譲渡した日の属する年の1月1日における所有期間が5年を超えるものは長期譲渡所得、5年以下のものは短期譲渡所得に区分される。"},
+{q:"土地を売ったとき、買った値段（取得費）がわからない場合は、売った値段の5%を取得費にすることができる。",a:true,fig:"jotoFudo",
+ exp:`<p>譲渡所得は「売った値段 － （取得費 ＋ 売るのにかかった費用）」で計算します。</p><p>でも、親から受け継いだ古い土地などは、<b>いくらで買ったかわからない</b>ことがありますね。</p><p>その場合は、<mark>売った値段の5%</mark>を取得費にできます（<b>概算取得費</b>）。実際の取得費が5%より少ない場合も、5%を使えます。</p>`,
+ pt:"取得費がわからない（または少ない）ときは、売った値段の5%を取得費にできる",
+ hon:"譲渡所得の計算上、取得費が不明な場合には、譲渡収入金額の5%相当額を取得費とすることができる。"},
+{q:"自分が住んでいる家（マイホーム）を売ったときの3,000万円特別控除は、その家を10年をこえて持っていないと使えない。",a:false,ha:true,ng:"3,000万円特別控除は、<b>持っていた期間に関係なく</b>使えます。10年超が条件なのは「軽減税率の特例」です。",fig:"jotoFudo",
+ exp:`<p>マイホームを売ったもうけには、大きな特例があります。</p><p><mark>居住用財産の3,000万円特別控除</mark>：もうけから<b>最高3,000万円</b>を引ける。</p><p>・<b>持っていた期間は関係なし</b>（短期でもOK）<br>・住まなくなってから<b>3年後の12月31日まで</b>に売る<br>・配偶者・親・子など<b>特別な関係の人に売った場合はダメ</b><br>・この特例は<b>3年に1回</b>しか使えない</p><p>使うには<b>確定申告</b>が必要です（税金がゼロになっても）。</p>`,
+ pt:"居住用財産の3,000万円特別控除：所有期間は問わない・確定申告が必要",
+ hon:"居住用財産を譲渡した場合の3,000万円の特別控除は、居住用財産の所有期間にかかわらず適用を受けることができる。"},
+{q:"不動産投資の「表面利回り」は、「（年間の家賃収入 － 管理費などの費用）÷ 物件の購入価格 × 100」で計算する。",a:false,ha:true,ng:"費用を引くのは「<b>NOI利回り</b>」。表面利回りは費用を引かず「年間の家賃収入÷購入価格×100」です。",
+ exp:`<p>アパートなどに投資するとき、どれくらいもうかるかを<b>利回り</b>で考えます。</p><p>・<mark>表面利回り（単純利回り）</mark>：年間家賃 ÷ 購入価格 × 100<br>・<b>NOI利回り（純利回り）</b>：（年間家賃 － 管理費や税金などの費用）÷ 購入価格 × 100</p><p>実際の手取りに近いのは、費用を引いた<b>NOI利回り</b>のほうです。</p>`,
+ pt:"表面利回り＝年間収入÷投資額／NOI利回り＝（年間収入−諸経費）÷投資額",
+ hon:"不動産投資の表面利回り（単純利回り）は、年間収入合計額を投資総額で除して算出する。"},
+{q:"マンションの管理などのルールを決めた区分所有法では、マンションを建て替える決議には、原則として区分所有者と議決権の各5分の4以上の賛成が必要である。",a:true,
+ exp:`<p>マンションの部屋を持つ人を<b>区分所有者</b>といい、そのルールが<b>区分所有法</b>です。</p><p>マンションの<b>建て替え</b>は、住んでいる人みんなに大きな影響があるので、<mark>5分の4以上</mark>という特に多い賛成が必要です（原則）。</p><p>そのほかに、廊下やエレベーターなどの<b>共用部分</b>は、みんなの物で、部屋と切り離して売ることはできない、というルールもあります。</p>`,
+ pt:"マンションの建替え決議：原則として5分の4以上の賛成",
+ hon:"区分所有法では、建替え決議は、原則として、集会において区分所有者および議決権の各5分の4以上の多数で行う。"}
+].map(o=>Object.assign({g:3,c:"fudo"},o)));
+/* 3級・sozo */
+Q.push(...[
+{q:"贈与（ぞうよ）は、あげる人の「あげます」という意思だけで成立し、もらう人の「もらいます」という返事はいらない。",a:false,
+ exp:`<p>贈与は、ただで財産をあげる<b>契約</b>です。</p><p>契約なので、<mark>あげる人「あげます」＋もらう人「もらいます」</mark>の両方の意思が合ったときに成立します。口約束でも成立します。</p><p>ただし、<b>書面にしていない贈与</b>は、まだ渡していない部分なら取り消せます。書面にした贈与は、取り消せません。</p>`,
+ pt:"贈与は双方の合意で成立（口約束もOK）。書面によらない贈与は未履行部分を解除できる",
+ hon:"贈与は、当事者の一方が財産を無償で相手方に与える意思を表示し、相手方が受諾をすることによって、その効力を生ずる。"},
+{q:"贈与税（暦年課税）の基礎控除額は、1年間に1人がもらった財産について110万円である。",a:true,fig:"zoyo",
+ exp:`<p>贈与税は、財産を<b>もらった人</b>が払う税金です。</p><p>1年（1月1日〜12月31日）にもらった財産の合計から<mark>110万円</mark>を引けます。つまり、<b>1年に110万円以下なら税金はかからず、申告もいりません</b>。</p><p>ポイント：110万円は「<b>もらう人</b>」ごと。たとえば、父から100万円・母から100万円もらうと合計200万円なので、110万円を引いた90万円に税金がかかります。</p>`,
+ pt:"贈与税の基礎控除は「もらった人」1人につき年110万円",
+ hon:"暦年課税による贈与税の基礎控除額は、受贈者1人につき年間110万円である。"},
+{q:"贈与税の申告と納税は、もらった年の翌年2月16日から3月15日までに行う。",a:false,ha:true,ng:"贈与税は<b>翌年2月1日</b>から3月15日まで。2月16日からは所得税の確定申告です。",
+ exp:`<p>贈与税の申告期間は<mark>翌年2月1日〜3月15日</mark>です。</p><p>所得税の確定申告（2月16日〜3月15日）より<b>はじまりが早い</b>ので、ひっかけに注意。</p><p>贈与税は、原則として<b>現金で一度に払います</b>。どうしても無理な場合は、分割で払う<b>延納（えんのう）</b>が認められることがあります（物で払う物納はできません）。</p>`,
+ pt:"贈与税の申告：翌年2/1〜3/15（所得税は2/16〜）。物納はできない",
+ hon:"贈与税の申告書は、原則として、贈与を受けた年の翌年2月1日から3月15日までの間に提出しなければならない。"},
+{q:"結婚して10年以上の夫婦の間で、住む家やそれを買うためのお金をあげた場合、最高2,000万円まで贈与税がかからない特例がある。",a:false,ha:true,ng:"贈与税の配偶者控除は、結婚して<b>20年以上</b>が条件です。",fig:"zoyo",
+ exp:`<p>長く連れそった夫婦への特例が<mark>贈与税の配偶者控除</mark>です。</p><p>・結婚して<mark>20年以上</mark><br>・<b>住むための家・土地</b>か、それを買うための<b>お金</b><br>・最高<mark>2,000万円</mark> ＋ 基礎控除110万円 ＝ <b>合計2,110万円まで非課税</b></p><p>同じ夫婦の間では<b>一生に1回</b>だけ。税金がゼロでも<b>申告が必要</b>です。</p>`,
+ pt:"贈与税の配偶者控除：婚姻20年以上・居住用不動産等・2,000万円（＋110万円）",
+ hon:"婚姻期間が20年以上の配偶者から居住用不動産の贈与を受けた場合、基礎控除とは別に最高2,000万円の配偶者控除を受けることができる。"},
+{q:"相続時精算課税制度を使うと、2,500万円（特別控除）までは贈与税がかからず、それをこえた部分には一律10%の贈与税がかかる。",a:false,ha:true,ng:"こえた部分は一律<b>20%</b>です。",fig:"zoyo",
+ exp:`<p>相続時精算課税は、<b>今は贈与税を少なくして、あとで相続税でまとめて精算する</b>制度です。</p><p>・あげる人：<b>60歳以上</b>の父母・祖父母<br>・もらう人：<b>18歳以上</b>の子・孫<br>・毎年<b>110万円</b>の基礎控除（2024年から）のあと、合計<mark>2,500万円まで非課税</mark>、こえた分は<mark>一律20%</mark></p><p>一度選ぶと、その人からの贈与は<b>ずっとこの制度</b>（暦年課税に戻れない）。あげた人が亡くなったら、もらった財産（毎年110万円以下の部分を除く）を相続財産に足して相続税を計算します。</p>`,
+ pt:"相続時精算課税：60歳以上の父母・祖父母→18歳以上の子・孫／2,500万円まで非課税・超えたら20%",
+ hon:"相続時精算課税制度の特別控除額は、特定贈与者ごとに累計2,500万円であり、これを超える部分には一律20%の税率が適用される。"},
+{q:"法定相続人（法律で決められた相続人）で、亡くなった人の配偶者（夫・妻）は、つねに相続人になる。",a:true,fig:"souzokunin",
+ exp:`<p>亡くなった人を<b>被相続人（ひそうぞくにん）</b>、財産を受け継ぐ人を<b>相続人</b>といいます。</p><p><mark>配偶者はつねに相続人</mark>です。そのほかの家族は、次の順番で、上の順位の人がいないときだけ相続人になります。</p><p>・<b>第1順位：子</b>（子が先に亡くなっていれば孫）<br>・<b>第2順位：父母</b>（直系尊属）<br>・<b>第3順位：兄弟姉妹</b>（先に亡くなっていればおい・めい）</p><p>なお、<b>内縁の妻・夫</b>（婚姻届を出していない）は相続人になりません。</p>`,
+ pt:"配偶者はつねに相続人。順位：①子 ②父母 ③兄弟姉妹",
+ hon:"被相続人の配偶者は常に相続人となり、血族相続人の順位は、第1順位が子、第2順位が直系尊属、第3順位が兄弟姉妹である。"},
+{q:"相続人が配偶者と子2人の場合、法定相続分は、配偶者・子・子がそれぞれ3分の1ずつである。",a:false,ha:true,ng:"配偶者と子の場合は「配偶者<b>1/2</b>・子全体で<b>1/2</b>」。子2人なら、子はそれぞれ<b>1/4</b>です。",fig:"souzokubun",
+ exp:`<p>法定相続分は、法律で決められた<b>財産の分け方の目安</b>です。</p><p>・配偶者と<b>子</b>：<mark>配偶者1/2・子1/2</mark><br>・配偶者と<b>父母</b>：配偶者2/3・父母1/3<br>・配偶者と<b>兄弟姉妹</b>：配偶者3/4・兄弟姉妹1/4</p><p>同じ順位の人が何人もいるときは、その中で<b>等分</b>します。子2人なら、1/2÷2＝<b>それぞれ1/4</b>。</p>`,
+ pt:"配偶者＋子＝1/2:1/2／＋父母＝2/3:1/3／＋兄弟姉妹＝3/4:1/4",
+ hon:"相続人が被相続人の配偶者および子2人である場合、子1人の法定相続分は4分の1である。"},
+{q:"子が親より先に亡くなっていた場合、その子の子（孫）が代わりに相続人になる。これを「代襲相続（だいしゅうそうぞく）」という。",a:true,fig:"souzokunin",
+ exp:`<p>本来相続人になるはずの子が、親より先に亡くなっていたら、<mark>その子ども（孫）が代わりに相続人</mark>になります。これが代襲相続です。</p><p>孫も亡くなっていれば、ひ孫…と、<b>どこまでも下に</b>続きます。</p><p>ただし、<b>兄弟姉妹</b>が相続人のときの代襲は、<b>おい・めいまで（1代限り）</b>です。</p><p>また、相続を<b>放棄</b>した人の子は、代襲相続できません。</p>`,
+ pt:"代襲相続：子→孫→ひ孫…（兄弟姉妹はおい・めいまで）。放棄した人の子は代襲しない",
+ hon:"相続の放棄をした者の子は、その者を代襲して相続人となることはできない。"},
+{q:"相続を放棄するには、自分が相続人になったことを知った時から6か月以内に、家庭裁判所に申し立てる。",a:false,ha:true,ng:"相続放棄は<b>3か月以内</b>です。",
+ exp:`<p>相続では、プラスの財産だけでなく<b>借金（マイナスの財産）も受け継ぎます</b>。</p><p>選び方は3つ：<br>・<b>単純承認</b>：全部受け継ぐ（何もしなければこれ）<br>・<mark>相続放棄</mark>：全部受け継がない。<b>1人でもできる</b><br>・<b>限定承認</b>：プラスの財産の範囲でだけ借金を返す。<b>相続人全員で</b>しなければならない</p><p>放棄と限定承認は、<mark>知った時から3か月以内に家庭裁判所</mark>へ申し立てます。</p>`,
+ pt:"相続放棄・限定承認：3か月以内に家庭裁判所。限定承認は相続人全員で",
+ hon:"相続の放棄をしようとする者は、自己のために相続の開始があったことを知った時から3か月以内に、家庭裁判所に申述しなければならない。"},
+{q:"遺言書のうち「自筆証書遺言」は、財産目録（財産の一覧）も含めて、すべて自分の手で書かなければならない。",a:false,fig:"igon",
+ exp:`<p>自筆証書遺言は、自分で書く遺言書です。本文・日付・名前を<b>自分で手書き</b>し、はんこを押します。</p><p>ただし、<mark>財産目録はパソコンで作ったり、通帳のコピーをつけたりしてもOK</mark>です（各ページに署名・押印が必要）。</p><p>また、自筆証書遺言は<b>法務局に預ける</b>こともできます（自筆証書遺言書保管制度）。預けた場合は、亡くなった後の家庭裁判所の<b>検認（けんにん）が不要</b>です。</p>`,
+ pt:"自筆証書遺言：本文は手書き、財産目録はパソコンOK。法務局保管なら検認不要",
+ hon:"自筆証書遺言に添付する財産目録については、自書によらずパソコン等で作成することができる。"},
+{q:"公正証書遺言（こうせいしょしょいごん）は、亡くなったあと、家庭裁判所で検認を受けなければならない。",a:false,ha:true,ng:"公正証書遺言は<b>検認不要</b>です。検認が必要なのは自筆証書遺言（法務局保管なら不要）と秘密証書遺言です。",fig:"igon",
+ exp:`<p>公正証書遺言は、<b>公証役場</b>で、<b>公証人</b>という法律の専門家に作ってもらう遺言書です。</p><p>・<mark>証人2人以上</mark>が立ち会う<br>・原本は公証役場に保管されるので、なくしたり書きかえられたりする心配がない<br>・<mark>検認は不要</mark></p><p>ただし、相続人になる予定の人やその配偶者、未成年者は<b>証人になれません</b>。</p>`,
+ pt:"公正証書遺言：証人2人以上・公証人が作成・検認不要",
+ hon:"公正証書遺言は、証人2人以上の立会いのもと、遺言者が遺言の趣旨を公証人に口授し、公証人がこれを筆記して作成するものであり、家庭裁判所の検認は不要である。",
+ w:[["検認","けんにん","家庭裁判所で、遺言書の形や中身を確認して記録する手続き"]]},
+{q:"遺留分（いりゅうぶん）とは、一定の相続人に最低限保障される相続財産の取り分で、兄弟姉妹にも遺留分がある。",a:false,
+ exp:`<p>遺言で「全部を他人にあげる」と書かれても、家族には<b>最低限もらえる分</b>があります。これが<b>遺留分</b>です。</p><p>遺留分があるのは<b>配偶者・子（孫）・父母</b>。<mark>兄弟姉妹には遺留分がありません</mark>。</p><p>全体の遺留分は、<br>・<b>父母だけが相続人</b>：財産の<b>1/3</b><br>・<b>それ以外</b>：財産の<b>1/2</b><br>これに各人の法定相続分をかけたものが、1人あたりの遺留分です。</p>`,
+ pt:"遺留分は兄弟姉妹にはない。全体で1/2（父母のみなら1/3）",
+ hon:"兄弟姉妹には遺留分は認められていない。"},
+{q:"相続税の基礎控除額は「5,000万円＋1,000万円×法定相続人の数」である。",a:false,ha:true,ng:"今は「<b>3,000万円＋600万円</b>×法定相続人の数」です（5,000万円＋1,000万円は2014年までの古いルール）。",fig:"sozokuzei",
+ exp:`<p>相続した財産の合計（課税価格）が<b>基礎控除額以下</b>なら、相続税はかからず、申告もいりません。</p><p><mark>基礎控除額 ＝ 3,000万円 ＋ 600万円 × 法定相続人の数</mark></p><p>例：妻と子2人（法定相続人3人）なら、3,000万＋600万×3＝<b>4,800万円</b>。</p><p>相続を放棄した人がいても、<b>放棄がなかったものとして</b>人数を数えます。</p>`,
+ pt:"相続税の基礎控除＝3,000万円＋600万円×法定相続人の数（放棄した人も数える）",
+ hon:"相続税の遺産に係る基礎控除額は、3,000万円＋600万円×法定相続人の数で計算され、相続の放棄があった場合でも、その放棄がなかったものとした場合の相続人の数による。"},
+{q:"相続人が受け取った死亡保険金には、「500万円×法定相続人の数」まで相続税がかからない（非課税）。",a:true,fig:"sozokuzei",
+ exp:`<p>亡くなった人が保険料を払っていた生命保険の死亡保険金は、<b>みなし相続財産</b>として相続税の対象になります。</p><p>でも、残された家族の生活を守るお金なので、<mark>500万円×法定相続人の数</mark>までは非課税です。</p><p>例：法定相続人3人なら、500万×3＝<b>1,500万円まで非課税</b>。</p><p>亡くなったことでもらう<b>死亡退職金</b>にも、同じ「500万円×法定相続人の数」の非課税があります（別枠）。</p><p>注意：<b>相続人ではない人</b>（相続を放棄した人を含む）が受け取った場合、この非課税は使えません。</p>`,
+ pt:"死亡保険金・死亡退職金の非課税＝それぞれ500万円×法定相続人の数（相続人が受け取る場合）",
+ hon:"相続人が受け取った死亡保険金のうち、500万円に法定相続人の数を乗じた金額までは、相続税が非課税となる。"},
+{q:"亡くなった人の借金や、お葬式の費用は、相続財産から差し引くことができる（債務控除）。",a:true,fig:"sozokuzei",
+ exp:`<p>相続税は、<b>プラスの財産からマイナスを引いた「正味」</b>に対してかかります。</p><p>引けるもの（<mark>債務控除</mark>）：<br>・<b>借金</b>、未払いの税金・医療費<br>・<b>お葬式の費用</b>（通夜・本葬・火葬など）</p><p>引けないもの：<br>・<b>香典返し</b>の費用<br>・<b>法要</b>（初七日・四十九日など）の費用<br>・<b>墓地や墓石の未払い代金</b>（お墓はそもそも非課税財産なので）</p>`,
+ pt:"債務控除：借金・葬式費用はOK／香典返し・法要・墓地の未払金はダメ",
+ hon:"相続税の課税価格の計算上、通夜や本葬の費用は葬式費用として控除できるが、香典返しの費用や法要の費用は控除できない。"},
+{q:"亡くなった人の配偶者が相続した財産は、1億6,000万円か、配偶者の法定相続分のどちらか多い金額まで、相続税がかからない。",a:true,fig:"sozokuzei",
+ exp:`<p>夫婦は二人で財産を築いたものであり、残された配偶者の生活も大事。そこで<mark>配偶者の税額軽減</mark>があります。</p><p>配偶者が相続した財産が、<mark>1億6,000万円まで</mark>か、<mark>法定相続分まで</mark>の<b>多いほう</b>なら、相続税はかかりません。</p><p>結婚していた期間の長さは<b>関係ありません</b>（贈与税の配偶者控除の「20年」とまちがえないように）。</p><p>税金がゼロになっても、<b>申告は必要</b>です。</p>`,
+ pt:"配偶者の税額軽減：1億6,000万円か法定相続分の多いほうまで非課税（婚姻期間は不問・申告は必要）",
+ hon:"配偶者の税額軽減の適用を受けると、配偶者の取得した財産が1億6,000万円または配偶者の法定相続分相当額のいずれか多い金額までであれば、配偶者に相続税は課されない。"},
+{q:"相続税の申告は、相続の開始を知った日の翌日から10か月以内に行う。",a:true,
+ exp:`<p>相続の手続きには、締め切りがいくつもあります。</p><p>・<b>相続放棄・限定承認</b>：知った時から<b>3か月</b>以内（家庭裁判所）<br>・<b>準確定申告</b>（亡くなった人の所得税の申告）：<b>4か月</b>以内<br>・<mark>相続税の申告</mark>：<mark>10か月</mark>以内（亡くなった人の住所地の税務署）</p><p>覚え方：<b>「3・4・10（さん・し・とう）」</b></p>`,
+ pt:"締め切り：放棄・限定承認3か月／準確定申告4か月／相続税申告10か月",
+ hon:"相続税の申告書は、原則として、相続の開始があったことを知った日の翌日から10か月以内に、被相続人の死亡時の住所地を所轄する税務署長に提出しなければならない。"},
+{q:"亡くなった人の父母が財産を相続した場合、その人の相続税は2割加算される。",a:false,ha:true,ng:"父母は2割加算<b>されません</b>。加算されないのは<b>配偶者・子・父母</b>。兄弟姉妹などが2割加算されます。",
+ exp:`<p>亡くなった人と関係が遠い人が財産を受け取ると、相続税が<mark>2割増し</mark>になります（相続税額の2割加算）。</p><p>2割加算される人：<br>・<b>兄弟姉妹</b>、おい・めい<br>・<b>孫（養子にした孫を含む）</b>：ただし子が亡くなって代わりに相続人になった孫（代襲相続人）は対象外<br>・相続人ではない人（遺言でもらった他人など）</p><p>2割加算<b>されない</b>のは、<b>配偶者・子・父母</b>です。</p>`,
+ pt:"2割加算：配偶者・子・父母以外（兄弟姉妹、孫（代襲を除く）など）",
+ hon:"被相続人の兄弟姉妹が相続により財産を取得した場合、その者の相続税額には2割加算が適用される。"},
+{q:"相続税で土地を評価するとき、道路に面した土地は、道路ごとにつけられた「路線価」をもとに計算する（路線価方式）。",a:true,
+ exp:`<p>相続した土地の値段（評価額）は、次の2つの方法で決めます。</p><p>・<mark>路線価方式</mark>：主に市街地。道路ごとの「1㎡あたりの値段（路線価）」×面積（形などで調整）<br>・<b>倍率方式</b>：路線価がない地域。<b>固定資産税評価額 × 決められた倍率</b></p><p>路線価は、<b>国税庁</b>が毎年発表し、千円単位で表示されています（例：300D → 1㎡あたり30万円、Dは借地権割合60%）。</p>`,
+ pt:"土地の評価：路線価方式（市街地）／倍率方式（固定資産税評価額×倍率）",
+ hon:"宅地の評価方法には路線価方式と倍率方式があり、路線価が定められていない地域では倍率方式により評価する。"},
+{q:"アパートを建てて人に貸している土地（貸家建付地）は、自分で使っている土地（自用地）よりも、相続税の評価額が高くなる。",a:false,fig:"hyoka",
+ exp:`<p>人に貸している土地や建物は、<b>自分で自由に使えない</b>ぶん、評価額が<mark>低く</mark>なります。</p><p>・<b>自用地</b>（自分で使う）：路線価×面積（100%）<br>・<mark>貸家建付地</mark>（アパートが建つ土地）：自用地評価額 ×（1 − 借地権割合 × 借家権割合 × 賃貸割合）<br>・<b>貸宅地（底地）</b>（人に土地を貸して、その人が家を建てている）：自用地評価額 ×（1 − 借地権割合）</p><p>アパートを建てると相続税が下がると言われるのは、このためです。</p>`,
+ pt:"人に貸している土地・建物は評価が下がる（貸家建付地・貸宅地）",
+ hon:"貸家建付地の価額は、自用地としての価額×（1−借地権割合×借家権割合×賃貸割合）により評価する。"},
+{q:"小規模宅地等の特例で、亡くなった人が住んでいた土地（特定居住用宅地等）を配偶者が相続した場合、330㎡までの部分の評価額が50%減額される。",a:false,ha:true,ng:"特定居住用宅地等は、330㎡まで<b>80%</b>減額です（50%減は貸付事業用）。",fig:"shokibo",
+ exp:`<p>家族が住んでいる家の土地に大きな相続税がかかると、住み続けられなくなるかもしれません。そこで<b>小規模宅地等の特例</b>があります。</p><p>・<mark>特定居住用宅地等（自宅の土地）：330㎡まで80%減</mark><br>・<b>特定事業用宅地等</b>（お店や工場の土地）：400㎡まで80%減<br>・<b>貸付事業用宅地等</b>（アパートなどの土地）：200㎡まで50%減</p><p><b>配偶者</b>が自宅の土地を相続した場合は、住み続けるなどの条件なしで使えます。</p>`,
+ pt:"小規模宅地等の特例：自宅330㎡80%減／事業400㎡80%減／貸付200㎡50%減",
+ hon:"小規模宅地等についての相続税の課税価格の計算の特例において、特定居住用宅地等に該当する場合、330㎡を限度面積として評価額の80%を減額することができる。"},
+{q:"上場株式を相続税で評価するときは、亡くなった日の終値と、その月・前月・前々月の毎日の終値の平均額のうち、もっとも低い金額を使うことができる。",a:true,
+ exp:`<p>株の値段は毎日変わるので、相続のときの評価は<b>4つの中から一番低いもの</b>を選べます。</p><p>①<b>亡くなった日の終値</b><br>②<b>その月</b>の毎日の終値の平均<br>③<b>前月</b>の毎日の終値の平均<br>④<b>前々月</b>の毎日の終値の平均</p><p>→ この中で<mark>いちばん低い金額</mark>で評価します。</p>`,
+ pt:"上場株式の評価：死亡日の終値・当月・前月・前々月の平均のうち最も低い額",
+ hon:"上場株式の相続税評価額は、課税時期の最終価格、課税時期の属する月以前3か月間の毎日の最終価格の各月の平均額のうち、最も低い価額による。"},
+{q:"相続人全員で話し合って、法定相続分とはちがう割合で遺産を分けることもできる（遺産分割協議）。",a:true,
+ exp:`<p>法定相続分は、あくまで<b>目安</b>です。</p><p><mark>相続人全員が納得すれば、自由な割合で分けてOK</mark>。これを<b>遺産分割協議</b>といい、まとまった内容は<b>遺産分割協議書</b>に書いておきます。</p><p>注意：協議には<b>相続人全員</b>の参加が必要です。1人でも欠けると無効です。話し合いがまとまらなければ、家庭裁判所の調停・審判で決めます。</p>`,
+ pt:"遺産分割協議：相続人全員の合意があれば、法定相続分と異なる分け方もOK",
+ hon:"共同相続人全員の協議により、法定相続分と異なる割合で遺産を分割することができる。"},
+{q:"財産を分けるとき、ある相続人が家などの財産をもらう代わりに、ほかの相続人に自分のお金を払って調整する方法を「代償分割（だいしょうぶんかつ）」という。",a:true,
+ exp:`<p>遺産の分け方（分割の方法）は主に3つです。</p><p>・<b>現物分割</b>：家は長男、預金は次男、のように<b>そのまま</b>分ける<br>・<mark>代償分割</mark>：家をもらった人が、ほかの人に<b>自分のお金（代償金）を払って</b>調整する<br>・<b>換価分割</b>：財産を<b>売ってお金にして</b>から分ける</p><p>家が1軒しかないときなど、代償分割がよく使われます。代償金の準備に、<b>生命保険</b>が活用されることもあります。</p>`,
+ pt:"現物分割／代償分割（代償金で調整）／換価分割（売って分ける）",
+ hon:"代償分割とは、共同相続人のうち特定の者が遺産の全部または一部を取得し、他の共同相続人に対して自己の固有財産から代償金を支払う方法である。"}
+].map(o=>Object.assign({g:3,c:"sozo"},o)));
+/* 2級・life */
+Q.push(...[
+{q:"65歳からの老齢厚生年金は、厚生年金に10年以上入っていなければ受け取れない。",a:false,ha:true,ng:"65歳からの老齢厚生年金は、受給資格期間（10年）を満たしていれば、厚生年金は<b>1か月以上</b>でもらえます。",fig:"nenkin",
+ exp:`<p>2階部分の<b>老齢厚生年金</b>（65歳から）の条件は2つだけです。</p><p>① 1階の<b>老齢基礎年金の受給資格期間（10年以上）</b>を満たしている<br>② <mark>厚生年金の加入期間が1か月以上</mark>ある</p><p>なお、60〜64歳でもらえる<b>特別支給の老齢厚生年金</b>は、厚生年金の加入期間が<b>1年以上</b>必要です（生まれた年によってはもらえません）。</p>`,
+ pt:"65歳からの老齢厚生年金：受給資格期間10年＋厚生年金1か月以上",
+ hon:"65歳から支給される老齢厚生年金は、老齢基礎年金の受給資格期間を満たし、厚生年金保険の被保険者期間が1か月以上あれば受給することができる。"},
+{q:"老齢厚生年金の「加給年金（かきゅうねんきん）」は、厚生年金の加入期間が10年以上ある人に、生計を維持している65歳未満の配偶者などがいる場合に加算される。",a:false,ha:true,ng:"加給年金は、厚生年金の加入期間が<b>20年以上</b>必要です。",
+ exp:`<p>加給年金は、年金の<b>家族手当</b>のようなものです。</p><p>条件：<br>・本人の<mark>厚生年金の加入期間が20年以上</mark><br>・本人が生計を維持している<mark>65歳未満の配偶者</mark>、または18歳到達年度末までの子などがいる</p><p>配偶者が65歳になって自分の老齢基礎年金をもらい始めると、加給年金は終わり、条件を満たせば配偶者の年金に<b>振替加算</b>がつきます。</p><p>なお、老齢厚生年金を<b>繰下げている間は、加給年金も支給されません</b>（増えもしない）。</p>`,
+ pt:"加給年金：厚生年金20年以上＋65歳未満の配偶者等。繰下げ中は支給されない",
+ hon:"加給年金額は、厚生年金保険の被保険者期間が20年以上ある老齢厚生年金の受給権者に、その者によって生計を維持されている65歳未満の配偶者がいる場合などに加算される。"},
+{q:"60歳以降も会社で働きながら老齢厚生年金をもらう場合、給与（賞与を含む月あたりの額）と年金の月額の合計が一定額をこえると、年金の一部または全部が止められる（在職老齢年金）。",a:true,
+ exp:`<p>会社で働いて厚生年金に入りながら年金をもらうと、<b>給料が多い人は年金が減らされる</b>しくみがあります（在職老齢年金）。</p><p>「総報酬月額相当額（月給＋1年の賞与÷12）」と「年金の月額（報酬比例部分）」の合計が<mark>基準額</mark>をこえると、こえた分の<b>半分</b>が年金から止められます。</p><p>基準額は年度ごとに変わり、<b>2026年4月からは62万円</b>に大きく引き上げられました（2025年度は51万円）。</p><p>止められるのは<b>老齢厚生年金</b>だけ。<b>老齢基礎年金は全額もらえます</b>。自営業などで厚生年金に入っていなければ、そもそも対象外です。</p>`,
+ pt:"在職老齢年金：（月給等＋年金月額）が基準額を超えた分の1/2を支給停止。老齢基礎年金は対象外",
+ hon:"在職老齢年金の仕組みにより、老齢厚生年金の一部または全部が支給停止となる場合でも、老齢基礎年金は支給停止の対象とならない。"},
+{q:"老齢基礎年金と老齢厚生年金は、繰下げ受給をする場合、必ず両方を同時に繰り下げなければならない。",a:false,ha:true,ng:"繰下げは<b>別々に</b>選べます。同時にしなければならないのは<b>繰上げ</b>です。",fig:"kuriage",
+ exp:`<p>年金のもらい始めの時期は、早める（繰上げ）・遅らせる（繰下げ）ができます。</p><p>・<b>繰上げ</b>：老齢基礎年金と老齢厚生年金を<mark>必ず同時に</mark>早める<br>・<b>繰下げ</b>：<mark>別々に</mark>選べる（基礎だけ繰下げ、厚生だけ繰下げ、もOK）</p><p>繰下げは、65歳から<b>1年以上待って（66歳以降）</b>申し出ます。最大75歳まで、1か月0.7%増、最大84%増です。</p><p>繰上げは一度すると取り消せず、<b>障害基礎年金がもらえなくなる</b>などのデメリットもあります。</p>`,
+ pt:"繰上げ＝基礎と厚生を同時に／繰下げ＝別々に選べる",
+ hon:"老齢基礎年金と老齢厚生年金の繰上げ支給の請求は同時に行わなければならないが、繰下げ支給の申出はそれぞれ別に行うことができる。"},
+{q:"遺族厚生年金の額は、原則として、亡くなった人の老齢厚生年金の報酬比例部分の3分の2である。",a:false,ha:true,ng:"遺族厚生年金は報酬比例部分の<b>4分の3</b>です。",
+ exp:`<p>遺族厚生年金は、会社員だった人が亡くなったとき、家族がもらう2階部分の年金です。</p><p>金額は<mark>亡くなった人の報酬比例部分 × 3/4</mark>。</p><p>会社員の在職中に亡くなった場合（<b>短期要件</b>）は、加入期間が<b>300月（25年）未満でも300月あるものとして</b>計算してくれます。</p><p>遺族基礎年金とちがって、<b>子のない配偶者</b>ももらえます（ただし、子のない30歳未満の妻は5年間だけ）。</p>`,
+ pt:"遺族厚生年金＝報酬比例部分×3/4（短期要件は300月みなし）",
+ hon:"遺族厚生年金の額は、原則として、死亡した者の老齢厚生年金の報酬比例部分の額の4分の3相当額である。"},
+{q:"夫が亡くなったとき40歳以上65歳未満で、子のいない妻が受け取る遺族厚生年金には、「中高齢寡婦加算（ちゅうこうれいかふかさん）」が加算される。",a:true,
+ exp:`<p>子がいない妻は<b>遺族基礎年金がもらえません</b>。また、子がいても、子が大きくなると遺族基礎年金は終わります。</p><p>その穴をうめるのが<mark>中高齢寡婦加算</mark>です。</p><p>・夫が亡くなったとき<mark>40歳以上65歳未満</mark>で子がいない妻<br>・または、40歳時点で子がいて遺族基礎年金をもらっていた妻（子が大きくなって遺族基礎年金がなくなった後）</p><p>妻が<b>65歳</b>になり、自分の老齢基礎年金をもらえるようになると終わります。</p>`,
+ pt:"中高齢寡婦加算：40歳以上65歳未満の子のない妻（または遺族基礎年金が終わった妻）の遺族厚生年金に加算",
+ hon:"中高齢寡婦加算は、夫の死亡当時40歳以上65歳未満で、生計を同じくする子がいない妻が受ける遺族厚生年金に加算される。"},
+{q:"障害基礎年金の1級の額は、2級の額の1.5倍である。",a:false,ha:true,ng:"1級は2級の<b>1.25倍</b>です。",
+ exp:`<p>病気やけがで障害が残ったときにもらえるのが障害年金です。</p><p>・<b>障害基礎年金</b>（1階）：<b>1級・2級</b>。<mark>1級は2級の1.25倍</mark>。2級は老齢基礎年金の満額と同じ額。子がいれば子の加算あり<br>・<b>障害厚生年金</b>（2階）：<b>1級・2級・3級</b>まである。さらに軽い障害には一時金の<b>障害手当金</b></p><p>障害年金は、障害の原因となった病気の<b>初診日</b>に、どの年金制度に入っていたかで決まります。</p>`,
+ pt:"障害基礎年金：1級＝2級×1.25（1・2級のみ）／障害厚生年金は3級・障害手当金まである",
+ hon:"障害基礎年金の額は、1級の場合、2級の額の100分の125に相当する額である。"},
+{q:"国民年金の保険料の免除を受けた期間の分は、5年以内でなければ、あとから払う（追納）ことはできない。",a:false,ha:true,ng:"追納は<b>10年以内</b>ならできます。",
+ exp:`<p>お金がなくて国民年金の保険料が払えないときは、<b>免除</b>や<b>猶予</b>を申請できます。</p><p>・<b>全額免除・一部免除</b>：受給資格期間に入り、年金額にも<b>一部反映</b>される（全額免除なら国が負担する半分）<br>・<b>学生納付特例・納付猶予</b>：受給資格期間には入るが、<b>年金額には反映されない</b></p><p>あとから<mark>10年以内なら追納</mark>でき、満額に近づけられます。3年度目以降の追納には<b>加算額</b>がつきます。</p>`,
+ pt:"免除・猶予の追納は10年以内。学生納付特例・納付猶予は年金額に反映されない",
+ hon:"国民年金の保険料免除期間や学生納付特例期間の保険料は、厚生労働大臣の承認を受けて、10年以内であれば追納することができる。"},
+{q:"健康保険の出産手当金は、出産の日以前56日から出産の日の翌日以後42日までの間で、会社を休んで給与がもらえない日について支給される。",a:false,ha:true,ng:"逆です。出産の日以前<b>42日</b>（双子以上は98日）から、出産の日の翌日以後<b>56日</b>までです。",
+ exp:`<p>会社員（健康保険の被保険者）が出産で会社を休むときの給料の代わりが<b>出産手当金</b>です。</p><p>・期間：<mark>出産前42日（双子以上は98日）〜出産後56日</mark><br>・1日あたり：<b>標準報酬日額の約3分の2</b></p><p>また、子どもを産んだときは<b>出産育児一時金</b>として、1人につき<b>50万円</b>（産科医療補償制度の病院の場合）がもらえます。こちらは国民健康保険の人ももらえます。</p>`,
+ pt:"出産手当金：産前42日〜産後56日・日額の2/3／出産育児一時金：1児50万円",
+ hon:"出産手当金は、出産の日以前42日から出産の日後56日までの間において、労務に服さなかった期間について支給される。"},
+{q:"健康保険の被扶養者（家族として扶養に入る人）になるには、原則として、年収が130万円未満（60歳以上や障害者は180万円未満）であることが必要である。",a:true,
+ exp:`<p>会社員の家族は、条件を満たすと<b>被扶養者</b>として、保険料を払わずに健康保険が使えます。</p><p>条件（同居の場合）：<br>・年収が<mark>130万円未満</mark>（<b>60歳以上や障害者は180万円未満</b>）<br>・被保険者（会社員）の年収の<b>半分未満</b></p><p>なお、2025年10月から、<b>19歳以上23歳未満</b>（配偶者を除く）は<b>150万円未満</b>に引き上げられました。</p><p>また、75歳以上の人は後期高齢者医療制度に入るので、被扶養者にはなれません。</p>`,
+ pt:"被扶養者：年収130万円未満（60歳以上・障害者180万円未満、19〜22歳は150万円未満）",
+ hon:"健康保険の被扶養者となるためには、認定対象者の年間収入が原則として130万円未満（60歳以上または障害者の場合は180万円未満）であることが必要である。"},
+{q:"後期高齢者医療制度には、原則として75歳以上の人が加入し、病院の窓口での自己負担は、所得に応じて1割・2割・3割である。",a:true,
+ exp:`<p>75歳になると、それまでの健康保険・国民健康保険から抜けて、<mark>後期高齢者医療制度</mark>に入ります（一定の障害がある人は65歳から）。</p><p>窓口での自己負担は、<mark>原則1割</mark>、一定以上の所得がある人は<b>2割</b>、現役なみの所得がある人は<b>3割</b>です。</p><p>保険料は<b>一人ひとり</b>が払います（年金から天引きが多い）。会社員の家族として扶養に入っていた人も、自分で払うことになります。</p>`,
+ pt:"後期高齢者医療制度：75歳以上・自己負担1割（一定以上2割・現役並み3割）",
+ hon:"後期高齢者医療制度の被保険者が保険医療機関等の窓口で支払う一部負担金の割合は、原則1割であるが、所得に応じて2割または3割となる。"},
+{q:"雇用保険の基本手当の所定給付日数は、自己都合でやめた人の場合でも、雇用保険の加入期間が20年以上あれば最大330日である。",a:false,ha:true,ng:"自己都合などの一般の離職者は、最大<b>150日</b>。330日は、倒産・解雇などの特定受給資格者の最大日数です。",
+ exp:`<p>基本手当をもらえる日数（所定給付日数）は、<b>やめた理由・年齢・加入期間</b>で決まります。</p><p>・<b>自己都合・定年など</b>（一般の離職者）：加入期間に応じて<mark>90日〜150日</mark>（年齢は関係なし）。20年以上で150日<br>・<b>倒産・解雇</b>（特定受給資格者）：年齢と加入期間に応じて<b>90日〜330日</b></p><p>もらえる期間（受給期間）は、原則、<b>やめた日の翌日から1年間</b>。病気や出産などですぐ働けない場合は、延長を申請できます。</p>`,
+ pt:"一般の離職者の所定給付日数：90〜150日（20年以上で150日）／特定受給資格者は最大330日",
+ hon:"自己都合退職者の基本手当の所定給付日数は、算定基礎期間が20年以上の場合、150日である。"},
+{q:"雇用保険の高年齢雇用継続基本給付金は、60歳以上65歳未満の人の賃金が60歳時点の75%未満に下がった場合に支給され、2025年4月以降に60歳になった人の支給率は最大で賃金の10%である。",a:true,
+ exp:`<p>60歳で定年になり、再雇用で給料が下がる人は多いです。その下がった分を少しおぎなうのが<b>高年齢雇用継続基本給付金</b>です。</p><p>・対象：<b>60歳以上65歳未満</b>で、雇用保険に<b>5年以上</b>入っていた人<br>・条件：賃金が60歳時点の<mark>75%未満</mark>に下がった<br>・支給額：<mark>最大で賃金の10%</mark>（2025年4月から。以前は15%）</p>`,
+ pt:"高年齢雇用継続基本給付金：60〜64歳・賃金が75%未満に低下・最大10%（2025年4月〜）",
+ hon:"高年齢雇用継続基本給付金は、60歳到達時の賃金と比較して75%未満に低下した状態で就労している60歳以上65歳未満の被保険者に支給される。"},
+{q:"雇用保険の育児休業給付金は、育児休業を始めた日から、休業前の賃金の50%相当額が支給される。",a:false,ha:true,ng:"休業開始から180日目までは<b>67%</b>、181日目から50%です。",
+ exp:`<p>育児休業中の生活を助けるのが<b>育児休業給付金</b>です（原則、子が1歳になるまで。保育園に入れないなど一定の場合は最長2歳まで）。</p><p>・休業開始から<mark>180日まで：67%</mark><br>・181日目から：<b>50%</b></p><p>さらに2025年4月から、両親がともに14日以上の育休をとると、最大28日間<b>13%</b>上乗せされる<b>出生後休業支援給付金</b>ができ、67%と合わせて<b>80%</b>（手取りでほぼ10割）になります。</p><p>育休中は<b>健康保険・厚生年金の保険料も免除</b>されます。</p>`,
+ pt:"育児休業給付金：180日まで67%、その後50%（出生後休業支援給付金で最大80%）",
+ hon:"育児休業給付金の支給額は、育児休業を開始した日から起算して180日に達するまでの期間は、休業開始時賃金日額×支給日数×67%相当額である。"},
+{q:"iDeCo（個人型確定拠出年金）は、原則として60歳まで引き出せず、60歳から受け取るには、加入していた期間（通算加入者等期間）が10年以上必要である。",a:true,
+ exp:`<p>iDeCoは老後のための制度なので、<b>原則60歳まで引き出せません</b>。</p><p>60歳から受け取るには、<mark>通算加入者等期間が10年以上</mark>必要です。10年に足りない人は、期間に応じて受け取り開始が<b>61〜65歳</b>に遅れます。</p><p>受け取りは<b>60歳〜75歳</b>の間で始めます。受け取り方は：<br>・<b>一時金</b> → <b>退職所得</b>（退職所得控除が使える）<br>・<b>年金</b> → <b>雑所得</b>（公的年金等控除が使える）</p>`,
+ pt:"iDeCo：60歳受給には通算10年以上。一時金＝退職所得／年金＝雑所得",
+ hon:"確定拠出年金の老齢給付金を一時金で受け取った場合は退職所得、年金で受け取った場合は雑所得として課税される。"},
+{q:"自営業者（国民年金の第1号被保険者）のiDeCoの掛金の上限は、会社員（企業年金なし）と同じ月額2万3,000円である。",a:false,ha:true,ng:"第1号被保険者は、国民年金基金などと合わせて月<b>6万8,000円</b>まで。2万3,000円は企業年金のない会社員などの上限です。",
+ exp:`<p>iDeCoの掛金の上限は、働き方によってちがいます（2026年4月時点）。</p><p>・<mark>自営業など（第1号）：月6.8万円</mark>（国民年金基金・付加保険料と合わせて）<br>・<b>会社員（企業年金なし）</b>：月2.3万円<br>・<b>会社員（企業年金あり）・公務員</b>：月2万円（企業型DCなどと合わせて5.5万円以内）<br>・<b>専業主婦など（第3号）</b>：月2.3万円</p><p>なお、制度改正により、今後（2027年1月以降の予定）上限がさらに引き上げられます。</p>`,
+ pt:"iDeCo上限：第1号は月6.8万円（国民年金基金等と合算）／会社員2.3万円または2万円／第3号2.3万円",
+ hon:"国民年金の第1号被保険者が個人型年金に加入する場合の掛金の拠出限度額は、国民年金基金の掛金等と合算して月額6万8,000円である。"},
+{q:"国民年金基金に加入している人は、付加年金にも同時に加入できる。",a:false,
+ exp:`<p><b>国民年金基金</b>は、自営業者など第1号被保険者が、会社員の厚生年金のような2階部分を自分で作る制度です。</p><p>国民年金基金と<b>付加年金</b>は、どちらも1階に上乗せする制度なので、<mark>両方に入ることはできません</mark>（国民年金基金の中に付加年金の分が含まれているイメージ）。</p><p>一方、<b>iDeCoと国民年金基金は両方入れます</b>（掛金は合わせて月6.8万円まで）。</p>`,
+ pt:"国民年金基金と付加年金は併用不可。国民年金基金とiDeCoは併用可（合算6.8万円）",
+ hon:"国民年金基金の加入員は、付加保険料を納付することができない。"},
+{q:"フラット35の融資額の上限は8,000万円で、住宅の建設費や購入価格の全額（100%）まで借りることができる。",a:true,
+ exp:`<p>フラット35で借りられる金額は：<br>・<mark>上限8,000万円</mark><br>・<b>建設費・購入価格の100%</b>まで</p><p>ただし、借りる額が価格の<b>9割をこえると金利が高く</b>なります。</p><p>ほかの特ちょう：<br>・<b>保証人・保証料は不要</b>、<b>繰上げ返済の手数料も無料</b>（インターネットなら10万円以上から）<br>・ほかのローンからの<b>借り換え</b>にも使える<br>・<b>セカンドハウス</b>は対象だが、<b>投資用（人に貸すため）の物件はダメ</b></p>`,
+ pt:"フラット35：上限8,000万円・価格の100%まで（9割超は金利高め）・投資用は不可",
+ hon:"フラット35の融資額は、100万円以上8,000万円以下で、住宅の建設費または購入価額以内とされる。"},
+{q:"会社の安全性を見る「流動比率」は、「流動資産 ÷ 流動負債 × 100」で計算し、一般に数値が高いほど、短期的な支払い能力が高いといえる。",a:true,
+ exp:`<p>2級では、中小企業の社長への相談として、<b>会社の決算書の見方</b>も出題されます。</p><p>・<b>流動資産</b>：1年以内にお金にかわる財産（現金、売掛金など）<br>・<b>流動負債</b>：1年以内に払わなければならない借金など</p><p><mark>流動比率 ＝ 流動資産 ÷ 流動負債 × 100</mark>。高いほど、すぐに払うお金が足りている＝安全です。</p><p>似た指標に、もっとすぐにお金にできるものだけで見る<b>当座比率</b>（当座資産÷流動負債×100）や、<b>自己資本比率</b>（自己資本÷総資本×100）があります。</p>`,
+ pt:"流動比率＝流動資産÷流動負債×100（高いほど短期の支払能力が高い）",
+ hon:"流動比率は、流動負債に対する流動資産の割合を示すものであり、一般に、この比率が高いほど企業の短期的な支払能力が高いと判断される。"},
+{q:"損益分岐点売上高（そんえきぶんきてんうりあげだか）は、「固定費 ÷ 変動費率」で計算する。",a:false,ha:true,ng:"正しくは「固定費÷（<b>1−変動費率</b>）」です。",
+ exp:`<p>損益分岐点売上高は、<b>もうけがちょうどゼロ</b>（赤字でも黒字でもない）になる売上高です。これをこえると黒字になります。</p><p>・<b>固定費</b>：売上に関係なくかかる費用（家賃、人件費など）<br>・<b>変動費</b>：売上に比例してふえる費用（材料費など）<br>・<b>変動費率</b>：変動費 ÷ 売上高</p><p><mark>損益分岐点売上高 ＝ 固定費 ÷（1 − 変動費率）</mark></p><p>例：固定費300万円、変動費率40%なら、300÷0.6＝<b>500万円</b>。</p>`,
+ pt:"損益分岐点売上高＝固定費÷（1−変動費率）",
+ hon:"損益分岐点売上高は、固定費を限界利益率（1−変動費率）で除して求める。"},
+{q:"貸金業法の総量規制により、個人が借りる住宅ローンや自動車ローンも、年収の3分の1までに制限される。",a:false,ha:true,ng:"住宅ローン・自動車ローンは総量規制の<b>対象外</b>です。対象は消費者金融などの貸金業者からの借入れです。",
+ exp:`<p>借金のしすぎをふせぐために、<b>貸金業法</b>には<b>総量規制</b>があります。</p><p>消費者金融などの貸金業者から個人が借りられるのは、原則<mark>年収の3分の1まで</mark>です。</p><p>ただし、<b>銀行のカードローン</b>は貸金業法の対象外。また、<b>住宅ローン・自動車ローン</b>や、<b>クレジットカードのショッピング</b>（買い物の分割払い）も総量規制の対象外です（クレジットカードのキャッシングは対象）。</p>`,
+ pt:"総量規制：貸金業者からの借入れは年収の1/3まで（住宅ローン・ショッピングは対象外）",
+ hon:"貸金業法の総量規制により、個人が貸金業者から借入れを行う場合、原則として、年収の3分の1を超える借入れはできない。"},
+{q:"年利2%で毎年100万円ずつ10年間積み立てた場合の元利合計は、「100万円 × 年金終価係数（2%・10年）」で求める。",a:true,fig:"keisu",
+ exp:`<p>6つの係数の計算問題は、2級でもよく出ます。</p><p>「<b>毎年</b>同じ額を<b>積み立て</b>たら、<b>将来いくら</b>？」→ <mark>年金終価係数</mark></p><p>例：年金終価係数（2%・10年）＝10.950 なら、100万×10.950＝<b>1,095万円</b>。</p><p>係数選びのコツ：<br>① 今ある<b>一括</b>のお金？ それとも<b>毎年</b>のお金？<br>② 知りたいのは<b>将来（終価）</b>？ <b>今（現価）</b>？<br>③ 求めたいのは<b>毎年の額</b>？（減債基金・資本回収）</p>`,
+ pt:"毎年の積立 → 将来の合計 ＝ 年金終価係数",
+ hon:"毎年一定金額を積み立てながら一定の利率で複利運用した場合の一定期間後の元利合計額を求める場合には、年金終価係数を用いる。"},
+{q:"国の教育ローン（日本政策金融公庫の教育一般貸付）は、どんな場合でも、学生本人ではなく保護者しか借りることができない。",a:false,
+ exp:`<p>国の教育ローン（日本政策金融公庫の教育一般貸付）は、<b>保護者が借りる</b>のが基本です。</p><p>ただし、<mark>学生本人が成人していて、独立した生計を営んでいる場合などは、学生本人が借りることもできます</mark>。</p><p>また、世帯の年収（所得）に上限があり、子どもの数が多いほど上限は高くなります。返済期間は最長<b>18年</b>です。</p>`,
+ pt:"国の教育ローン：原則は保護者が借りる（一定の場合は学生本人も）・返済は最長18年",
+ hon:"教育一般貸付の返済期間は、最長18年である。"},
+{q:"労災保険では、通勤とちゅうに寄り道をして、そのまま通勤経路からはずれた後に起きたけがは、原則として通勤災害にならない。",a:true,
+ exp:`<p>労災保険は、<b>業務災害</b>（仕事中のけが）と<b>通勤災害</b>（通勤中のけが）を補償します。</p><p>通勤のとちゅうで寄り道して経路からはずれると、<mark>はずれている間と、その後</mark>は原則として通勤とは認められません。</p><p>ただし、<b>日用品の買い物</b>、<b>病院に行く</b>、<b>選挙の投票</b>など、日常生活に必要な行為を短時間で済ませて<b>元の経路にもどった後</b>は、再び通勤として認められます。</p>`,
+ pt:"通勤経路の逸脱・中断後は原則として通勤外（日用品の購入などで元の経路に戻った後はOK）",
+ hon:"通勤の途中で通勤経路を逸脱した場合、原則として、逸脱の間およびその後の移動は通勤とならないが、日常生活上必要な行為をやむを得ない事由により最小限度の範囲で行う場合は、経路に復した後は通勤となる。"},
+{q:"介護保険の第1号被保険者の保険料は、年額18万円以上の年金をもらっている人は、原則として年金から天引き（特別徴収）される。",a:true,
+ exp:`<p>65歳以上（第1号被保険者）の介護保険料の払い方は2つです。</p><p>・<mark>年金が年18万円以上 → 年金から天引き（特別徴収）</mark><br>・年金が年18万円未満 → 自分で納付書や口座振替で払う（<b>普通徴収</b>）</p><p>40〜64歳（第2号）は、健康保険料と一緒に払います。</p><p>サービスを使うには、<b>市町村</b>から<b>要介護（1〜5）・要支援（1〜2）</b>の認定を受けます。</p>`,
+ pt:"第1号の介護保険料：年金18万円以上なら年金から天引き（特別徴収）",
+ hon:"介護保険の第1号被保険者のうち、公的年金制度から年額18万円以上の老齢年金等を受給している者の保険料は、原則として特別徴収の方法により徴収される。"},
+{q:"老齢基礎年金を65歳より前に繰上げ受給した人は、その後、障害の状態になっても、原則として障害基礎年金を請求できない。",a:true,fig:"kuriage",
+ exp:`<p>繰上げ受給には、減額以外にも<b>デメリット</b>があります。</p><p>・<mark>障害基礎年金を請求できなくなる</mark>（原則）<br>・<b>寡婦年金</b>がもらえなくなる<br>・<b>国民年金の任意加入</b>ができなくなる<br>・一度繰り上げると<b>取り消せない</b></p><p>「早くもらえておトク」とは限らない、というのがポイントです。</p>`,
+ pt:"繰上げのデメリット：減額が一生続く・障害基礎年金や寡婦年金がもらえない・取消し不可",
+ hon:"老齢基礎年金の繰上げ支給を受けている者は、原則として、障害基礎年金を請求することはできない。"}
+].map(o=>Object.assign({g:2,c:"life"},o)));
+/* 2級・risk */
+Q.push(...[
+{q:"生命保険の保険料は、「予定死亡率」「予定利率」「予定事業費率」の3つの予定基礎率をもとに計算される。",a:true,
+ exp:`<p>保険料は、3つの<b>「予想（予定基礎率）」</b>をもとに決められます。</p><p>・<b>予定死亡率</b>：何人くらい亡くなるか<br>・<b>予定利率</b>：集めたお金をどれくらいの利回りで運用できるか<br>・<b>予定事業費率</b>：会社の運営にどれくらいお金がかかるか</p><p>保険料は2つに分かれます。<br>・<b>純保険料</b>（保険金の支払いにあてる）：予定死亡率と予定利率から<br>・<b>付加保険料</b>（会社の経費にあてる）：予定事業費率から</p>`,
+ pt:"保険料＝純保険料（予定死亡率・予定利率）＋付加保険料（予定事業費率）",
+ hon:"生命保険の保険料は、純保険料と付加保険料で構成され、予定死亡率、予定利率、予定事業費率の3つの予定基礎率に基づいて計算される。"},
+{q:"予定利率を高く設定すると、ほかの条件が同じなら、保険料は高くなる。",a:false,
+ exp:`<p>予定利率は、保険会社が「集めたお金をこれだけ増やせるだろう」と見込む利回りです。</p><p>たくさん増やせると見込めば、<b>最初に集めるお金（保険料）は少なくて済みます</b>。</p><p>だから<mark>予定利率が高い → 保険料は安く</mark>、予定利率が低い → 保険料は高くなります。</p><p>ちなみに<b>予定死亡率</b>が高いと、死亡保険の保険料は<b>高く</b>なります。</p>`,
+ pt:"予定利率↑ → 保険料↓／予定利率↓ → 保険料↑",
+ hon:"予定利率を高く設定するほど、保険料は安くなる。"},
+{q:"生命保険の剰余金（予想よりもうかった分）が出る3つの理由は、「死差益（しさえき）」「利差益（りさえき）」「費差益（ひさえき）」である。",a:true,
+ exp:`<p>保険料は予想で決めているので、実際と差が出ます。予想よりうまくいった分が<b>剰余金</b>で、契約者に<b>配当金</b>として返されることがあります。</p><p>・<b>死差益</b>：亡くなった人が予想より<b>少なかった</b><br>・<b>利差益</b>：運用が予想より<b>うまくいった</b><br>・<b>費差益</b>：経費が予想より<b>少なかった</b></p><p>配当金がある保険を「有配当保険」、ない保険を「無配当保険」といいます。無配当保険は、そのぶん保険料が安めです。</p>`,
+ pt:"剰余金の3利源：死差益・利差益・費差益",
+ hon:"生命保険の剰余金は、主に死差益、利差益、費差益の3つから生じる。"},
+{q:"保険会社が保険金の支払いの責任を始める日（責任開始日）は、保険会社が契約を承諾した日である。",a:false,ha:true,ng:"責任開始日は、承諾を前提に「<b>申込み・告知（診査）・第1回保険料の払込み</b>」の3つがそろった日です。",
+ exp:`<p>保険は、契約書にサインしただけでは保障が始まりません。</p><p><mark>①申込み ②告知（または医師の診査） ③第1回保険料の払込み</mark>の<b>3つがすべてそろった日</b>から保障が始まります。これを<b>責任開始日</b>といいます。</p><p>3つの順番は関係なく、<b>最後の1つがそろった日</b>が責任開始日です。</p>`,
+ pt:"責任開始日＝申込み・告知（診査）・第1回保険料払込みの3つがそろった日",
+ hon:"保険会社の承諾を前提として、申込み、告知（診査）、第1回保険料の払込みの3つがすべて完了した時から、保険会社の保障の責任が開始する。"},
+{q:"保険契約者が告知義務に違反した場合、保険会社は、契約から10年たつまでは、いつでも契約を解除できる。",a:false,ha:true,ng:"解除できるのは、違反を知ってから<b>1か月</b>以内、かつ、契約から<b>5年</b>以内です。",
+ exp:`<p>保険に入るときは、病気などを正直に伝える<b>告知義務</b>があります。うそをついたり、隠したりすると、保険会社は契約を<b>解除</b>できます。</p><p>でも、いつまでも解除できるわけではありません。<br>・保険会社が違反を<mark>知った時から1か月</mark>、解除しなかった<br>・<mark>契約から5年</mark>がたった<br>のどちらかなら、もう解除できません。</p><p>また、<b>保険募集人が告知をじゃましたり、うそを言うようすすめたりした</b>場合も、保険会社は解除できません（保険法）。</p>`,
+ pt:"告知義務違反の解除権：知ってから1か月・契約から5年で消える",
+ hon:"保険法では、保険者が告知義務違反による解除の原因があることを知った時から1か月間解除権を行使しないとき、または契約締結時から5年を経過したときは、解除権は消滅する。"},
+{q:"変額保険（終身型）は、死亡保険金だけでなく、解約返戻金にも最低保証がある。",a:false,ha:true,ng:"最低保証があるのは<b>死亡保険金（基本保険金額）</b>だけ。解約返戻金には最低保証は<b>ありません</b>。",
+ exp:`<p>変額保険は、集めた保険料を<b>株や債券で運用（特別勘定）</b>し、その成績で受け取る金額が変わる保険です。</p><p>・<b>死亡保険金</b>：運用がうまくいけば増えるが、<mark>悪くても基本保険金額は最低保証</mark><br>・<b>解約返戻金・満期保険金</b>：<b>最低保証なし</b>（元本割れすることも）</p><p>「死亡保険金は保証あり、解約返戻金は保証なし」と区別しましょう。</p>`,
+ pt:"変額保険：死亡保険金は基本保険金額を最低保証／解約返戻金は保証なし",
+ hon:"変額保険（終身型）の死亡保険金は、運用実績にかかわらず基本保険金額が保証されるが、解約返戻金には最低保証がない。"},
+{q:"低解約返戻金型終身保険は、保険料を払い込んでいる期間中の解約返戻金を少なくしているため、通常の終身保険よりも保険料が安い。",a:true,
+ exp:`<p>低解約返戻金型終身保険は、<b>保険料の払込期間中に解約すると、戻ってくるお金（解約返戻金）が少ない</b>代わりに、<mark>保険料が安い</mark>終身保険です。</p><p>払込期間が終わった後は、解約返戻金がふつうの終身保険と同じくらいにもどります。</p><p>途中でやめない人には、老後資金づくりや相続対策に向いています。</p>`,
+ pt:"低解約返戻金型終身保険：払込期間中の解約返戻金を抑えて保険料を安くしたもの",
+ hon:"低解約返戻金型終身保険は、保険料払込期間中の解約返戻金を低く抑えることで、他の契約条件が同一で低解約返戻金型ではない終身保険と比較して、保険料が割安となっている。"},
+{q:"契約者と被保険者を同じ人にしないで、被保険者の同意を得ずに、その人が亡くなったときの死亡保険の契約をしても有効である。",a:false,
+ exp:`<p>他人の命に勝手に保険をかけられると、悪いことに使われるおそれがありますよね。</p><p>そこで保険法では、契約者と被保険者がちがう死亡保険の契約は、<mark>被保険者の同意がなければ無効</mark>としています。</p><p>保険金受取人を変更するときにも、死亡保険では被保険者の同意が必要です。</p>`,
+ pt:"他人の生命の保険契約は、被保険者の同意がないと無効",
+ hon:"保険法では、契約者と被保険者が異なる死亡保険契約は、被保険者の同意がなければ、その効力を生じない。"},
+{q:"個人年金保険料控除を受けるには、年金受取人が契約者またはその配偶者で、被保険者と同じ人であることや、保険料の払込期間が10年以上であることなどが必要である。",a:true,
+ exp:`<p>個人年金保険の保険料を<b>個人年金保険料控除</b>にするには、「<b>個人年金保険料税制適格特約</b>」をつけ、次の条件を全部満たす必要があります。</p><p>・<mark>年金受取人が契約者かその配偶者</mark><br>・<mark>年金受取人＝被保険者</mark><br>・保険料の払込期間が<mark>10年以上</mark>（一時払いはダメ）<br>・年金の受取開始が<b>60歳以上</b>で、受取期間が<b>10年以上</b>（確定年金の場合）</p><p>条件を満たさないものは、一般の生命保険料控除になります。</p><p>なお、<b>変額個人年金保険</b>は個人年金保険料控除の対象外です。</p>`,
+ pt:"個人年金保険料控除の要件：受取人＝契約者か配偶者、受取人＝被保険者、払込10年以上、60歳以上から10年以上受取",
+ hon:"個人年金保険料税制適格特約を付加するためには、年金受取人が契約者またはその配偶者のいずれかであり、かつ、年金受取人と被保険者が同一人であることなどの要件を満たす必要がある。"},
+{q:"一時払いの養老保険を、契約から10年以内に解約して受け取った解約返戻金の差益は、20.315%の源泉分離課税となる。",a:false,ha:true,ng:"源泉分離課税になるのは<b>5年以内</b>の解約・満期です。5年をこえれば一時所得です。",
+ exp:`<p>保険料を最初に一度に払う（<b>一時払い</b>）養老保険などを、<mark>5年以内</mark>に解約したり満期を迎えたりした場合、そのもうけは<b>預金の利息と同じようなもの</b>（金融類似商品）とみなされます。</p><p>そのため、<mark>20.315%の源泉分離課税</mark>になります（一時所得にはなりません）。</p><p>5年をこえてから解約した場合は、ふつうどおり<b>一時所得</b>です。</p><p>※一時払い<b>終身保険</b>は、5年以内の解約でも一時所得です（金融類似商品にあたらない）。</p>`,
+ pt:"一時払い養老保険等を5年以内に解約・満期 → 差益は20.315%源泉分離（金融類似商品）",
+ hon:"一時払養老保険を契約から5年以内に解約した場合の解約差益は、金融類似商品の収益として20.315%の源泉分離課税の対象となる。"},
+{q:"個人年金保険（確定年金）を年金形式で受け取ると、その年金は「雑所得」になり、受け取った年金額からその年金に対応する払込保険料を差し引いて計算する。",a:true,
+ exp:`<p>個人年金保険の年金は<mark>雑所得</mark>です。</p><p>計算：<b>その年の年金額 － その年金額に対応する払込保険料（必要経費）</b></p><p>公的年金とちがい、<b>公的年金等控除は使えません</b>。</p><p>年金の受け取り方には：<br>・<b>確定年金</b>：決まった期間、生死に関係なく受け取る<br>・<b>終身年金</b>：生きている間ずっと受け取る<br>・<b>有期年金</b>：決まった期間のうち、生きている間だけ受け取る</p>`,
+ pt:"個人年金保険の年金＝雑所得（年金額−対応する保険料）。公的年金等控除はなし",
+ hon:"個人年金保険の年金は、雑所得として課税され、その金額は、その年に受け取った年金額からその年金額に対応する払込保険料を控除して計算する。"},
+{q:"法人が契約者・保険金受取人、役員が被保険者の定期保険で、最高解約返戻率が50%以下のものは、原則として支払った保険料の全額を損金に算入できる。",a:true,fig:"hojinHoken",
+ exp:`<p>会社が保険料を払うとき、それが<b>経費（損金）</b>になるかどうかで会社の税金が変わります。</p><p>2019年のルール変更後、定期保険や第三分野の保険は<mark>最高解約返戻率</mark>（解約したときにどれだけお金が戻るかの最大値）で決まります。</p><p>・<mark>50%以下</mark>：<b>全額損金</b><br>・50%超70%以下：最初の4割の期間は保険料の<b>40%を資産</b>・60%を損金<br>・70%超85%以下：最初の4割の期間は<b>60%を資産</b>・40%を損金<br>・85%超：さらに細かいルール</p>`,
+ pt:"法人の定期保険：最高解約返戻率50%以下は全額損金",
+ hon:"法人が契約者で、最高解約返戻率が50%以下である定期保険の支払保険料は、原則として、その全額を損金の額に算入する。"},
+{q:"法人が契約者・満期保険金受取人、役員や従業員の遺族が死亡保険金受取人の養老保険で、全従業員を被保険者とするものは、支払った保険料の全額を損金に算入できる。",a:false,ha:true,ng:"この福利厚生プラン（ハーフタックスプラン）は、<b>2分の1が損金</b>・2分の1が資産です。",fig:"hojinHoken",
+ exp:`<p>この入り方は、<b>福利厚生プラン</b>や<b>ハーフタックスプラン</b>と呼ばれます。</p><p>条件：<br>・死亡保険金の受取人：<b>被保険者の遺族</b><br>・満期保険金の受取人：<b>会社</b><br>・被保険者：<b>原則として全役員・全従業員</b></p><p>保険料の扱い：<mark>2分の1が資産（保険料積立金）、2分の1が損金（福利厚生費）</mark></p><p>もし死亡保険金も満期保険金も会社が受け取るなら、<b>全額が資産</b>になります。</p>`,
+ pt:"養老保険の福利厚生プラン（死亡＝遺族、満期＝法人、全員加入）→ 1/2損金・1/2資産",
+ hon:"法人が契約者で、被保険者を全従業員、死亡保険金受取人を被保険者の遺族、満期保険金受取人を法人とする養老保険の支払保険料は、その2分の1を資産に計上し、残りの2分の1を損金の額に算入することができる。"},
+{q:"法人が契約者・死亡保険金受取人、役員が被保険者の終身保険の保険料は、全額を損金に算入できる。",a:false,fig:"hojinHoken",
+ exp:`<p>終身保険は、一生涯の保障で、いつか必ず保険金が出ます。また、<b>解約返戻金もたくさんたまる</b>ので、貯金に近い性格があります。</p><p>そのため、会社が受取人の終身保険の保険料は<mark>全額を資産（保険料積立金）として計上</mark>します。損金にはなりません。</p><p>会社が死亡保険金を受け取ったら、それまで資産にしていた額との差額が<b>雑収入（益金）</b>または<b>雑損失</b>になります。</p>`,
+ pt:"法人受取の終身保険・養老保険の保険料＝全額資産計上",
+ hon:"法人が契約者および死亡保険金受取人である終身保険の支払保険料は、その全額を資産に計上する。"},
+{q:"火災保険で、保険金額を「再調達価額（新価）」で決めると、同じ建物を新しく建て直すのに必要な金額を基準に補償される。",a:true,
+ exp:`<p>家の保険金額の決め方には2つあります。</p><p>・<mark>再調達価額（新価）</mark>：今、同じものを<b>新しく建て直す</b>のに必要な金額<br>・<b>時価</b>：新価から、古くなった分（減価償却）を<b>引いた</b>金額</p><p>時価で入ると、全焼しても建て直すお金が足りないことがあります。<b>新価で入る</b>のがおすすめです。</p><p>また、保険金額が家の価値より少ない状態を<b>一部保険</b>といい、損害額の一部しか払われないことがあります（比例てん補）。</p>`,
+ pt:"再調達価額（新価）＝建て直す金額／時価＝新価−消耗分",
+ hon:"再調達価額とは、保険の対象と同等のものを新たに建築または購入するのに必要な金額をいう。"},
+{q:"地震保険で支払われる保険金は、損害の程度によって4つの区分があり、「大半損」なら保険金額の50%が支払われる。",a:false,ha:true,ng:"大半損は<b>60%</b>です（全損100%・大半損60%・小半損30%・一部損5%）。",
+ exp:`<p>地震保険は、実際の修理代ではなく、<b>損害の程度に応じて決まった割合</b>で保険金が払われます。</p><p>・<mark>全損：100%</mark><br>・<b>大半損：60%</b><br>・<b>小半損：30%</b><br>・<b>一部損：5%</b></p><p>（いずれも時価が上限）</p><p>また、地震に強い家には<b>保険料の割引</b>があります（免震建築物・耐震等級3は50%など）。割引は<b>どれか1つだけ</b>で、重ねて使えません。</p>`,
+ pt:"地震保険の支払：全損100%・大半損60%・小半損30%・一部損5%。割引は重複不可",
+ hon:"地震保険では、損害の程度に応じて全損、大半損、小半損、一部損の区分があり、全損の場合には保険金額の100%（時価額が限度）が支払われる。"},
+{q:"損害保険会社が倒産した場合、自賠責保険と地震保険は、損害保険契約者保護機構により補償額の100%が守られる。",a:true,
+ exp:`<p>損害保険会社がつぶれたときの補償は、保険の種類によってちがいます。</p><p>・<mark>自賠責保険・地震保険：100%</mark><br>・<b>自動車保険・火災保険など</b>：破綻後<b>3か月以内</b>の事故は100%、その後は<b>80%</b><br>・<b>年金払積立傷害保険など</b>：90%</p>`,
+ pt:"損保の破綻：自賠責・地震100%／自動車・火災は3か月まで100%、以後80%",
+ hon:"損害保険会社が破綻した場合、自賠責保険および地震保険については、補償割合は100%とされている。"},
+{q:"自動車保険の等級制度（ノンフリート等級）では、対人賠償保険を使うと、翌年度の等級が1等級だけ下がる。",a:false,ha:true,ng:"対人・対物・車両保険などで事故を使うと、原則<b>3等級</b>下がります。1等級ダウンは、盗難・台風などで車両保険だけを使った場合です。",
+ exp:`<p>自動車保険には、<b>1〜20等級</b>の等級制度があります。数字が大きいほど保険料が安くなります（はじめて入ると多くは6等級）。</p><p>・1年間事故なし → 翌年<b>1等級アップ</b><br>・対人・対物・車両保険などで事故を使う → 原則<mark>3等級ダウン</mark>（「事故あり」の期間は保険料も割高）<br>・盗難・台風・いたずらなどで車両保険だけ使う → <b>1等級ダウン</b><br>・人身傷害保険だけ使う → <b>ノーカウント</b>（等級は下がらない）</p>`,
+ pt:"事故で保険を使う → 原則3等級ダウン（盗難・災害などは1等級、人身傷害のみはノーカウント）",
+ hon:"自動車保険のノンフリート等級別料率制度において、対人賠償保険の保険金が支払われた場合、翌年度の等級は3等級下がる。"},
+{q:"飲食店で、客に出した料理が原因で食中毒が起き、店が損害賠償責任を負った場合にそなえる保険は「生産物賠償責任保険（PL保険）」である。",a:true,
+ exp:`<p>会社やお店向けの賠償責任保険は、<b>何が原因の事故か</b>で使い分けます。</p><p>・<mark>生産物賠償責任保険（PL保険）</mark>：作った物・売った物・<b>出した料理</b>が原因の事故（食中毒など）<br>・<b>施設所有（管理）者賠償責任保険</b>：お店の<b>建物や設備</b>が原因の事故（床がぬれていて客が転んだなど）<br>・<b>受託者賠償責任保険</b>：お客さんから<b>預かった物</b>をこわした（クリーニング店、ホテルのクローク）<br>・<b>請負業者賠償責任保険</b>：工事などの<b>作業中</b>の事故</p>`,
+ pt:"出した料理・製品が原因 → PL保険／建物・設備 → 施設所有者賠償／預かり物 → 受託者賠償",
+ hon:"飲食店が提供した料理が原因で顧客が食中毒になり、法律上の損害賠償責任を負う場合に備える保険として、生産物賠償責任保険（PL保険）がある。"},
+{q:"所得補償保険は、病気やけがで働けなくなったときの収入の減少を補う保険で、受け取った保険金は雑所得として課税される。",a:false,ha:true,ng:"所得補償保険の保険金は<b>非課税</b>です。",
+ exp:`<p>所得補償保険は、<b>病気やけがで働けない間、毎月の給料の代わり</b>に保険金が出る保険です（損害保険会社の商品）。</p><p>入院していなくても、医師の指示で<b>自宅で療養</b>していて働けない場合も対象になります。</p><p>受け取った保険金は、体のケガ・病気に関する保険金なので<mark>非課税</mark>です。</p><p>似た保険に、生命保険会社の<b>就業不能保険</b>があります。</p>`,
+ pt:"所得補償保険：働けない間の収入を補う。保険金は非課税",
+ hon:"所得補償保険の保険金は、非課税である。"},
+{q:"少額短期保険業者（ミニ保険）と結んだ保険契約は、生命保険契約者保護機構や損害保険契約者保護機構の補償の対象になる。",a:false,
+ exp:`<p>少額短期保険は、<b>少ない保険金・短い期間</b>の保険を専門にあつかう業者の保険です（ペット保険など）。</p><p>・保険期間：生命保険・医療保険は<b>1年</b>、損害保険は<b>2年</b>まで<br>・保険金額：1人あたり合計<b>1,000万円</b>まで（死亡保険は300万円まで）</p><p>注意点：<mark>保険契約者保護機構の対象外</mark>です。また、支払った保険料は<b>生命保険料控除・地震保険料控除の対象外</b>です。</p>`,
+ pt:"少額短期保険：保護機構の対象外・保険料控除の対象外",
+ hon:"少額短期保険業者が引き受けた保険契約は、保険契約者保護機構による補償の対象とならない。"},
+{q:"契約者が夫、被保険者が妻、死亡保険金受取人が子である生命保険で、妻が亡くなって子が受け取った死亡保険金は、贈与税の対象となる。",a:true,fig:"hokenTax",
+ exp:`<p>3人ともちがう人の組み合わせは<mark>贈与税</mark>です。</p><p>お金（保険料）を出していたのは<b>夫</b>。受け取ったのは<b>子</b>。つまり、<b>夫から子へ財産が移った＝贈与</b>と考えます。</p><p>まとめると：<br>・契約者＝被保険者 → <b>相続税</b><br>・契約者＝受取人 → <b>所得税（一時所得）</b><br>・契約者・被保険者・受取人がすべて別 → <b>贈与税</b></p>`,
+ pt:"契約者・被保険者・受取人がすべて別人 → 贈与税",
+ hon:"保険契約者（保険料負担者）が夫、被保険者が妻、死亡保険金受取人が子である生命保険契約において、子が受け取る死亡保険金は贈与税の課税対象となる。"},
+{q:"契約者（保険料負担者）と満期保険金受取人がどちらも本人の養老保険で、本人が受け取った満期保険金は、一時所得として所得税・住民税の対象になる。",a:true,fig:"hokenTax",
+ exp:`<p>自分で保険料を払って、自分で満期保険金を受け取った場合は、<b>自分のもうけ</b>です。</p><p>だから<mark>一時所得</mark>として所得税・住民税がかかります。</p><p>計算：（満期保険金 － 払った保険料 － 50万円）× 1/2 を、ほかの所得と合計します。</p><p>※一時払いで5年以内の場合は、20.315%の源泉分離課税になります（金融類似商品）。</p>`,
+ pt:"契約者＝満期保険金受取人 → 一時所得",
+ hon:"契約者（＝保険料負担者）と満期保険金受取人が同一人である養老保険の満期保険金は、一時所得として所得税・住民税の課税対象となる。"},
+{q:"団体信用生命保険（団信）の保険料は、生命保険料控除の対象になる。",a:false,ha:true,ng:"団信の保険料は、生命保険料控除の<b>対象外</b>です。",
+ exp:`<p>団信は、住宅ローンを借りた人が<b>亡くなったり高度障害になったり</b>したとき、<mark>保険会社がローンの残りを返してくれる</mark>保険です。</p><p>そのため、残された家族はローンを払わずに家に住み続けられます。</p><p>保険料は、民間の銀行の住宅ローンでは<b>金利に含まれている</b>ことが多いです。また、団信の保険料は<b>生命保険料控除の対象外</b>です。</p><p>がんなどになったときにローンが返済される特約がついたタイプもあります。</p>`,
+ pt:"団信：借りた人の死亡・高度障害で住宅ローン残高が返済される（保険料は生命保険料控除の対象外）",
+ hon:"団体信用生命保険の保険料は、生命保険料控除の対象とならない。"},
+{q:"「定期保険特約付終身保険（更新型）」は、特約の期間が終わって更新するとき、その時点の年齢で保険料が計算し直されるため、一般に保険料は高くなる。",a:true,
+ exp:`<p>定期保険特約付終身保険は、一生涯の<b>終身保険</b>（主契約）に、一定期間だけ大きな保障を上乗せする<b>定期保険特約</b>をつけたものです。</p><p>特約が<b>更新型</b>の場合、更新のときに<mark>その時の年齢で保険料を計算し直す</mark>ので、同じ保障でも<b>保険料が上がります</b>。</p><p>更新は、<b>健康状態にかかわらず（告知や診査なしで）</b>できるのが一般的です。</p>`,
+ pt:"更新型の定期保険特約：更新時の年齢で保険料再計算 → 一般に保険料は上がる（告知不要）",
+ hon:"更新型の定期保険特約を同一の保障内容で更新した場合、更新後の保険料は、一般に更新前より高くなる。"}
+].map(o=>Object.assign({g:2,c:"risk"},o)));
+/* 2級・kin */
+Q.push(...[
+{q:"GDP（国内総生産）を支出面から見ると、もっとも大きな割合をしめるのは「政府最終消費支出」である。",a:false,ha:true,ng:"もっとも大きいのは「<b>民間最終消費支出</b>」（約5割強）です。",
+ exp:`<p>GDPは、「何にお金が使われたか（支出面）」で見ることもできます。</p><p>内訳は、家計の消費、企業の設備投資、政府の支出、輸出−輸入など。</p><p>その中で<mark>いちばん大きいのが民間最終消費支出（私たちの買い物など）で、約5割強</mark>をしめます。</p><p>つまり、日本の景気は<b>私たちの消費</b>に大きく左右される、ということです。</p>`,
+ pt:"支出面のGDPで最大は民間最終消費支出（約5割強）",
+ hon:"国内総生産（GDP）を支出面から見た場合、民間最終消費支出の割合が最も大きい。"},
+{q:"マネーストック統計は、金融機関や中央政府が持っているお金もふくめた、世の中のお金の総量を表す。",a:false,ha:true,ng:"マネーストックには、<b>金融機関と中央政府が持つお金は含まれません</b>。",
+ exp:`<p>マネーストックは、<b>世の中に出回っているお金の量</b>です。</p><p>・発表：<mark>日本銀行</mark><br>・対象：個人、一般の会社、地方公共団体などが持っているお金<br>・含まれない：<mark>金融機関</mark>や<mark>中央政府（国）</mark>が持っているお金</p><p>似た言葉の<b>マネタリーベース</b>は、日本銀行が<b>直接</b>世の中に出しているお金（お札・硬貨＋日銀当座預金）です。</p>`,
+ pt:"マネーストック＝日銀が発表・金融機関と中央政府を除く通貨保有主体のお金の量",
+ hon:"マネーストック統計は、一般法人、個人、地方公共団体などの通貨保有主体が保有する通貨量の残高を集計したものであり、金融機関や中央政府が保有する預金などは対象外である。"},
+{q:"景気動向指数で、「完全失業率」は先行系列（景気より先に動く指標）にふくまれる。",a:false,ha:true,ng:"完全失業率は<b>遅行系列</b>です。",
+ exp:`<p>景気動向指数の材料（系列）はたくさんありますが、代表的なものを覚えましょう。</p><p>・<b>先行系列</b>（景気より先に動く）：新規求人数、東証株価指数、新設住宅着工床面積、消費者態度指数 など<br>・<mark>一致系列</mark>（景気と同時）：<b>有効求人倍率</b>、鉱工業生産指数、商業販売額 など<br>・<mark>遅行系列</mark>（あとから動く）：<b>完全失業率</b>、家計消費支出、法人税収入、消費者物価指数（生鮮食品を除く総合） など</p><p>「求人」は先行・一致、「失業」は遅行と覚えると区別しやすいです。</p>`,
+ pt:"新規求人数＝先行／有効求人倍率＝一致／完全失業率＝遅行",
+ hon:"景気動向指数において、有効求人倍率（除学卒）は一致系列、完全失業率は遅行系列に採用されている。"},
+{q:"ほかの条件が同じなら、日本の金利が上がりアメリカとの金利差が小さくなると、一般に円高ドル安の要因になる。",a:true,
+ exp:`<p>お金は、<b>金利が高い国</b>に集まりやすいです（預けたときの利息が多いから）。</p><p>日本の金利が上がると、円で持っていたほうが得になるので<b>円を買う人が増える</b> → <mark>円高</mark>になりやすい。</p><p>反対に、アメリカの金利が上がると<b>ドルが買われて円安</b>になりやすいです。</p><p>そのほか、日本の<b>貿易黒字</b>が増える（輸出で得たドルを円に替える）のも円高の要因です。</p>`,
+ pt:"日本の金利上昇（内外金利差の縮小）→ 円高要因",
+ hon:"他の条件を一定とすれば、日本の金利が上昇して米国との金利差が縮小することは、一般に円高ドル安の要因となる。"},
+{q:"ほかの条件が同じなら、満期までの期間が短い債券ほど、金利が変わったときの価格の変動が大きい。",a:false,ha:true,ng:"価格の変動が大きいのは、満期までの期間が<b>長い</b>債券です。",
+ exp:`<p>金利が上がると債券価格は下がりますが、その<b>下がり方</b>は債券によってちがいます。</p><p>・<mark>残存期間（満期までの期間）が長い</mark>ほど、価格の変動が<b>大きい</b><br>・<mark>表面利率（クーポン）が低い</mark>ほど、価格の変動が<b>大きい</b></p><p>長い期間、低い利率に縛られるほど、金利変化の影響を強く受ける、とイメージしましょう。</p>`,
+ pt:"残存期間が長い・表面利率が低い債券ほど、金利変動による価格変動が大きい",
+ hon:"他の条件が同一であれば、残存期間の長い債券ほど、金利変動に対する価格の変動幅は大きくなる。"},
+{q:"表面利率1.0%の債券を額面100円あたり101円で買い、2年後に102円で売った場合の所有期間利回りは、約1.49%である。",a:true,
+ exp:`<p>途中で売ったときの利回りが<b>所有期間利回り</b>です。計算方法は最終利回りと同じで、「額面」の代わりに「売った値段」を使います。</p><p>① 1年の利息：<b>1.0円</b><br>② 1年あたりの売却益：(102−101)÷2年＝<b>0.5円</b><br>③ 合計：1.0＋0.5＝<b>1.5円</b><br>④ 買値で割る：1.5÷101×100＝<mark>約1.485% → 約1.49%</mark></p><p>式：<b>｛利率＋(売値−買値)÷所有年数｝÷買値×100</b></p>`,
+ pt:"所有期間利回り＝｛利率＋(売値−買値)÷年数｝÷買値×100",
+ hon:"表面利率1.0%、購入価格101円の固定利付債券を2年後に102円で売却した場合の所有期間利回り（単利・年率）は、約1.49%である。"},
+{q:"個人向け国債は、「変動10年」「固定5年」「固定3年」の3種類があり、どれも発行から2年たたないと中途換金できない。",a:false,ha:true,ng:"発行から<b>1年</b>たてば中途換金できます。",
+ exp:`<p>個人向け国債は、<b>個人だけが買える国債</b>です。</p><p>・種類：<mark>変動10年・固定5年・固定3年</mark><br>・買える単位：<b>1万円</b>から<br>・金利の下限：<b>年0.05%</b>（どれだけ金利が下がってもこれ以上）<br>・変動10年は、<b>半年ごと</b>に金利が見直される</p><p><mark>発行から1年たてば中途換金</mark>でき、国が額面で買い取ってくれます。ただし、直前2回分の利子（税引前）相当額が差し引かれます。</p>`,
+ pt:"個人向け国債：変動10年・固定5年・固定3年／1万円単位・下限0.05%／1年経過で中途換金可",
+ hon:"個人向け国債は、発行後1年経過すれば、原則としていつでも中途換金することができ、その際は直前2回分の各利子（税引前）相当額×0.79685が差し引かれる。"},
+{q:"信用取引では、投資家は証券会社に委託保証金を差し入れる必要があり、その額は約定代金の20%以上、かつ20万円以上である。",a:false,ha:true,ng:"委託保証金は、約定代金の<b>30%以上かつ30万円以上</b>です。",
+ exp:`<p>信用取引は、証券会社から<b>お金や株を借りて</b>売買する取引です。手持ちのお金の約3.3倍まで取引できます。</p><p>・<mark>委託保証金：約定代金の30%以上・最低30万円</mark><br>・<b>制度信用取引</b>：返済期限は<b>最長6か月</b>。銘柄は取引所が選んだもの<br>・<b>一般信用取引</b>：返済期限や銘柄を証券会社と投資家で決める</p><p>株価が下がると<b>追加の保証金（追証：おいしょう）</b>が必要になることがあります。</p>`,
+ pt:"信用取引：委託保証金は30%以上かつ30万円以上。制度信用の返済期限は最長6か月",
+ hon:"信用取引の委託保証金は、約定代金に対して30%以上で、かつ、30万円以上でなければならない。"},
+{q:"追加型株式投資信託の分配金のうち、「元本払戻金（特別分配金）」には、普通分配金と同じく20.315%の税金がかかる。",a:false,ha:true,ng:"元本払戻金は、自分のお金が戻ってきただけなので<b>非課税</b>です。",
+ exp:`<p>投資信託の分配金には2種類あります。</p><p>・<b>普通分配金</b>：投資信託が<b>もうけた部分</b>から出る → 配当所得として<b>課税</b>（20.315%）<br>・<mark>元本払戻金（特別分配金）</mark>：自分が出したお金（<b>元本の一部が戻ってきただけ</b>）→ <mark>非課税</mark></p><p>どちらになるかは、分配金を受け取る直前の基準価額が、<b>自分が買ったときの値段（個別元本）</b>より高いか低いかで決まります。</p><p>元本払戻金を受け取ると、そのぶん<b>個別元本が下がり</b>ます。</p>`,
+ pt:"普通分配金＝課税／元本払戻金（特別分配金）＝非課税（個別元本が下がる）",
+ hon:"追加型株式投資信託の収益分配金のうち、元本払戻金（特別分配金）は非課税である。"},
+{q:"MRF（マネー・リザーブ・ファンド）は、証券会社の口座で株の売買代金などを置いておく、安全性の高い公社債投資信託で、いつでも手数料なしで引き出せる。",a:true,
+ exp:`<p>MRFは、証券口座の<b>お財布</b>のような投資信託です。</p><p>・国債などの安全な債券で運用する<b>公社債投資信託</b><br>・<b>毎日</b>決算し、分配金は<b>月末にまとめて再投資</b><br>・<mark>いつでも換金でき、手数料なし</mark></p><p>元本は保証されていませんが、とても安全性の高い運用をしています。</p>`,
+ pt:"MRF＝証券口座の待機資金用の公社債投資信託。いつでも手数料なしで換金",
+ hon:"MRFは、証券総合口座用の追加型公社債投資信託であり、いつでも手数料なしで換金することができる。"},
+{q:"J-REIT（上場不動産投資信託）の分配金は、配当控除の対象になる。",a:false,
+ exp:`<p>REITは、投資家から集めたお金で<b>オフィスビルやマンションなどを買い、家賃収入や売却益を分配</b>する投資信託です。</p><p>REITの分配金は<b>配当所得</b>ですが、<mark>配当控除の対象外</mark>です。</p><p>理由：REITは、もうけの大部分を分配すると<b>法人税がかからない</b>しくみになっているため。配当控除は「会社で法人税、個人で所得税」という二重の課税を調整するための制度なので、REITには使えません。</p>`,
+ pt:"J-REITの分配金は配当控除の対象外",
+ hon:"上場不動産投資信託（J-REIT）の分配金は配当所得となるが、配当控除の適用を受けることはできない。"},
+{q:"外貨預金の為替差益（円にもどしたときのもうけ）は、雑所得として総合課税の対象になる。",a:true,
+ exp:`<p>外貨預金は、<b>利息</b>と<b>為替差益</b>で税金の扱いがちがいます。</p><p>・<b>利息</b>：利子所得・20.315%の<b>源泉分離課税</b><br>・<mark>為替差益：雑所得・総合課税</mark>（会社員なら、給与以外の所得が20万円以下なら申告不要）</p><p>ただし、<b>満期のときの元本と利息の円換算額があらかじめ決まっている</b>（為替予約つき）場合は、為替差益も20.315%の源泉分離課税になります。</p><p>一方、<b>外貨建てMMF</b>の為替差益は、上場株式などと同じ<b>20.315%の申告分離課税</b>です。</p>`,
+ pt:"外貨預金：利息＝源泉分離／為替差益＝雑所得（総合課税）。外貨建てMMFの為替差益＝申告分離",
+ hon:"為替予約を付していない外貨預金の為替差益は、雑所得として総合課税の対象となる。"},
+{q:"オプション取引で、コール・オプション（買う権利）の買い手の損失は、無限に大きくなる可能性がある。",a:false,ha:true,ng:"権利の<b>買い手</b>の損失は、払った<b>プレミアムまで</b>。損失が無限定になりうるのは<b>売り手</b>です。",
+ exp:`<p>オプションは、<b>「決められた値段で買う（売る）ことができる権利」</b>の売り買いです。</p><p>・<mark>コール・オプション</mark>：<b>買う</b>権利<br>・<b>プット・オプション</b>：<b>売る</b>権利</p><p>権利の<b>買い手</b>は、損になりそうなら権利を使わなければいいので、<mark>損失はプレミアム（権利の代金）だけ</mark>。利益は大きくなる可能性があります。</p><p>反対に権利の<b>売り手</b>は、もらえる利益はプレミアムだけで、<b>損失は無限に大きくなる</b>可能性があります。</p>`,
+ pt:"コール＝買う権利／プット＝売る権利。買い手の損失はプレミアムに限定、売り手は損失無限定",
+ hon:"オプション取引において、コール・オプションの買い手の損失は、支払ったプレミアムに限定される。"},
+{q:"期待収益率が4%の資産Aに60%、8%の資産Bに40%投資したポートフォリオの期待収益率は、5.6%である。",a:true,
+ exp:`<p>ポートフォリオ（いくつかの資産の組み合わせ）の期待収益率は、<b>それぞれの期待収益率を、投資する割合で平均</b>（加重平均）して求めます。</p><p>計算：4%×0.6＋8%×0.4＝2.4%＋3.2%＝<mark>5.6%</mark></p><p>注意：<b>リスク（標準偏差）</b>は、このように単純な加重平均では求められません。相関係数が＋1より小さければ、加重平均より<b>小さく</b>なります。これが分散投資の効果です。</p>`,
+ pt:"ポートフォリオの期待収益率＝各資産の期待収益率×組入比率の合計",
+ hon:"ポートフォリオの期待収益率は、組み入れた各資産の期待収益率をその組入比率で加重平均して求める。"},
+{q:"シャープレシオは、「（ポートフォリオの収益率 − 無リスク資産の利子率）÷ 標準偏差（リスク）」で計算し、数値が大きいほど効率よく運用できたといえる。",a:true,
+ exp:`<p>運用の<b>上手さ</b>をくらべる指標がシャープレシオです。</p><p><mark>（収益率 − 無リスク利子率）÷ 標準偏差</mark></p><p>「預金などの安全な運用より、どれだけ多くもうけたか（超過収益）」を、「とったリスクの大きさ」で割ります。<b>同じリスクでたくさんもうけたほど、数値が大きく</b>なります。</p><p>例：収益率8%、無リスク利子率1%、標準偏差10%なら、(8−1)÷10＝<b>0.7</b>。</p>`,
+ pt:"シャープレシオ＝（収益率−無リスク利子率）÷標準偏差。大きいほど効率がよい",
+ hon:"シャープレシオは、ポートフォリオの収益率から無リスク資産の利子率を差し引いた超過収益率を標準偏差で除して求め、その値が大きいほど効率的な運用であったと評価される。"},
+{q:"証券会社が倒産して預けた財産が返せない場合の日本投資者保護基金の補償は、銀行で買った投資信託も対象になる。",a:false,ha:true,ng:"銀行は日本投資者保護基金に加入していないので、銀行で買った投資信託は<b>対象外</b>です。",
+ exp:`<p>証券会社は、お客さんの財産を、会社自身の財産とは<b>分けて管理（分別管理）</b>することが法律で決められています。だから、ふつうは証券会社がつぶれてもお客さんの株などは戻ってきます。</p><p>でも、もし分別管理がちゃんとされていなくて戻ってこない場合は、<mark>日本投資者保護基金が1人1,000万円まで</mark>補償します。</p><p>なお、<b>銀行で買った投資信託</b>は、日本投資者保護基金の対象外です（銀行は加入していないため）。ただし、投資信託の財産は信託銀行で分けて管理されています。</p>`,
+ pt:"証券会社の破綻：分別管理＋日本投資者保護基金が1人1,000万円まで補償（銀行は対象外）",
+ hon:"日本投資者保護基金は、証券会社が分別管理義務に違反し、顧客資産を返還できない場合に、一般顧客1人当たり1,000万円を上限として補償する。"},
+{q:"消費者契約法では、事業者の不適切な勧誘で契約した消費者は、その契約を取り消すことができ、取消権は、追認できる時から1年間行使しないと時効で消える。",a:true,
+ exp:`<p>消費者契約法は、事業者と消費者の<b>情報や交渉力の差</b>から消費者を守る法律です。</p><p>うそを言われた（<b>不実告知</b>）、確実にもうかると言われた（<b>断定的判断の提供</b>）、帰ってくれなかった（<b>不退去</b>）など、不適切な勧誘で結んだ契約は<mark>取り消せます</mark>。</p><p>取り消せる期間は、<mark>追認できる時（だまされたと気づいた時など）から1年</mark>、または契約から<b>5年</b>です。</p><p>金融サービス提供法（損害賠償）と両方の要件を満たせば、<b>両方を使えます</b>。</p>`,
+ pt:"消費者契約法：不適切な勧誘による契約は取消可（追認可能時から1年・契約から5年）",
+ hon:"消費者契約法に基づく取消権は、追認をすることができる時から1年間行使しないとき、または消費者契約の締結の時から5年を経過したときは、時効によって消滅する。"},
+{q:"上場株式を売って出た損は、確定申告をすれば、銀行の預金の利息とも損益通算できる。",a:false,ha:true,ng:"預金の利息（源泉分離課税）とは<b>通算できません</b>。通算できるのは、上場株式等の配当（申告分離）や特定公社債等の利子・譲渡益です。",
+ exp:`<p>株などの<b>上場株式等</b>のグループと、国債や社債などの<b>特定公社債等</b>のグループは、2016年から<b>同じグループ</b>として扱われています。</p><p>そのため、上場株式の売却損は、<br>・上場株式・特定公社債などの<b>売却益</b><br>・上場株式の<b>配当</b>（申告分離課税を選んだもの）<br>・特定公社債の<b>利子</b><br>と<mark>損益通算できます</mark>。</p><p>一方、<b>預金の利息</b>や<b>非上場株式</b>の売却益などとは通算できません。</p>`,
+ pt:"上場株式等の譲渡損は、上場株式等の配当（申告分離）・特定公社債等の利子・譲渡益と通算可",
+ hon:"上場株式等の譲渡損失は、確定申告により、申告分離課税を選択した上場株式等の配当所得等の金額や特定公社債の利子と損益通算することができる。"},
+{q:"NISA口座で持っている上場株式の配当金を非課税で受け取るには、配当金の受け取り方を「株式数比例配分方式」にしておく必要がある。",a:true,fig:"nisa",
+ exp:`<p>上場株式の配当金の受け取り方には、いくつか方法があります。</p><p>・<mark>株式数比例配分方式</mark>：配当金を<b>証券会社の口座</b>で受け取る<br>・<b>配当金領収証方式</b>：郵便局などで受け取る<br>・<b>登録配当金受領口座方式</b>・<b>個別銘柄指定方式</b>：銀行口座で受け取る</p><p>NISAで配当金を<b>非課税</b>にするには、<mark>株式数比例配分方式</mark>を選ぶ必要があります。ほかの方法だと、20.315%が差し引かれてしまいます。</p>`,
+ pt:"NISAで配当を非課税にするには「株式数比例配分方式」",
+ hon:"NISA口座で保有する上場株式の配当金を非課税とするためには、配当金の受取方法として株式数比例配分方式を選択しなければならない。"},
+{q:"NISAの成長投資枠では、毎月分配型の投資信託や、信託期間が20年未満の投資信託は買うことができない。",a:true,fig:"nisa",
+ exp:`<p>成長投資枠は、株や投資信託など幅広く買えますが、<b>長期の資産づくり</b>に向かないものは対象外です。</p><p>買えないもの：<br>・<mark>毎月分配型</mark>の投資信託<br>・<mark>信託期間が20年未満</mark>の投資信託<br>・<b>高いレバレッジ</b>をかける投資信託（ヘッジ目的以外のデリバティブ取引を行うもの）<br>・<b>整理銘柄・監理銘柄</b>の株</p><p>つみたて投資枠は、さらにしぼられ、<b>国が決めた条件を満たす長期・積立・分散向けの投資信託やETF</b>だけです。</p>`,
+ pt:"成長投資枠の対象外：毎月分配型・信託期間20年未満・高レバレッジ型・整理/監理銘柄",
+ hon:"NISAの成長投資枠では、毎月分配型の投資信託や、信託期間が20年未満の投資信託は投資対象とならない。"},
+{q:"東京証券取引所の市場区分は、「プライム市場」「スタンダード市場」「グロース市場」の3つである。",a:true,
+ exp:`<p>東京証券取引所は、2022年4月から市場を3つに分けています。</p><p>・<mark>プライム市場</mark>：世界の投資家から注目される、<b>大きくて体力のある会社</b><br>・<mark>スタンダード市場</mark>：<b>しっかりした中くらいの会社</b><br>・<mark>グロース市場</mark>：<b>これから大きく成長しそうな会社</b>（ベンチャーなど）</p><p>日経平均株価は、このうち<b>プライム市場</b>から選ばれた225銘柄で計算されます。</p>`,
+ pt:"東証の市場区分：プライム・スタンダード・グロース",
+ hon:"東京証券取引所の市場区分は、プライム市場、スタンダード市場、グロース市場の3つである。"},
+{q:"株価が1,500円、1株あたり純利益が100円、1株あたり純資産が1,000円の会社のPER（株価収益率）は1.5倍、PBR（株価純資産倍率）は15倍である。",a:false,ha:true,ng:"逆です。PER＝1,500÷100＝<b>15倍</b>、PBR＝1,500÷1,000＝<b>1.5倍</b>です。",fig:"kabu",
+ exp:`<p>計算してみましょう。</p><p>・<b>PER</b> ＝ 株価 ÷ 1株あたり純利益 ＝ 1,500 ÷ 100 ＝ <mark>15倍</mark><br>・<b>PBR</b> ＝ 株価 ÷ 1株あたり純資産 ＝ 1,500 ÷ 1,000 ＝ <mark>1.5倍</mark></p><p>ちなみに<b>ROE</b> ＝ 純利益 ÷ 純資産 ＝ 100 ÷ 1,000 ＝ <b>10%</b>。<br>「PBR ＝ PER × ROE」（15×0.1＝1.5）という関係も成り立ちます。</p>`,
+ pt:"PER＝株価÷EPS、PBR＝株価÷BPS、PBR＝PER×ROE",
+ hon:"株価1,500円、1株当たり純利益100円、1株当たり純資産1,000円の企業のPERは15倍、PBRは1.5倍である。"},
+{q:"金融商品取引法の「契約締結前交付書面」は、お客さんがプロ（特定投資家）であっても、必ず渡さなければならない。",a:false,
+ exp:`<p>金融商品取引業者は、契約の前に、商品のリスクや手数料などを書いた<b>契約締結前交付書面</b>を渡す義務があります。</p><p>でも、お客さんが<b>特定投資家</b>（金融機関などのプロの投資家）の場合は、<mark>渡さなくてもよい</mark>など、ルールの一部が適用されません。</p><p>プロは自分で判断できるので、守る必要が小さいからです。</p><p>なお、<b>適合性の原則</b>も、特定投資家には適用されません。</p>`,
+ pt:"特定投資家（プロ）には、契約締結前交付書面の交付義務や適合性の原則などが適用されない",
+ hon:"金融商品取引業者等は、顧客が特定投資家である場合、契約締結前交付書面の交付義務は適用されない。"},
+{q:"同じ元本・同じ利率なら、半年ごとに複利で運用するほうが、1年ごとに複利で運用するよりも、満期の元利合計は多くなる。",a:true,
+ exp:`<p>複利は、ついた利息がまた元本に組み入れられて、利息を生むしくみです。</p><p>利息を組み入れる回数が<mark>多いほど（1年→半年→1か月）、元利合計は多く</mark>なります。早く元本に組み入れられるほど、雪だるまが早く大きくなるイメージです。</p><p>例：100万円を年1%で1年<br>・1年複利：100万×1.01＝101万円<br>・半年複利：100万×1.005×1.005＝<b>101万0,025円</b></p><p>スーパー定期（300万円以上・3年以上の個人向け）は<b>半年複利</b>を選べます。</p>`,
+ pt:"複利の回数が多い（半年複利など）ほど元利合計は多くなる",
+ hon:"他の条件が同一であれば、半年複利による元利合計額は、1年複利による元利合計額よりも多くなる。"}
+].map(o=>Object.assign({g:2,c:"kin"},o)));
+/* 2級・tax */
+Q.push(...[
+{q:"所得税の計算では、所得の合計から税額控除を引いてから、所得控除を引き、最後に税率をかける。",a:false,ha:true,ng:"順番は「所得の合計 → <b>所得控除</b> → <b>税率</b> → <b>税額控除</b>」です。",fig:"taxFlow",
+ exp:`<p>所得税の計算の流れ（ステップ）を、まず頭に入れましょう。</p><p>① 10種類の所得を<b>それぞれ計算</b><br>② 損益通算・損失の繰越控除をして<b>合計</b><br>③ <mark>所得控除</mark>（基礎控除、扶養控除、医療費控除など）を引く → <b>課税所得</b><br>④ <b>税率</b>をかける<br>⑤ <mark>税額控除</mark>（配当控除、住宅ローン控除など）を引く → 納める税額</p><p>「所得控除」は税率をかける<b>前</b>、「税額控除」は<b>後</b>、と区別するのがポイントです。</p>`,
+ pt:"所得計算 → 合計 → 所得控除 → 税率 → 税額控除",
+ hon:"所得税額は、各種所得の金額を計算して総所得金額等を求め、所得控除を差し引いた課税所得金額に税率を乗じ、税額控除を差し引いて算出する。"},
+{q:"個人が事業用に使う建物（1998年4月以後に取得）の減価償却の方法は、定率法に限られる。",a:false,ha:true,ng:"1998年4月以後に取得した建物は<b>定額法</b>だけです。",
+ exp:`<p>建物や機械は、長く使ううちに価値が減っていきます。買った代金を、<b>使う年数（耐用年数）に分けて少しずつ経費にする</b>のが<b>減価償却</b>です。</p><p>・<b>定額法</b>：毎年<b>同じ額</b>ずつ経費にする<br>・<b>定率法</b>：最初に<b>多く</b>、だんだん少なく経費にする</p><p>個人の場合、届け出をしなければ<b>定額法</b>（法定償却方法）。さらに、<mark>1998年4月以後に取得した建物</mark>や、2016年4月以後に取得した建物附属設備・構築物は、<mark>定額法だけ</mark>です。</p><p>なお、<b>土地</b>は古くならないので、減価償却しません。</p>`,
+ pt:"建物（1998年4月以後取得）は定額法のみ。個人の法定償却方法は定額法。土地は減価償却しない",
+ hon:"1998年4月1日以後に取得した建物の減価償却の方法は、定額法に限られる。"},
+{q:"取得価額が20万円未満の物は、だれでも、減価償却をしないで使い始めた年に全額を経費にできる。",a:false,ha:true,ng:"全額を経費にできるのは<b>10万円未満</b>（または耐用年数1年未満）。20万円未満の資産は3年で均等に経費にする方法（一括償却資産）などになります。",
+ exp:`<p>安い物までいちいち何年にも分けて経費にするのは大変ですよね。</p><p><mark>10万円未満</mark>または<mark>耐用年数1年未満</mark>の物（少額減価償却資産）は、<b>使い始めた年に全額を経費</b>にできます。</p><p>さらに、<b>青色申告をしている中小企業者等</b>（個人事業主も含む）は、<b>30万円未満</b>の物も、年合計<b>300万円</b>まで、一度に経費にできる特例があります。</p>`,
+ pt:"10万円未満は全額経費／青色の中小企業者は30万円未満も（年300万円まで）",
+ hon:"取得価額が10万円未満の減価償却資産は、その全額を業務の用に供した年分の必要経費に算入する。"},
+{q:"アパートの賃貸が「事業的規模」かどうかは、おおむね「5棟10室」以上かどうかが目安である。",a:true,
+ exp:`<p>アパートや家の貸し付けは、規模にかかわらず<b>不動産所得</b>です。でも、大きな規模で行っている（<b>事業的規模</b>）かどうかで、扱いが変わります。</p><p>目安は<mark>「5棟10室」</mark>：独立した家なら<b>5棟以上</b>、アパートなどの部屋なら<b>10室以上</b>。</p><p>事業的規模だと：<br>・青色申告特別控除が<b>最高65万円</b>（事業的規模でないと10万円まで）<br>・家族に払う給料を経費にできる（青色事業専従者給与）</p>`,
+ pt:"不動産貸付の事業的規模＝5棟10室以上（65万円控除・専従者給与OK）",
+ hon:"不動産の貸付けが事業的規模であるか否かは、社会通念上事業と称する程度の規模で行われているかどうかにより判定するが、形式基準として、おおむね5棟10室以上であれば事業的規模とされる。"},
+{q:"総合課税の譲渡所得（土地・建物・株式以外の物を売ったもうけ）のうち、5年をこえて持っていた物の分（長期）は、その2分の1をほかの所得と合計する。",a:true,
+ exp:`<p>ゴルフ会員権や金（ゴールド）、骨とう品などを売ったもうけは、<b>総合課税の譲渡所得</b>です。</p><p>計算：売った値段 −（取得費＋売る費用）− <b>特別控除50万円</b></p><p>持っていた期間で：<br>・<b>短期</b>（5年以下）：<b>全額</b>をほかの所得と合計<br>・<mark>長期</mark>（5年超）：<mark>2分の1</mark>をほかの所得と合計</p><p>注意：こちらの期間は、土地・建物（売った年の1月1日で判定）とちがい、<b>実際に持っていた期間</b>で数えます。</p><p>また、<b>生活に使う家具や服</b>などを売ったもうけは非課税です（1個30万円をこえる貴金属や書画などは課税）。</p>`,
+ pt:"総合課税の譲渡所得：長期（5年超）はその1/2を総所得に算入",
+ hon:"総合課税の対象となる譲渡所得のうち、長期譲渡所得の金額は、その2分の1相当額が総所得金額に算入される。"},
+{q:"雑損控除は、災害や盗難のほか、詐欺の被害にあった場合も対象になる。",a:false,ha:true,ng:"<b>詐欺</b>や恐喝の被害は雑損控除の<b>対象外</b>です（災害・盗難・横領が対象）。",
+ exp:`<p>雑損控除（ざっそんこうじょ）は、<b>災害・盗難・横領</b>で、住宅や家財などに損害を受けたときの所得控除です。</p><p>・<b>詐欺</b>や<b>恐喝</b>による損害は対象外<br>・控除しきれない分は<mark>翌年以後3年間くり越せる</mark>（特定非常災害の場合は5年）</p><p>所得控除の中で、<b>くり越しができるのは雑損控除だけ</b>です。</p>`,
+ pt:"雑損控除：災害・盗難・横領が対象（詐欺は不可）。控除しきれない分は3年繰越し",
+ hon:"雑損控除の額がその年分の総所得金額等から控除しきれない場合、その控除しきれない金額は、翌年以後3年間にわたり繰り越して控除することができる。"},
+{q:"配偶者の合計所得金額が58万円をこえて133万円以下の場合、条件を満たせば「配偶者特別控除」が受けられる。",a:true,fig:"fuyo",
+ exp:`<p>配偶者がパートなどで少し多くかせいでいて、配偶者控除の条件（合計所得58万円以下）をこえてしまっても、すぐにゼロにならないよう<b>配偶者特別控除</b>があります。</p><p>・配偶者の合計所得：<mark>58万円超133万円以下</mark>（2025年分から）<br>・本人の合計所得：<b>1,000万円以下</b><br>・控除額：最高<b>38万円</b>から、配偶者の所得が増えるにつれて段階的に減る</p><p>配偶者控除と配偶者特別控除は、<b>どちらか一方</b>しか使えません。また、夫婦がおたがいに配偶者特別控除を受けることもできません。</p>`,
+ pt:"配偶者特別控除：配偶者の合計所得58万円超133万円以下・本人1,000万円以下",
+ hon:"配偶者特別控除は、納税者本人の合計所得金額が1,000万円以下で、配偶者の合計所得金額が58万円超133万円以下である場合に適用を受けることができる。"},
+{q:"「ひとり親控除」の額は27万円である。",a:false,ha:true,ng:"ひとり親控除は<b>35万円</b>。27万円は<b>寡婦控除</b>です。",
+ exp:`<p>ひとり親控除は、結婚していない（離婚・死別・未婚）で、<b>子どもを1人で育てている人</b>のための所得控除です。</p><p>・控除額：<mark>35万円</mark><br>・本人の合計所得：<b>500万円以下</b><br>・子の総所得金額等が<b>58万円以下</b>（2025年分から）<br>・事実婚（内縁）の人がいないこと</p><p>子がいない場合などで、夫と離婚・死別した女性が受けられるのは<b>寡婦控除（27万円）</b>です。</p>`,
+ pt:"ひとり親控除35万円（合計所得500万円以下）／寡婦控除27万円",
+ hon:"ひとり親控除の額は35万円であり、納税者本人の合計所得金額が500万円以下であることが要件の一つとされている。"},
+{q:"配当控除は、上場株式の配当を「申告分離課税」で確定申告した場合に受けられる。",a:false,ha:true,ng:"配当控除は「<b>総合課税</b>」を選んだ場合だけ。申告分離や申告不要では受けられません。",
+ exp:`<p>会社のもうけには<b>法人税</b>がかかり、その残りから配当が出ます。その配当にまた所得税がかかると、<b>二重に税金</b>がかかることになりますね。</p><p>これを調整するのが<b>配当控除</b>（税額控除）です。</p><p>・<b>総合課税</b>を選んだ場合だけ（申告不要や申告分離課税では受けられない）<br>・課税総所得金額等が<mark>1,000万円以下</mark>の部分：配当所得の<mark>10%</mark><br>・1,000万円をこえる部分：<b>5%</b></p><p>J-REITの分配金や外国株の配当は対象外です。</p>`,
+ pt:"配当控除：総合課税を選んだ場合のみ。1,000万円以下の部分は10%",
+ hon:"上場株式等の配当所得について総合課税を選択した場合、課税総所得金額等が1,000万円以下であれば、配当所得の金額の10%相当額が配当控除の額となる。"},
+{q:"マイホームを売って「居住用財産の3,000万円特別控除」を使った人は、その前後の年に新しい家を買っても、住宅ローン控除を使えない場合がある。",a:true,
+ exp:`<p>マイホームの売却と購入の特例には、<b>いっしょに使えない組み合わせ</b>があります。</p><p>新しい家に住んだ年と、<mark>その前2年・後3年</mark>の間に、古い家を売って<b>3,000万円特別控除</b>や<b>軽減税率の特例</b>などを使った場合、<mark>住宅ローン控除は使えません</mark>。</p><p>どちらが有利かを計算して選ぶことになります。</p>`,
+ pt:"居住年とその前2年・後3年に3,000万円控除等を使うと、住宅ローン控除は不可",
+ hon:"住宅借入金等特別控除は、居住の用に供した年とその前2年・後3年の計6年間に、居住用財産の譲渡所得の3,000万円特別控除等の適用を受けた場合には、適用を受けることができない。"},
+{q:"確定申告をしたあと、税金を多く払いすぎていたことに気づいたときは、原則として法定申告期限から5年以内に「更正の請求」をして、取りもどすことができる。",a:true,
+ exp:`<p>申告をまちがえたときの手続きは2つです。</p><p>・税金が<b>少なすぎた</b> → <b>修正申告</b>（自分で直す。加算税などがかかることも）<br>・税金が<b>多すぎた</b> → <mark>更正の請求</mark>（税務署に直してもらうよう頼む）</p><p>更正の請求は、<mark>法定申告期限から5年以内</mark>にできます。</p>`,
+ pt:"払いすぎ → 更正の請求（5年以内）／少なすぎ → 修正申告",
+ hon:"確定申告書を提出した者は、税額が過大であったことが判明した場合、原則として、法定申告期限から5年以内に限り、更正の請求をすることができる。"},
+{q:"亡くなった人の所得税の申告（準確定申告）は、相続人が、相続の開始を知った日の翌日から10か月以内に行う。",a:false,ha:true,ng:"準確定申告は<b>4か月以内</b>です。10か月は相続税の申告期限です。",
+ exp:`<p>亡くなった人にも、1月1日から亡くなった日までの所得があれば、所得税がかかります。</p><p>その申告を、<b>相続人が代わりに</b>行います。これが<mark>準確定申告</mark>です。</p><p>期限は<mark>知った日の翌日から4か月以内</mark>。</p><p>亡くなった人が払った医療費は、亡くなった人の準確定申告で医療費控除にできます（亡くなった後に相続人が払った分は、相続税の債務控除になります）。</p>`,
+ pt:"準確定申告は相続開始を知った日の翌日から4か月以内",
+ hon:"年の中途で死亡した者の所得税については、その相続人が、相続の開始があったことを知った日の翌日から4か月以内に準確定申告をしなければならない。"},
+{q:"法人税の確定申告は、原則として、事業年度が終わった日の翌日から2か月以内に行う。",a:true,
+ exp:`<p>会社（法人）にかかる税金が<b>法人税</b>です。</p><p>・計算の期間：会社が<b>定款（ていかん：会社のルールブック）で決めた事業年度</b>（1年以内）<br>・申告：<mark>事業年度が終わった日の翌日から2か月以内</mark><br>・申告先：会社の<b>本店がある場所</b>の税務署</p><p>新しく会社を作ったときは、<b>設立から2か月以内</b>に「法人設立届出書」を出します。</p>`,
+ pt:"法人税の申告：事業年度終了の翌日から2か月以内",
+ hon:"法人税の確定申告書は、原則として、各事業年度終了の日の翌日から2か月以内に、納税地の所轄税務署長に提出しなければならない。"},
+{q:"資本金1億円以下の中小法人は、法人税の所得のうち年800万円以下の部分について、軽い税率（軽減税率）が使える。",a:true,
+ exp:`<p>法人税の税率は、本来<b>23.2%</b>です。</p><p>でも、<b>資本金1億円以下の中小法人</b>は、<mark>所得のうち年800万円以下の部分</mark>について、<b>軽減税率（本来は19%、特例で15%）</b>が使えます。</p><p>800万円をこえる部分は、23.2%です。</p><p>※特例の税率は、期間を区切って延長されてきた措置です。</p>`,
+ pt:"中小法人の法人税：年800万円以下の部分は軽減税率（特例15%）、超える部分は23.2%",
+ hon:"期末資本金の額が1億円以下の普通法人の所得の金額のうち、年800万円以下の部分については、軽減税率が適用される。"},
+{q:"資本金1億円以下の中小法人は、交際費等のうち、年1,000万円までを全額損金にできる。",a:false,ha:true,ng:"中小法人の交際費の定額控除限度額は年<b>800万円</b>です。",
+ exp:`<p>会社の<b>交際費</b>（取引先の接待や贈答など）は、原則として経費（損金）にできませんが、中小法人には特例があります。</p><p>・<mark>年800万円まで全額損金</mark>（定額控除限度額）<br>・<mark>接待飲食費の50%</mark>を損金<br>→ どちらか<b>有利なほうを選べる</b></p><p>大きな会社（資本金100億円超）は、交際費を損金にできません。</p><p>また、<b>1人あたり1万円以下</b>（2024年4月から。それまでは5,000円以下）の飲食費は、一定の書類を残せば、そもそも交際費に入れずに全額損金にできます。</p>`,
+ pt:"中小法人の交際費：年800万円まで全額損金か、接待飲食費の50%を選択／1人1万円以下の飲食費は交際費から除外",
+ hon:"期末資本金の額が1億円以下の法人は、支出した交際費等のうち、年800万円以下の金額を損金算入するか、接待飲食費の額の50%を損金算入するかを選択できる。"},
+{q:"役員に払う給与は、毎月同じ額を払う「定期同額給与」であれば、原則として損金にできる。",a:true,
+ exp:`<p>会社の役員は、自分の給料を自分で決められます。もうかった月だけ給料を増やして税金を減らす…といったことをふせぐため、<b>損金にできる役員給与</b>が決められています。</p><p>・<mark>定期同額給与</mark>：毎月同じ額<br>・<b>事前確定届出給与</b>：前もって税務署に届け出た金額・時期どおりに払う給与（役員賞与など）<br>・<b>業績連動給与</b>：一定の条件を満たすもの</p><p>これ以外の役員給与や、<b>不相当に高額な部分</b>は損金にできません。</p>`,
+ pt:"損金にできる役員給与：定期同額・事前確定届出・業績連動",
+ hon:"法人が役員に対して支給する定期同額給与は、不相当に高額な部分を除き、損金の額に算入することができる。"},
+{q:"会社が、社長である役員に、会社の土地を時価より安く売った場合、時価との差額は、その役員への給与（役員給与）とされる。",a:true,
+ exp:`<p>会社と役員の間の取引は、<b>時価（ふつうの値段）</b>で行われているかがチェックされます。</p><p>会社が役員に<b>安く売る</b>と、その差額は役員がトクをしたことになるので、<mark>役員給与（役員賞与）</mark>として扱われます。</p><p>役員にとっては<b>給与所得</b>として所得税がかかり、会社にとっては、定期同額給与などにあたらないので<b>損金にできない</b>のがふつうです。</p><p>反対に、役員が会社に<b>時価の2分の1未満</b>で売ると、役員は<b>時価で売ったもの</b>とみなされます。</p>`,
+ pt:"法人 → 役員へ低額譲渡：差額は役員給与／役員 → 法人へ時価の1/2未満：時価で譲渡したとみなす",
+ hon:"法人がその役員に対して資産を時価よりも低い価額で譲渡した場合、時価と譲渡価額との差額は、その役員に対する給与とされる。"},
+{q:"消費税で、基準期間（個人は前々年、法人は前々事業年度）の課税売上高が1,000万円以下の事業者は、原則として消費税を納める義務がない（免税事業者）。",a:true,
+ exp:`<p>消費税は、お店などの事業者が、お客さんから預かった消費税を国に納めるしくみです。</p><p>小さな事業者の手間を減らすため、<mark>基準期間（2年前）の課税売上高が1,000万円以下</mark>なら、原則として納めなくてよい<b>免税事業者</b>になります。</p><p>ただし、基準期間が1,000万円以下でも、<b>特定期間</b>（前年の1月〜6月）の課税売上高と給与の支払額がどちらも1,000万円をこえると、課税事業者になります。</p><p>また、2023年10月からのインボイス制度で、<b>インボイス（適格請求書）発行事業者</b>になると、売上が1,000万円以下でも消費税を納めます。</p>`,
+ pt:"消費税：基準期間（2年前）の課税売上高1,000万円以下は免税事業者（インボイス発行事業者は除く）",
+ hon:"消費税において、基準期間における課税売上高が1,000万円以下の事業者は、原則として、消費税の納税義務が免除される。"},
+{q:"消費税の「簡易課税制度」は、基準期間の課税売上高が1億円以下の事業者なら選ぶことができる。",a:false,ha:true,ng:"簡易課税は、基準期間の課税売上高<b>5,000万円以下</b>の事業者が選べます。",
+ exp:`<p>消費税の納める額は、ふつうは「お客さんから預かった消費税 − 仕入れのときに払った消費税」で計算します（<b>原則課税</b>）。</p><p>でも、仕入れの消費税を一つひとつ計算するのは大変。そこで<mark>簡易課税制度</mark>では、業種ごとの<b>みなし仕入率</b>（卸売業90%、小売業80%など）を使って、かんたんに計算できます。</p><p>・使える事業者：<mark>基準期間の課税売上高5,000万円以下</mark><br>・届け出：原則、<b>使いたい年（事業年度）が始まる前</b>までに「簡易課税制度選択届出書」を出す<br>・一度選ぶと、<b>2年間</b>はやめられない</p>`,
+ pt:"簡易課税：基準期間の課税売上高5,000万円以下・事前に届出・2年間継続",
+ hon:"簡易課税制度は、基準期間における課税売上高が5,000万円以下の事業者が、原則として、その課税期間の開始の日の前日までに簡易課税制度選択届出書を提出した場合に適用される。"},
+{q:"土地の売却だけでなく、事務所や店舗の貸し付けにも、消費税はかからない（非課税取引）。",a:false,ha:true,ng:"土地の売却は非課税ですが、<b>事務所・店舗の貸し付けは課税</b>です（非課税なのは住宅の貸し付け）。",
+ exp:`<p>消費税は、ほとんどのモノやサービスにかかりますが、<b>かからない（非課税）</b>取引もあります。</p><p>代表例：<br>・<mark>土地の売却・貸し付け</mark>（1か月未満の貸し付けや駐車場などの施設の貸し付けは課税）<br>・<mark>住宅の貸し付け</mark>（1か月以上）<br>・預金の利息、保険料<br>・健康保険の医療、介護サービス、学校の授業料 など</p><p>一方、<b>建物の売却</b>、<b>事務所や店舗の貸し付け</b>には消費税がかかります。</p>`,
+ pt:"消費税の非課税：土地の譲渡・貸付、住宅の貸付（1か月以上）、利息、保険料など／建物の売却・事務所の賃料は課税",
+ hon:"土地の譲渡および貸付け（一時的に使用させる場合等を除く）は、消費税の非課税取引である。"},
+{q:"法人住民税の「均等割（きんとうわり）」は、会社が赤字で法人税がかからない年でも、納めなければならない。",a:true,
+ exp:`<p>会社にかかる住民税（<b>法人住民税</b>）は、2つの部分でできています。</p><p>・<b>法人税割</b>：法人税の額に応じてかかる（赤字なら0円）<br>・<mark>均等割</mark>：会社の規模（資本金や従業員数）に応じて<b>決まった額</b>がかかる</p><p>均等割は、地域のサービスを受けていることへの負担なので、<mark>赤字でもかかります</mark>。</p>`,
+ pt:"法人住民税の均等割は赤字でもかかる",
+ hon:"法人住民税の均等割は、法人の所得の有無にかかわらず課される。"},
+{q:"寄附金控除の額は、「その年に支出した特定寄附金の合計 − 5,000円」である。",a:false,ha:true,ng:"差し引くのは<b>2,000円</b>です（寄附金の合計は総所得金額等の40%が上限）。",
+ exp:`<p>国や地方公共団体（ふるさと納税）、認定NPO法人などへの寄附は、<b>寄附金控除</b>（所得控除）の対象になります。</p><p>計算：<mark>寄附金の合計 − 2,000円</mark><br>ただし、寄附金の合計は<b>総所得金額等の40%</b>が上限です。</p><p>ふるさと納税では、住民税からも差し引かれるので、上限額の範囲内なら、<b>実質2,000円の負担</b>で寄附できるしくみになっています。</p><p>なお、政党などへの寄附は、所得控除の代わりに<b>税額控除</b>を選ぶこともできます。</p>`,
+ pt:"寄附金控除＝寄附金の合計（総所得金額等の40%が上限）−2,000円",
+ hon:"寄附金控除の額は、特定寄附金の額の合計額（総所得金額等の40%相当額が限度）から2,000円を控除した金額である。"},
+{q:"青色申告をしている個人事業主が、事業を手伝う家族に払う給与を必要経費にするには、前もって「青色事業専従者給与に関する届出書」を出しておく必要がある。",a:true,
+ exp:`<p>家族に払う給料は、ふつうは必要経費になりません（お財布が同じなので）。</p><p>でも、<b>青色申告</b>をしている人なら、<mark>届出書を出して、その金額の範囲内</mark>で、適正な額を必要経費にできます（<b>青色事業専従者給与</b>）。</p><p>条件：<br>・<b>生計を一にする15歳以上</b>の家族<br>・その年に<b>6か月をこえて</b>、事業に<b>専ら</b>（主として）従事している</p><p>白色申告の場合は、<b>事業専従者控除</b>（配偶者86万円、それ以外50万円が上限）になります。</p><p>なお、専従者になった家族は、配偶者控除・扶養控除の対象にはなりません。</p>`,
+ pt:"青色事業専従者給与：届出の範囲内で全額経費に。専従者は配偶者控除・扶養控除の対象外",
+ hon:"青色事業専従者給与の必要経費算入の適用を受けるためには、原則として、その年の3月15日までに青色事業専従者給与に関する届出書を提出しなければならない。"}
+].map(o=>Object.assign({g:2,c:"tax"},o)));
+/* 2級・fudo */
+Q.push(...[
+{q:"相続で不動産を取得した相続人は、2024年4月から、取得を知った日から1年以内に相続登記を申請することが義務になった。",a:false,ha:true,ng:"相続登記は、知った日から<b>3年以内</b>です。",fig:"toki",
+ exp:`<p>持ち主がわからない土地（所有者不明土地）が増えて問題になったため、<b>相続登記の義務化</b>が始まりました。</p><p>・相続で不動産をもらったことを<mark>知った日から3年以内</mark>に登記を申請する<br>・正当な理由なく申請しないと、<b>10万円以下の過料</b><br>・2024年4月より<b>前</b>の相続も対象（2027年3月末までに申請）</p><p>また、建物を新しく建てたときの<b>表題登記</b>（どんな建物かの登記）も、<b>1か月以内</b>に申請する義務があります。</p>`,
+ pt:"相続登記の義務化：知った日から3年以内（2024年4月〜）。建物の表題登記は1か月以内",
+ hon:"相続により不動産の所有権を取得した相続人は、自己のために相続の開始があったことを知り、かつ、その所有権を取得したことを知った日から3年以内に、所有権の移転の登記を申請しなければならない。"},
+{q:"仮登記（かりとうき）をしておけば、本登記と同じように、第三者に対抗することができる。",a:false,ha:true,ng:"仮登記には<b>対抗力はありません</b>。あるのは、本登記の順位を守る力（順位保全効）です。",fig:"toki",
+ exp:`<p>書類がそろわないなどで本当の登記（本登記）ができないとき、<b>とりあえず順番だけとっておく</b>のが仮登記です。</p><p>・<mark>対抗力はない</mark>（仮登記のままでは、「自分の物だ」と主張できない）<br>・<mark>順位保全の効力がある</mark>（あとで本登記すれば、仮登記をした時の順位になる）</p><p>病院の整理券のようなもの、とイメージしましょう。</p>`,
+ pt:"仮登記：対抗力なし・順位保全効あり",
+ hon:"仮登記に基づいて本登記をした場合、その本登記の順位は仮登記の順位による。"},
+{q:"不動産の鑑定評価の方法のうち、「収益還元法」は、今その建物を建て直したらいくらかかるかをもとに価格を求める方法である。",a:false,ha:true,ng:"それは「<b>原価法</b>」。収益還元法は、将来生み出す<b>収益</b>をもとに価格を求めます。",
+ exp:`<p>不動産鑑定士が値段を決める方法は、主に3つです。</p><p>・<b>原価法</b>：今<b>建て直したらいくらか</b>から、古くなった分を引く（積算価格）<br>・<b>取引事例比較法</b>：近くの<b>似た物件の取引価格</b>とくらべる（比準価格）<br>・<mark>収益還元法</mark>：<b>将来どれだけもうかるか</b>から計算する（収益価格）</p><p>収益還元法には、1年分の純収益を利回りで割る<b>直接還元法</b>と、将来の収益と売却価格を今の価値に割り引いて合計する<b>DCF法</b>があります。</p>`,
+ pt:"原価法（再調達原価）／取引事例比較法（事例）／収益還元法（直接還元法・DCF法）",
+ hon:"収益還元法は、対象不動産が将来生み出すであろうと期待される純収益の現在価値の総和を求めることにより、対象不動産の試算価格を求める手法である。"},
+{q:"売主が宅建業者で、買主が宅建業者ではない土地の売買では、売主は代金の3割まで手付金を受け取ることができる。",a:false,ha:true,ng:"手付金は代金の<b>2割</b>までです。",
+ exp:`<p>プロ（宅建業者）が売主で、買主がふつうの人の場合、買主を守るためのルールがあります。</p><p>・<mark>手付金は代金の2割まで</mark><br>・手付金は、何と書いてあっても<b>解約手付</b>とされる（買主に不利な特約は無効）<br>・損害賠償の予定額や違約金は、<b>合わせて代金の2割まで</b></p><p>買主も宅建業者（プロどうし）の取引には、これらの制限はありません。</p>`,
+ pt:"宅建業者が売主（買主は一般人）：手付金は代金の2割まで・必ず解約手付",
+ hon:"宅地建物取引業者が自ら売主となる宅地または建物の売買契約において、宅地建物取引業者でない買主から、代金の額の10分の2を超える額の手付を受領することはできない。"},
+{q:"買った建物に、契約の内容に合わない欠陥（雨もりなど）があった場合、買主がそれを知った時から1年以内に売主へ通知しないと、原則として売主の責任を追及できなくなる。",a:true,
+ exp:`<p>買った物が、約束（契約）の内容と合わない場合、売主は<b>契約不適合責任</b>を負います。</p><p>買主ができること：<br>・<b>直して</b>もらう（追完請求）<br>・<b>代金を減らして</b>もらう（代金減額請求）<br>・<b>損害賠償</b>の請求<br>・<b>契約の解除</b></p><p>ただし、種類や品質が合わない場合、買主は<mark>知った時から1年以内に売主へ通知</mark>する必要があります（売主が知っていた場合などを除く）。</p>`,
+ pt:"契約不適合責任：品質等の不適合は、知った時から1年以内に通知が必要",
+ hon:"売主が種類または品質に関して契約の内容に適合しない目的物を買主に引き渡した場合、買主がその不適合を知った時から1年以内にその旨を売主に通知しないときは、買主は、原則として、契約不適合を理由とする請求等をすることができない。"},
+{q:"建物の売買契約をしたあと、引き渡し前に、売主・買主どちらのせいでもない地震でその建物がこわれた場合、買主は代金の支払いを拒むことができる。",a:true,
+ exp:`<p>契約後・引き渡し前に、<b>だれのせいでもない理由</b>（地震や隣からのもらい火など）で建物がなくなった場合、損を誰がかぶるかを<b>危険負担</b>といいます。</p><p>今の民法では、<mark>買主は代金の支払いを拒める</mark>（さらに契約の解除もできる）とされています。</p><p>つまり、建物を受け取れないのに代金だけ払う、ということにはなりません。</p>`,
+ pt:"危険負担：引渡し前に双方の責任なく滅失 → 買主は代金の支払いを拒める",
+ hon:"建物の売買契約締結後、引渡し前に、当事者双方の責めに帰することができない事由によって建物が滅失した場合、買主は代金の支払いを拒むことができる。"},
+{q:"定期借家契約を結ぶとき、大家さんは、前もって借りる人に「更新がなく、期間満了で終わること」を書面を渡して説明しなければならない。",a:true,
+ exp:`<p>定期借家契約は、<b>期間が来たら更新なしで終わる</b>借家契約です。借りる人にとって大事なことなので、ルールがきびしくなっています。</p><p>・契約は<b>書面（電磁的記録も可）</b>で<br>・契約の前に、<mark>「更新がなく期間満了で終わる」ことを書いた書面を渡して説明</mark>する（説明がないと普通借家になる）<br>・期間が1年以上なら、終わる<b>1年前〜6か月前</b>に、終わることを通知する</p><p>また、<b>床面積200㎡未満の住まい</b>で、転勤・療養などやむを得ない事情があれば、借りる人から<b>途中解約</b>できます。</p>`,
+ pt:"定期借家：書面で契約＋事前に書面で説明（ないと普通借家）。200㎡未満の居住用は中途解約可",
+ hon:"定期建物賃貸借をしようとするときは、建物の賃貸人は、あらかじめ、建物の賃借人に対し、契約の更新がなく期間の満了により終了することについて、その旨を記載した書面を交付（または電磁的方法により提供）して説明しなければならない。"},
+{q:"普通借家契約で、「一定の期間、家賃を減額しない」という特約は有効である。",a:false,ha:true,ng:"普通借家では、「減額しない」特約は借りる人に不利なので<b>無効</b>。「増額しない」特約なら有効です。",
+ exp:`<p>普通借家契約では、家賃が周りとくらべて高すぎたり安すぎたりすると、大家さんも借りる人も、<b>家賃の増額・減額を請求</b>できます。</p><p>特約（とくべつな約束）の扱いは：<br>・<mark>「増額しない」特約 → 有効</mark>（借りる人に有利なので）<br>・<b>「減額しない」特約 → 無効</b>（借りる人に不利なので）</p><p>ただし、<b>定期借家契約</b>では、家賃の改定についての特約があれば、「減額しない」特約も有効です。</p>`,
+ pt:"普通借家：増額しない特約は有効・減額しない特約は無効（定期借家は特約に従う）",
+ hon:"普通建物賃貸借契約において、一定期間建物の賃料を増額しない旨の特約がある場合は、その定めに従う。"},
+{q:"市街化調整区域内で、1,000㎡未満の開発行為をする場合は、都道府県知事の許可はいらない。",a:false,ha:true,ng:"市街化調整区域は、<b>規模にかかわらず</b>原則として許可が必要です（農林漁業用の建物などを除く）。",
+ exp:`<p>土地を宅地にするために<b>造成</b>（区画や形を変える）することを<b>開発行為</b>といいます。一定の規模以上なら、<b>都道府県知事等の許可</b>が必要です。</p><p>・<mark>市街化区域：1,000㎡以上</mark><br>・<b>市街化調整区域：規模にかかわらず許可が必要</b>（農林漁業用の建物などを除く）<br>・非線引き区域・準都市計画区域：3,000㎡以上</p>`,
+ pt:"開発許可：市街化区域1,000㎡以上／市街化調整区域は規模にかかわらず",
+ hon:"市街化区域内において行う開発行為で、その規模が1,000㎡以上であるものは、原則として都道府県知事等の許可を受けなければならない。"},
+{q:"工業専用地域では、住宅を建てることができない。",a:true,
+ exp:`<p>用途地域は、その場所に<b>どんな種類の建物を建ててよいか</b>を決めたものです（13種類）。</p><p><mark>工業専用地域</mark>は、工場のための地域なので、<mark>住宅は建てられません</mark>。</p><p>ほかにもよく出るもの：<br>・<b>診療所・神社・寺・教会・保育所・巡査派出所</b>：<b>すべての用途地域</b>で建てられる<br>・<b>病院</b>：第一種・第二種低層住居専用地域、田園住居地域、工業地域、工業専用地域では建てられない<br>・<b>大学</b>：低層住居専用地域、工業地域、工業専用地域では建てられない</p>`,
+ pt:"工業専用地域には住宅は建てられない。診療所・保育所・神社などは全用途地域OK",
+ hon:"工業専用地域内においては、住宅を建築することができない。"},
+{q:"前面道路の幅が12m未満の場合、住居系の用途地域では、容積率は「前面道路の幅（m）× 10分の4」と「指定容積率」のうち小さいほうになる。",a:true,fig:"youseki",
+ exp:`<p>容積率（延べ面積の上限）は、都市計画で決められた<b>指定容積率</b>のほかに、<b>前面道路の幅</b>でも制限されます。せまい道路に大きな建物がたくさん建つと困るからです。</p><p>前面道路の幅が<mark>12m未満</mark>のとき：<br>・<b>住居系</b>の用途地域：道路の幅 × <mark>4/10</mark><br>・<b>それ以外</b>（商業系・工業系）：道路の幅 × <b>6/10</b><br>→ これと指定容積率の<b>小さいほう</b>が上限</p><p>例：住居系、道路幅6m、指定容積率300% → 6×4/10＝240%。小さいほうの<b>240%</b>が上限です。</p><p>前面道路が2つ以上あるときは、<b>広いほう</b>の道路の幅を使います。</p>`,
+ pt:"前面道路12m未満：住居系は幅×4/10、その他は幅×6/10と指定容積率の小さいほう",
+ hon:"前面道路の幅員が12m未満である場合、住居系用途地域における容積率は、前面道路の幅員に10分の4を乗じたものと指定容積率のいずれか低いほうとなる。"},
+{q:"建物の敷地が2つの用途地域にまたがる場合、建蔽率は、敷地の過半がある用途地域の建蔽率が敷地全体に適用される。",a:false,ha:true,ng:"建蔽率・容積率は、それぞれの面積の割合で<b>加重平均</b>します。過半の地域のルールを使うのは<b>用途制限</b>です。",fig:"youseki",
+ exp:`<p>敷地が2つの地域にまたがるときのルールは、項目によってちがいます。</p><p>・<mark>用途制限</mark>（何を建てていいか）：敷地の<mark>過半</mark>がある地域のルールを敷地全体に使う<br>・<b>建蔽率・容積率</b>：それぞれの地域の面積の割合で<b>加重平均</b>する<br>・<b>防火地域・準防火地域</b>：建物が防火地域にかかれば、原則として<b>厳しいほう</b>（防火地域）のルール</p>`,
+ pt:"2つの用途地域にまたがる：用途制限＝過半の地域／建蔽率・容積率＝加重平均／防火＝厳しいほう",
+ hon:"建築物の敷地が異なる2つの用途地域にわたる場合、その敷地の全部について、敷地の過半の属する用途地域の建築物の用途に関する規定が適用される。"},
+{q:"第一種・第二種低層住居専用地域と田園住居地域では、建物の高さは原則として10mまたは12mのうち、都市計画で決めた高さまでに制限される。",a:true,
+ exp:`<p>低い家が建ちならぶ静かな住宅地を守るため、<b>低層住居専用地域</b>（第一種・第二種）と<b>田園住居地域</b>には、<mark>絶対高さ制限</mark>があります。</p><p>高さは<mark>10mまたは12m</mark>のうち、都市計画で決めた数字までです。</p><p>そのほか、日当たりを守るための<b>日影規制</b>や、道路の明るさを守る<b>道路斜線制限</b>などもあります。</p>`,
+ pt:"低層住居専用地域・田園住居地域：絶対高さ制限10mまたは12m",
+ hon:"第一種低層住居専用地域、第二種低層住居専用地域および田園住居地域内においては、建築物の高さは、原則として10mまたは12mのうち都市計画で定められた限度を超えてはならない。"},
+{q:"市街化区域内の農地を、宅地にするために売る場合（転用目的の権利移動）は、あらかじめ農業委員会に届け出れば、都道府県知事の許可はいらない。",a:true,
+ exp:`<p>農地を守るための法律が<b>農地法</b>です。</p><p>・<b>3条</b>：農地を<b>農地のまま</b>売る・貸す → <b>農業委員会</b>の許可<br>・<b>4条</b>：自分の農地を<b>宅地などに変える（転用）</b> → <b>都道府県知事等</b>の許可<br>・<b>5条</b>：<b>転用するために</b>売る・貸す → <b>都道府県知事等</b>の許可</p><p>ただし、<mark>市街化区域内</mark>の農地なら、4条・5条は<mark>農業委員会への届出だけ</mark>でOK（もともと街にする区域だから）。</p>`,
+ pt:"農地法：3条＝農業委員会の許可／4条・5条＝知事の許可（市街化区域内は農業委員会への届出でOK）",
+ hon:"市街化区域内にある農地を転用する目的で権利を移転する場合、あらかじめ農業委員会に届け出れば、農地法第5条の許可を受ける必要はない。"},
+{q:"不動産の売買契約書に印紙を貼らなかった場合、その契約は無効になる。",a:false,
+ exp:`<p>契約書などには、<b>印紙税</b>として収入印紙を貼ります。</p><p>でも、印紙を貼らなくても<mark>契約そのものは有効</mark>です。契約は、当事者の合意で成立するからです。</p><p>ただし、貼らなかった場合は、ペナルティとして<b>過怠税（かたいぜい）</b>がかかります（原則、本来の印紙税の3倍）。</p><p>また、契約書を<b>電子データ</b>で作った場合は、印紙税はかかりません。</p>`,
+ pt:"印紙を貼らなくても契約は有効（過怠税がかかる）。電子契約は印紙税なし",
+ hon:"印紙税の課税文書に印紙を貼付しなかった場合でも、その契約の効力には影響がない。"},
+{q:"新築住宅の固定資産税は、一定の条件を満たすと、新築後3年間（一般の住宅の場合）、床面積120㎡までの部分の税額が2分の1になる。",a:true,fig:"fudoTax",
+ exp:`<p>新しく家を建てたときの固定資産税（<b>建物の分</b>）には、軽減の特例があります。</p><p>・<mark>一般の住宅：3年間</mark>（3階建て以上の中高層耐火住宅は5年間）<br>・<mark>床面積120㎡までの部分</mark><br>・税額が<mark>2分の1</mark></p><p>認定長期優良住宅は、これが5年間（中高層耐火は7年間）に延びます。</p><p>土地のほうは、住宅用地の特例（200㎡以下は課税標準が1/6）があります。</p>`,
+ pt:"新築住宅（建物）の固定資産税：3年間（中高層耐火5年）、120㎡まで税額1/2",
+ hon:"一定の要件を満たす新築住宅に係る固定資産税は、新たに課されることとなった年度から3年度分（中高層耐火建築物は5年度分）に限り、床面積120㎡までの部分について税額の2分の1が減額される。"},
+{q:"マイホームを売った年の1月1日時点で5年をこえて持っていれば、6,000万円以下の部分に14.21%の軽減税率が使える。",a:false,ha:true,ng:"軽減税率は、所有期間<b>10年超</b>が条件です。",fig:"jotoFudo",
+ exp:`<p>長く住んだマイホームを売ったときは、さらに税率が下がる特例があります（<b>軽減税率の特例</b>）。</p><p>条件：売った年の1月1日時点で<mark>所有期間10年超</mark></p><p>税率：<br>・<mark>6,000万円以下の部分：14.21%</mark>（所得税10.21%・住民税4%）<br>・6,000万円をこえる部分：20.315%（ふつうの長期の税率）</p><p>この特例は、<b>3,000万円特別控除と一緒に使えます</b>（控除のあとの金額にかける）。</p>`,
+ pt:"居住用財産の軽減税率：所有10年超・6,000万円以下の部分14.21%（3,000万円控除と併用可）",
+ hon:"居住用財産を譲渡した場合の長期譲渡所得の課税の特例（軽減税率の特例）は、譲渡した年の1月1日における所有期間が10年を超えていることが要件であり、3,000万円特別控除と併用することができる。"},
+{q:"「特定居住用財産の買換え特例」を使うには、売る家の売却代金が1億円以下で、売った年の1月1日時点で10年をこえて持ち、住んでいた期間も10年以上あることなどが必要である。",a:true,fig:"jotoFudo",
+ exp:`<p>マイホームを売って新しい家に買い換えるとき、<b>もうけに税金をかけるのを先送り（繰延べ）</b>できるのが<b>買換え特例</b>です。</p><p>主な条件：<br>・売った家の代金が<mark>1億円以下</mark><br>・売った年の1月1日時点で<mark>所有期間10年超</mark>、かつ<mark>居住期間10年以上</mark><br>・買う家の<b>床面積50㎡以上</b>、土地は<b>500㎡以下</b></p><p>この特例は、<b>3,000万円特別控除や軽減税率の特例とは一緒に使えません</b>（どちらかを選ぶ）。</p>`,
+ pt:"買換え特例：譲渡価額1億円以下・所有10年超・居住10年以上。3,000万円控除とは選択",
+ hon:"特定の居住用財産の買換えの場合の長期譲渡所得の課税の特例の適用を受けるためには、譲渡資産の譲渡対価の額が1億円以下であることが要件の一つである。"},
+{q:"親から相続した空き家の3,000万円特別控除は、マンションなどの区分所有建物でも使える。",a:false,ha:true,ng:"空き家特例は、1981年5月31日以前に建てられた家で、<b>マンションなどの区分所有建物は対象外</b>です。",
+ exp:`<p>空き家が増えるのをふせぐための特例が<b>相続した空き家の3,000万円特別控除</b>（空き家特例）です。</p><p>主な条件：<br>・<mark>1981年5月31日以前に建てられた</mark>家（マンションなどは除く）<br>・亡くなる直前まで、親が<b>1人で住んでいた</b><br>・耐震リフォームをする、または家を取りこわして<b>更地で売る</b>（売った翌年2月15日までに買主が行ってもOK）<br>・売却代金が<b>1億円以下</b><br>・相続から<b>3年後の12月31日まで</b>に売る</p><p>家を相続した人が<b>3人以上</b>のときは、1人あたり<b>2,000万円</b>になります（2024年から）。</p>`,
+ pt:"空き家特例：1981年5月31日以前の家・売却1億円以下・最高3,000万円（相続人3人以上は2,000万円）",
+ hon:"被相続人の居住用財産（空き家）に係る譲渡所得の特別控除の特例は、1981年5月31日以前に建築された家屋であることなどが要件であり、相続人が3人以上の場合の控除額は1人当たり2,000万円となる。"},
+{q:"土地や建物を同じ種類の資産と交換した場合、一定の条件を満たせば、譲渡がなかったものとして税金がかからない特例がある。この場合、交換する物の価値の差は、高いほうの価値の20%以内でなければならない。",a:true,
+ exp:`<p><b>固定資産の交換の特例</b>：土地と土地、建物と建物など、<b>同じ種類</b>の物を交換すると、売ったことにならず、税金がかからない（課税の繰延べ）特例です。</p><p>主な条件：<br>・<b>同じ種類</b>の資産どうし（土地と建物の交換はダメ）<br>・どちらも<b>1年以上</b>持っていた<br>・交換前と同じ<b>使い道</b>で使う<br>・価値の差が<mark>高いほうの20%以内</mark></p><p>差額をお金（交換差金）で受け取った場合、その分には税金がかかります。</p>`,
+ pt:"固定資産の交換特例：同種資産・1年以上所有・同一用途・差額は高いほうの20%以内",
+ hon:"固定資産の交換の特例の適用を受けるためには、交換譲渡資産の時価と交換取得資産の時価との差額が、いずれか高いほうの価額の20%以内であることが必要である。"},
+{q:"土地の有効活用の方法のうち「等価交換方式」は、土地の持ち主が土地を出し、デベロッパー（開発業者）が建設費を出して建物を建て、それぞれが出した割合に応じて土地と建物を持ち合う方法である。",a:true,
+ exp:`<p>土地を持っていても、建物を建てるお金がない…というとき、いろいろな活用方法があります。</p><p>・<mark>等価交換方式</mark>：持ち主は土地、業者は建設費を出し、出した割合で土地・建物を分け合う。<b>持ち主は自分でお金を出さずに済む</b><br>・<b>事業受託方式</b>：業者に企画から管理まで任せる。建設費は持ち主が出す<br>・<b>定期借地権方式</b>：土地を定期借地で貸して<b>地代</b>を受け取る。期間が終われば土地が返ってくる<br>・<b>建設協力金方式</b>：お店を出したい会社（テナント）から建設費を借りて建物を建て、貸す</p>`,
+ pt:"等価交換方式：土地と建設資金を出し合い、出資割合で土地・建物を共有（持ち主の資金負担なし）",
+ hon:"等価交換方式では、土地所有者は土地を拠出し、デベロッパーが建設資金を負担してマンション等を建設し、それぞれの出資割合に応じて土地・建物に係る権利を取得する。"},
+{q:"年間の家賃収入が1,000万円、年間の経費（管理費・税金など）が300万円、購入価格が1億円の物件のNOI利回り（純利回り）は10%である。",a:false,ha:true,ng:"NOI利回りは経費を引いて（1,000万−300万）÷1億＝<b>7%</b>。10%は表面利回りです。",
+ exp:`<p>不動産投資の利回りを計算してみましょう。</p><p>・<b>表面利回り</b> ＝ 1,000万 ÷ 1億 × 100 ＝ <b>10%</b><br>・<mark>NOI利回り</mark> ＝（1,000万 − 300万）÷ 1億 × 100 ＝ <mark>7%</mark></p><p>NOIは「純収益」のこと。経費を引いた分だけで考えるので、実際に近い数字がわかります。</p><p>また、借入金を使って投資する場合、物件の利回りが借入金の金利より<b>高い</b>と、自分のお金の利回りが上がります（<b>レバレッジ効果</b>）。</p>`,
+ pt:"NOI利回り＝（年間収入−諸経費）÷投資額×100",
+ hon:"年間賃料収入1,000万円、年間費用300万円、投資額1億円の賃貸物件のNOI利回りは7%である。"},
+{q:"新築住宅を取得した場合、不動産取得税の計算では、床面積が50㎡以上240㎡以下などの条件を満たせば、課税標準から1,200万円を差し引ける。",a:true,fig:"fudoTax",
+ exp:`<p>不動産取得税（都道府県の税金）は、家を手に入れたときに1回かかります。</p><p>新築住宅の特例：<br>・床面積<mark>50㎡以上240㎡以下</mark>（一戸建て以外の賃貸住宅は40㎡以上）<br>・課税標準（固定資産税評価額）から<mark>1,200万円を控除</mark>（認定長期優良住宅は1,300万円）</p><p>税率は住宅なら<b>3%</b>。評価額1,500万円の新築住宅なら、（1,500万−1,200万）×3%＝<b>9万円</b>です。</p>`,
+ pt:"新築住宅の不動産取得税：50㎡以上240㎡以下で1,200万円控除（税率3%）",
+ hon:"一定の要件を満たす新築住宅を取得した場合の不動産取得税の課税標準の算定にあたっては、1戸につき1,200万円を価格から控除することができる。"}
+].map(o=>Object.assign({g:2,c:"fudo"},o)));
+/* 2級・sozo */
+Q.push(...[
+{q:"「負担付贈与」とは、もらう人に一定の義務（例：借金の一部を肩代わりする）を負わせる贈与で、あげる人は、その負担の限度で売主と同じような責任を負う。",a:true,
+ exp:`<p>贈与にはいくつか種類があります。</p><p>・<mark>負担付贈与</mark>：「家をあげるかわりに、残りのローンを払ってね」のように、<b>もらう人に義務</b>がつく贈与。あげる人は、負担の限度で<b>売主と同じような責任</b>（契約不適合責任など）を負う<br>・<b>定期贈与</b>：「毎年100万円ずつあげる」のように<b>定期的に</b>あげる贈与。どちらかが亡くなると終わる<br>・<b>死因贈与</b>：「私が死んだらあげる」という贈与。<b>相続税</b>の対象になる</p><p>負担付贈与で土地や建物をもらった場合は、相続税評価額ではなく<b>通常の取引価額（時価）</b>から負担額を引いた額に贈与税がかかります。</p>`,
+ pt:"負担付贈与：贈与者は負担の限度で売主と同様の責任。死因贈与は相続税の対象",
+ hon:"負担付贈与では、贈与者は、その負担の限度において、売主と同じく担保の責任を負う。"},
+{q:"贈与税の計算で、20歳以上の人が父母や祖父母（直系尊属）から財産をもらった場合にだけ、「特例税率」を使う。",a:false,ha:true,ng:"特例税率は<b>18歳以上</b>（その年の1月1日時点）です。",fig:"zoyo",
+ exp:`<p>暦年課税の贈与税の税率には2種類あります。</p><p>・<mark>特例税率</mark>：<b>18歳以上</b>の人が<b>父母・祖父母など（直系尊属）</b>からもらった財産<br>・<b>一般税率</b>：それ以外（夫婦間、兄弟間、未成年の子への贈与など）</p><p>特例税率のほうが<b>税金が安く</b>なっています。若い世代への財産の移転を進めるためです。</p><p>年齢は<b>贈与を受けた年の1月1日</b>時点で判断します。</p>`,
+ pt:"特例税率＝18歳以上が直系尊属から受けた贈与／一般税率＝それ以外",
+ hon:"その年1月1日において18歳以上の者が直系尊属から贈与により取得した財産に係る贈与税額の計算には、特例税率が適用される。"},
+{q:"2024年1月1日以後の贈与について、亡くなった人から相続などで財産をもらった人が、亡くなる前の一定期間にもらった贈与財産を相続財産に加える期間は、段階的に7年に延びている。",a:true,fig:"zoyo",
+ exp:`<p>亡くなる直前の駆けこみ贈与で相続税を減らすのをふせぐため、<b>亡くなる前の一定期間の贈与</b>は、相続財産に足して相続税を計算します（<b>生前贈与加算</b>）。</p><p>この期間は、以前は<b>3年</b>でしたが、<mark>2024年1月1日以後の贈与から7年</mark>に延びました（2027年以後の相続から段階的に延び、2031年以後の相続で完全に7年）。</p><p>延びた4年間にもらった分は、合計<b>100万円</b>を差し引いてから加えます。</p><p>対象になるのは、相続や遺贈で<b>財産をもらった人</b>だけ。財産をもらわなかった孫などへの贈与は加算されません。</p>`,
+ pt:"生前贈与加算：3年 → 7年（2024年以後の贈与から段階的に）。延長4年分は100万円控除",
+ hon:"相続または遺贈により財産を取得した者が、相続開始前7年以内（経過措置あり）に被相続人から暦年課税による贈与により取得した財産の価額は、相続税の課税価格に加算される。"},
+{q:"相続時精算課税制度で、毎年110万円の基礎控除の範囲内でもらった財産も、贈与した人が亡くなったら、すべて相続財産に加えなければならない。",a:false,ha:true,ng:"年110万円の基礎控除以下の部分は、相続財産に<b>加えなくてよい</b>です（2024年1月以後の贈与）。",fig:"zoyo",
+ exp:`<p>相続時精算課税は、2024年から使いやすくなりました。</p><p>・<mark>毎年110万円の基礎控除</mark>ができた（暦年課税の110万円とは別枠）<br>・110万円以下なら<b>申告もいらない</b><br>・この110万円の部分は、亡くなったときに<b>相続財産に足さなくてよい</b>（7年以内でも）</p><p>そのうえで、110万円をこえた分は、累計<b>2,500万円</b>の特別控除から引いていきます。</p><p>ただし、一度選ぶと、<b>その人からの贈与は暦年課税にもどれない</b>のは今までどおりです。</p>`,
+ pt:"相続時精算課税：年110万円の基礎控除（2024年〜）＋累計2,500万円。110万円部分は相続時に加算しない",
+ hon:"相続時精算課税制度の適用を受けた贈与財産については、2024年1月1日以後、特別控除額とは別に年間110万円の基礎控除額が設けられ、基礎控除額以下の部分は相続税の課税価格に加算されない。"},
+{q:"父母や祖父母から、家を建てたり買ったりするためのお金をもらった場合、省エネなどの基準を満たす住宅なら、最高1,000万円まで贈与税がかからない特例がある。",a:true,
+ exp:`<p><b>住宅取得等資金の贈与税の非課税</b>は、若い世代のマイホームを応援する特例です。</p><p>・あげる人：<b>父母・祖父母など（直系尊属）</b><br>・もらう人：<b>18歳以上</b>で、合計所得金額<b>2,000万円以下</b><br>・非課税の上限：<mark>省エネ等住宅1,000万円</mark>、それ以外の住宅<b>500万円</b><br>・床面積：原則<b>50㎡以上240㎡以下</b></p><p>暦年課税の110万円や、相続時精算課税と<b>あわせて使えます</b>。非課税になっても<b>申告は必要</b>です。</p>`,
+ pt:"住宅取得等資金の非課税：直系尊属から・省エネ等住宅1,000万円／その他500万円（申告必要）",
+ hon:"直系尊属から住宅取得等資金の贈与を受けた場合の贈与税の非課税制度における非課税限度額は、省エネ等住宅の場合は1,000万円、それ以外の住宅の場合は500万円である。"},
+{q:"養子は、法定相続人として、実の子と同じだけの相続分がある。",a:true,fig:"souzokunin",
+ exp:`<p>民法では、<mark>養子も実子も同じ「子」</mark>なので、相続分も同じです。何人養子にしても、全員が相続人になります。</p><p>ただし、<b>相続税の計算</b>（基礎控除や生命保険の非課税などに使う「法定相続人の数」）では、数えられる養子の数に制限があります。</p><p>・<b>実子がいる</b>場合：養子は<b>1人まで</b><br>・<b>実子がいない</b>場合：養子は<b>2人まで</b></p><p>（配偶者の連れ子を養子にした場合などは、実子として数えます。）</p>`,
+ pt:"民法上は養子も実子と同じ。相続税の法定相続人の数に入る養子は、実子ありなら1人・なしなら2人まで",
+ hon:"相続税の計算において、法定相続人の数に含める養子の数は、被相続人に実子がいる場合は1人、実子がいない場合は2人までに制限される。"},
+{q:"特別養子縁組で養子になった子は、実の親（実方の父母）との親族関係がなくなるため、実の親の相続人にはならない。",a:true,
+ exp:`<p>養子縁組には2種類あります。</p><p>・<b>普通養子</b>：実の親との関係も<b>続く</b> → <b>実の親と養親の両方</b>の相続人になれる<br>・<mark>特別養子</mark>：原則<b>15歳未満</b>の子が対象。実の親との関係が<mark>なくなる</mark> → <b>養親だけ</b>の相続人</p>`,
+ pt:"普通養子＝実親と養親の両方を相続／特別養子＝養親のみ（実親との関係は終了）",
+ hon:"特別養子縁組が成立すると、養子と実方の父母との親族関係は終了するため、養子は実方の父母の相続人とならない。"},
+{q:"半血兄弟姉妹（父母の一方だけが同じ兄弟姉妹）の法定相続分は、全血兄弟姉妹（父母の両方が同じ）と同じである。",a:false,ha:true,ng:"半血兄弟姉妹の相続分は、全血の<b>2分の1</b>です。",fig:"souzokubun",
+ exp:`<p>兄弟姉妹が相続人になるとき、<b>父母の両方が同じか、片方だけ同じか</b>で相続分が変わります。</p><p>・<b>全血兄弟姉妹</b>（父も母も同じ）：1<br>・<mark>半血兄弟姉妹</mark>（父か母の片方だけ同じ）：<mark>全血の2分の1</mark></p><p>例：配偶者と、全血の兄と半血の弟が相続人のとき、兄弟姉妹全体の相続分1/4を「兄2：弟1」で分けます。兄は1/4×2/3＝1/6、弟は1/4×1/3＝<b>1/12</b>。</p><p>なお、子の場合は、<b>嫡出子（結婚している夫婦の子）でも非嫡出子でも相続分は同じ</b>です。</p>`,
+ pt:"半血兄弟姉妹の相続分は全血の1/2（子は嫡出・非嫡出で差はない）",
+ hon:"父母の一方のみを同じくする兄弟姉妹の相続分は、父母の双方を同じくする兄弟姉妹の相続分の2分の1である。"},
+{q:"遺留分を侵害された相続人は、相続の開始などを知った時から5年以内であれば、遺留分侵害額請求ができる。",a:false,ha:true,ng:"知った時から<b>1年</b>（または相続開始から10年）で時効です。",
+ exp:`<p>遺言などで遺留分（最低限の取り分）より少なくされた相続人は、多くもらった人に対して、<b>遺留分侵害額請求</b>ができます。</p><p>今の民法では、<mark>お金で</mark>請求します（昔のように「物を返して」ではない）。</p><p>期限：<br>・相続の開始と、侵害する贈与・遺贈があったことを<b>知った時から1年</b><br>・または、相続の開始から<b>10年</b></p><p>また、遺留分は、<b>家庭裁判所の許可</b>を受ければ、<b>相続が始まる前に放棄</b>することもできます（相続放棄は相続が始まる前にはできません）。</p>`,
+ pt:"遺留分侵害額請求：金銭で請求・知った時から1年／相続開始から10年。遺留分の放棄は生前でも可（家裁の許可）",
+ hon:"遺留分侵害額請求権は、遺留分権利者が、相続の開始および遺留分を侵害する贈与または遺贈があったことを知った時から1年間行使しないときは、時効によって消滅する。"},
+{q:"「配偶者居住権」を相続した配偶者は、その権利をほかの人に売ることができる。",a:false,ha:true,ng:"配偶者居住権は<b>譲渡（売ること）ができません</b>。",
+ exp:`<p>家の価値が大きいと、配偶者が家を相続すると、生活費になる預金などをあまりもらえないことがあります。</p><p>そこで、家を<b>「住む権利（配偶者居住権）」と「持ち主の権利（所有権）」に分けて</b>相続できるようになりました。</p><p>・配偶者は<mark>配偶者居住権</mark>を相続 → <b>原則亡くなるまで無償</b>で住める<br>・子などは<b>所有権</b>を相続</p><p>配偶者居住権は、<b>登記</b>することで第三者に対抗できます。また、<b>売ったり、ほかの人に譲ったりはできません</b>。</p><p>配偶者居住権は、配偶者が亡くなると消えるので、その時に<b>相続税はかかりません</b>。</p>`,
+ pt:"配偶者居住権：原則終身・無償で住める。登記が必要・譲渡不可",
+ hon:"配偶者居住権の存続期間は、原則として配偶者の終身の間であり、配偶者居住権は譲渡することができない。"},
+{q:"遺言は、18歳（成年）にならなければ、つくることができない。",a:false,ha:true,ng:"遺言は<b>15歳以上</b>なら、親の同意なしでつくれます。",fig:"igon",
+ exp:`<p>遺言は、その人の<b>最後の意思</b>なので、ふつうの契約より条件がゆるくなっています。</p><p>・<mark>15歳以上</mark>なら、<b>親（法定代理人）の同意なしで</b>作れる<br>・いつでも、<b>新しい遺言</b>で前の遺言を取り消せる（撤回）<br>・内容が食いちがう遺言が複数あるときは、<b>日付が新しいほう</b>が優先<br>・<b>2人以上が同じ紙で</b>する遺言（共同遺言）は無効</p>`,
+ pt:"遺言は15歳以上・同意不要。新しい遺言が優先・いつでも撤回可・共同遺言は無効",
+ hon:"15歳に達した者は、法定代理人の同意を得ることなく、遺言をすることができる。"},
+{q:"相続時精算課税の適用を受けた贈与財産は、相続税の計算では、亡くなったときの価額で相続財産に加える。",a:false,ha:true,ng:"加えるのは「<b>贈与したときの価額</b>」です。",fig:"zoyo",
+ exp:`<p>相続時精算課税で受けた贈与財産は、亡くなったときに相続財産に足して相続税を計算します（年110万円の基礎控除の部分は除く）。</p><p>このとき足す金額は、<mark>贈与したときの価額</mark>です（亡くなったときの価額ではありません）。</p><p>だから、<b>将来値上がりしそうな財産</b>（成長しそうな会社の株など）を早めに贈与すると、相続税対策になります。</p><p>すでに払った贈与税は、相続税から差し引きます。相続税より多ければ、<b>差額が戻ってきます（還付）</b>。</p>`,
+ pt:"相続時精算課税の財産は「贈与時の価額」で加算。払った贈与税は相続税から控除（還付あり）",
+ hon:"相続時精算課税の適用を受けた贈与財産は、贈与時の価額により相続税の課税価格に加算される。"},
+{q:"相続税の計算で、「相続人が受け取った死亡退職金」で非課税になるのは、亡くなってから3年以内に支給が確定したものである。",a:true,
+ exp:`<p>会社から遺族に支払われる<b>死亡退職金</b>は、<b>みなし相続財産</b>です。</p><p>相続財産になるのは、<mark>亡くなってから3年以内に支給が確定したもの</mark>。相続人が受け取った場合は、<b>500万円×法定相続人の数</b>までが非課税です。</p><p>一方、会社から遺族への<b>弔慰金（ちょういきん）</b>は、一定額までは非課税です。<br>・業務上の死亡：給与の<b>3年分</b>まで<br>・業務外の死亡：給与の<b>半年分</b>まで</p><p>なお、3年をこえて確定した退職金は、遺族の一時所得になります。</p>`,
+ pt:"死亡退職金：3年以内に支給確定 → 相続税（500万円×法定相続人の数が非課税）。弔慰金は業務上3年分・業務外半年分まで非課税",
+ hon:"被相続人の死亡後3年以内に支給が確定した退職手当金等は、相続税の課税対象となり、相続人が取得したものについては、500万円に法定相続人の数を乗じた金額まで非課税となる。"},
+{q:"相続税の申告で、配偶者の税額軽減や小規模宅地等の特例を使うと相続税がゼロになる場合は、相続税の申告書を出す必要はない。",a:false,
+ exp:`<p>特例を使うと税金がゼロになる場合でも、<mark>申告をしないと特例は使えません</mark>。だから、<b>申告は必要</b>です。</p><p>申告が必要な特例の例：<br>・<mark>配偶者の税額軽減</mark><br>・<mark>小規模宅地等の特例</mark></p><p>反対に、そもそも課税価格の合計が<b>基礎控除額以下</b>なら、申告はいりません。</p>`,
+ pt:"配偶者の税額軽減・小規模宅地等の特例は、税額ゼロでも申告が必要",
+ hon:"配偶者に対する相続税額の軽減や小規模宅地等についての相続税の課税価格の計算の特例の適用を受けることにより納付すべき相続税額が算出されない場合であっても、相続税の申告書を提出しなければならない。"},
+{q:"相続税は原則として現金で一度に払うが、それが難しい場合は「延納」が、延納でも難しい場合は「物納」が認められることがある。",a:true,
+ exp:`<p>相続税は、<b>申告期限（10か月以内）までに、現金で一度に払う</b>のが原則です。</p><p>払うのが難しい場合：<br>・<b>延納</b>：分割で払う（10万円をこえ、担保を出すなどの条件あり）<br>・<mark>物納</mark>：延納でも払えない場合に、<b>物（不動産や国債、上場株式など）で払う</b></p><p>物納できる財産には順位があり、<b>第1順位は不動産・船舶・国債・地方債・上場株式など</b>です。</p><p>なお、<b>贈与税</b>は延納はできますが、<b>物納はできません</b>。</p>`,
+ pt:"相続税：現金一括が原則 → 延納 → 物納（贈与税は物納不可）",
+ hon:"相続税を延納によっても金銭で納付することが困難な場合には、一定の要件のもと、物納が認められる。"},
+{q:"小規模宅地等の特例で、亡くなった人が人に貸していたアパートの敷地（貸付事業用宅地等）は、330㎡までの部分の評価額が80%減額される。",a:false,ha:true,ng:"貸付事業用宅地等は<b>200㎡まで50%</b>減額。330㎡・80%は特定居住用（自宅）です。",fig:"shokibo",
+ exp:`<p>小規模宅地等の特例の3つの区分を、数字とセットで覚えましょう。</p><p>・<b>特定居住用</b>（自宅）：<b>330㎡まで80%減</b><br>・<b>特定事業用</b>（お店・工場）：<b>400㎡まで80%減</b><br>・<mark>貸付事業用</mark>（アパート・貸駐車場）：<mark>200㎡まで50%減</mark></p><p>特定居住用と特定事業用は、<b>あわせて730㎡まで</b>使えます（330＋400）。貸付事業用を組み合わせる場合は、面積の調整計算が必要です。</p>`,
+ pt:"貸付事業用宅地等：200㎡まで50%減（居住用330㎡・事業用400㎡は80%減、両方で730㎡まで）",
+ hon:"貸付事業用宅地等に該当する宅地等については、200㎡を限度として評価額の50%を減額することができる。"},
+{q:"小規模宅地等の特例で、亡くなった人と同居していた子が自宅の土地を相続した場合、相続税の申告期限まで住み続け、かつ持ち続けることが条件である。",a:true,fig:"shokibo",
+ exp:`<p>自宅の土地（特定居住用宅地等）の特例を使える人と条件は、誰が相続するかで変わります。</p><p>・<b>配偶者</b>：<b>条件なし</b>（すぐ売ってもOK）<br>・<mark>同居していた親族</mark>：<mark>申告期限（10か月）まで住み続け、持ち続ける</mark><br>・<b>同居していない親族</b>（いわゆる「家なき子」）：配偶者や同居の相続人がいない、相続前3年以内に自分や配偶者などの持ち家に住んだことがない、などの厳しい条件あり</p>`,
+ pt:"特定居住用の特例：配偶者は無条件／同居親族は申告期限まで居住・保有継続",
+ hon:"被相続人と同居していた親族が特定居住用宅地等を相続した場合、相続開始時から相続税の申告期限まで引き続き当該宅地等に居住し、かつ所有していることが小規模宅地等の特例の要件である。"},
+{q:"家屋の相続税評価額は、固定資産税評価額 × 1.0 で計算し、人に貸している家屋（貸家）は、そこから借家権割合（30%）× 賃貸割合 を差し引いて評価する。",a:true,fig:"hyoka",
+ exp:`<p>建物の評価はシンプルです。</p><p>・<b>自分で使う家屋</b>（自用家屋）：<mark>固定資産税評価額 × 1.0</mark><br>・<mark>貸家</mark>：固定資産税評価額 ×（1 − <b>借家権割合（全国一律30%）</b> × 賃貸割合）</p><p>例：評価額2,000万円のアパートが満室なら、2,000万×（1−0.3×1.0）＝<b>1,400万円</b>。</p><p>建てている途中の家（建築中の家屋）は、<b>費用現価×70%</b>で評価します。</p>`,
+ pt:"家屋＝固定資産税評価額×1.0／貸家＝×（1−30%×賃貸割合）",
+ hon:"貸家の価額は、その家屋の固定資産税評価額×（1−借家権割合×賃貸割合）により評価し、借家権割合は30%である。"},
+{q:"借地権割合60%の地域で、自用地としての評価額が1億円の土地を人に貸し、借りた人が自分の家を建てている場合、その土地（貸宅地）の評価額は6,000万円である。",a:false,ha:true,ng:"貸宅地は1億×（1−0.6）＝<b>4,000万円</b>。6,000万円は借地権の評価額です。",fig:"hyoka",
+ exp:`<p>土地を人に貸して、その人が家を建てていると、貸している人はその土地を自由に使えません。</p><p>・<b>借りている人の権利（借地権）</b>：自用地評価額 × 借地権割合 ＝ 1億 × 60% ＝ <b>6,000万円</b><br>・<mark>貸している人の土地（貸宅地）</mark>：自用地評価額 ×（1 − 借地権割合）＝ 1億 × 40% ＝ <mark>4,000万円</mark></p><p>借地権と貸宅地を足すと、ちょうど自用地の1億円になります。</p>`,
+ pt:"貸宅地（底地）＝自用地評価額×（1−借地権割合）／借地権＝自用地評価額×借地権割合",
+ hon:"借地権割合60%、自用地評価額1億円の貸宅地の相続税評価額は、1億円×（1−0.6）＝4,000万円である。"},
+{q:"同族株主が、取引相場のない株式（上場していない会社の株）を相続した場合、原則として「類似業種比準方式」や「純資産価額方式」などの原則的評価方式で評価する。",a:true,
+ exp:`<p>上場していない会社の株は、市場の値段がないので、特別な方法で評価します。</p><p>・<mark>原則的評価方式</mark>（会社の経営に影響力のある<b>同族株主など</b>）<br>　- <b>類似業種比準方式</b>：同じような業種の上場会社の株価をもとに、配当・利益・純資産をくらべて評価<br>　- <b>純資産価額方式</b>：会社の財産から借金を引いた純資産をもとに評価<br>　（会社の大きさによって、どちらか・または組み合わせ）<br>・<b>特例的評価方式</b>（同族株主<b>以外</b>の少数株主）：<br>　- <b>配当還元方式</b>：もらえる配当をもとに評価（ふつう、かなり安くなる）</p>`,
+ pt:"取引相場のない株式：同族株主＝原則的評価（類似業種比準・純資産価額）／同族株主以外＝配当還元方式",
+ hon:"同族株主が取得した取引相場のない株式は、会社規模に応じて、類似業種比準方式、純資産価額方式、またはこれらの併用方式により評価する。"},
+{q:"「非上場株式等についての贈与税・相続税の納税猶予（事業承継税制）」の特例措置では、後継者が受け継いだ株式に対応する贈与税・相続税の全額が、一定の条件のもと納税を猶予される。",a:true,
+ exp:`<p>中小企業の社長が、後継者（子どもなど）に会社の株を渡すとき、<b>高い相続税・贈与税</b>がネックになることがあります。</p><p>そこで<b>事業承継税制</b>では、後継者が株を受け継いでも、一定の条件のもと<b>税金の支払いを先送り（猶予）</b>できます。</p><p>・<mark>特例措置</mark>：対象の株式数の上限なし、<mark>税額の100%</mark>を猶予（前もって「特例承継計画」を都道府県に出す必要があり、その提出期限は2026年3月31日まで）<br>・<b>一般措置</b>：発行済株式の3分の2まで、相続税は80%を猶予</p><p>後継者が亡くなるなど一定の場合には、猶予された税金が<b>免除</b>されます。</p>`,
+ pt:"事業承継税制：特例措置は全株式・税額100%猶予（特例承継計画の提出が必要）／一般措置は2/3・相続税80%",
+ hon:"非上場株式等についての相続税の納税猶予の特例措置では、後継者が取得した対象株式に係る相続税の全額について、その納税が猶予される。"},
+{q:"会社が、亡くなった社長の遺族に死亡退職金を払う資金を準備するため、会社が契約者・受取人、社長が被保険者の生命保険に入るのは、事業承継対策の一つである。",a:true,
+ exp:`<p>社長が急に亡くなると、会社には<b>死亡退職金や借金の返済</b>など、大きなお金が必要になります。</p><p>そこで、<mark>会社が契約者・受取人、社長が被保険者</mark>の生命保険に入っておき、受け取った保険金を<b>遺族への死亡退職金</b>にあてる方法がよく使われます。</p><p>遺族が受け取る死亡退職金は、<b>500万円×法定相続人の数まで非課税</b>。さらに、遺族はそのお金で相続税を払ったり、ほかの相続人に代償金を払ったりできます。</p><p>また、遺族が会社に<b>株を買い取ってもらう</b>資金にも使えます（自社株の買取り）。</p>`,
+ pt:"法人契約の生命保険で死亡退職金・自社株買取りの資金を準備（遺族の相続税の納税資金にも）",
+ hon:"法人が契約者および死亡保険金受取人、役員が被保険者である生命保険は、役員死亡時の死亡退職金の支払原資や事業承継対策として活用される。"},
+{q:"相続税の計算で、亡くなった人がもらう予定だった老齢年金のうち、亡くなった後に遺族が受け取った「未支給年金」は、相続税の対象になる。",a:false,
+ exp:`<p>年金は後払いなので、亡くなった月の分などが<b>まだ支払われていない（未支給）</b>ことがあります。それを遺族が受け取るのが<b>未支給年金</b>です。</p><p>未支給年金は、法律で<b>遺族自身の権利</b>として受け取るものとされているので、<mark>相続税の対象ではなく、受け取った遺族の一時所得</mark>になります。</p><p>ちなみに、遺族が受け取る<b>遺族年金</b>は、相続税も所得税も<b>かかりません</b>（非課税）。</p>`,
+ pt:"未支給年金＝受け取った遺族の一時所得（相続税ではない）。遺族年金は非課税",
+ hon:"相続人が受け取った被相続人の未支給年金は、相続税の課税対象とはならず、受け取った遺族の一時所得として所得税の課税対象となる。"},
+{q:"相続税の「相次相続控除（そうじそうぞくこうじょ）」は、10年以内に2回以上相続があった場合に、前の相続でかかった相続税の一部を、後の相続税から差し引ける制度である。",a:true,
+ exp:`<p>たとえば、祖父が亡くなって父が相続し、その数年後に父も亡くなった…という場合、同じ財産に短い期間で<b>2回も相続税</b>がかかってしまいます。</p><p>そこで、<mark>10年以内に続けて相続があった</mark>場合、前の相続税の一部を、後の相続税から差し引けます。これが<b>相次相続控除</b>です。</p><p>期間が短いほど、差し引ける額は大きくなります。</p>`,
+ pt:"相次相続控除：10年以内に続けて相続があったとき、前回の相続税の一部を控除",
+ hon:"相次相続控除は、今回の相続開始前10年以内に被相続人が相続により財産を取得し相続税が課されていた場合に適用される。"},
+{q:"遺言で財産をもらう人（受遺者）が、遺言者より先に亡くなっていた場合、その遺贈は、受遺者の子が代わりに受け取る（代襲する）。",a:false,
+ exp:`<p>遺言で財産をあげること（<b>遺贈</b>）は、<b>その人に</b>あげるという意思です。</p><p>だから、もらう人（受遺者）が遺言者より先に亡くなっていたら、<mark>その遺贈は効力がなくなります</mark>。受遺者の子が代わりにもらう（代襲する）ことはありません。</p><p>相続の「代襲相続」とは、ここがちがうので注意しましょう。</p><p>遺言に「受遺者が先に亡くなったら、その子にあげる」と書いておけば（予備的遺言）、その子がもらえます。</p>`,
+ pt:"受遺者が遺言者より先に死亡 → 遺贈は無効（代襲しない）",
+ hon:"遺贈は、遺言者の死亡以前に受遺者が死亡したときは、その効力を生じない。"}
+].map(o=>Object.assign({g:2,c:"sozo"},o)));
+const cnt={};
+Q.forEach(q=>{const k=q.g+"-"+q.c;cnt[k]=(cnt[k]||0)+1;q.n=cnt[k];q.id=k+"-"+q.n;
+  const seen=new Set(),found=[];q.q=expandAbbr(q.q,seen,found);q.exp=expandAbbr(q.exp,seen,found);q.hon=expandAbbr(q.hon,seen,found);if(q.ng)q.ng=expandAbbr(q.ng,seen,found);q.pt=expandAbbr(q.pt,new Set(found),found);q.abbr=found});
+
+/* ---------- 保存 ---------- */
+const KEY="fp-ox-v1";
+let store={res:{},grade:3};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.res)store=Object.assign({grade:3},s)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}};
+
+/* ---------- 画面 ---------- */
+const app=document.getElementById("app");
+let S={view:"home",list:[],i:0,picked:null,results:[],label:""};
+const G=()=>store.grade===2?2:3;
+const qsOf=(g,c)=>Q.filter(q=>q.g===g&&(!c||q.c===c));
+
+const header=()=>`<div class="top"><button class="brand" data-act="home" aria-label="ホームへ"><span class="seal">FP</span><span><b>はじめてのFP○×</b><small>3級・2級 超基礎からの一問一答</small></span></button>${S.view!=="home"?`<button class="ghost" data-act="home">ホーム</button>`:""}</div>`;
+
+function stat(qs){const ok=qs.filter(q=>store.res[q.id]&&store.res[q.id].ok).length;const done=qs.filter(q=>store.res[q.id]).length;return{n:qs.length,ok,done}}
+const wrongIds=g=>qsOf(g).filter(q=>store.res[q.id]&&!store.res[q.id].ok).map(q=>q.id);
+const yetIds=g=>qsOf(g).filter(q=>!store.res[q.id]).map(q=>q.id);
+
+function examInfo(g){
+  if(g===3)return `<details class="panel">
+    <summary>3級ってどんな試験？</summary>
+    <p><b>FP（ファイナンシャル・プランナー）</b>は、家計・保険・投資・税金・家・相続など、<b>くらしのお金全体</b>の相談にのる専門家です。国家資格の「FP技能士」は3級→2級→1級と進みます。</p>
+    <p>3級は<b>だれでも受けられます</b>。試験はパソコンで受ける方式（CBT：Computer Based Testing）で、ほぼ一年中、好きな日に受けられます。</p>
+    <p><b>学科</b>：60問（○×30問＋3択30問）・90分。<b>60点満点で36点以上</b>（6割）で合格。<br><b>実技</b>：日本FP協会「資産設計提案業務」（100点満点で60点以上）、または、きんざい「個人資産相談業務」「保険顧客資産相談業務」から1つ（50点満点で30点以上）。</p>
+    <p>学科は<b>6分野から10問ずつ</b>。どれか1分野だけが得意でもダメで、<b>まんべんなく6割</b>をめざすのがコツです。</p>
+    <p class="mini">※試験時間・形式は変わることがあります。申し込み前に日本FP協会・金融財政事情研究会（きんざい）の公式サイトで確認してください。</p>
+  </details>`;
+  return `<details class="panel">
+    <summary>2級ってどんな試験？</summary>
+    <p>2級を受けるには、<b>3級に合格</b>している、FPの仕事の<b>実務経験が2年以上</b>ある、日本FP協会の<b>AFP（Affiliated Financial Planner：アフィリエイテッド・ファイナンシャル・プランナー）認定研修</b>を修了した、などの条件が必要です。</p>
+    <p><b>学科</b>：60問（すべて4択）・120分。<b>60点満点で36点以上</b>で合格。<br><b>実技</b>：日本FP協会「資産設計提案業務」（100点満点で60点以上）、または、きんざい「個人資産相談業務」など（50点満点で30点以上）。</p>
+    <p>3級の知識をベースに、<b>計算問題</b>や<b>例外のルール</b>、<b>会社（法人）のお金</b>の話が増えます。まずこのアプリの3級を8割以上できるようにしてから進むと、ぐっとわかりやすくなります。</p>
+    <p class="mini">※試験時間・形式は変わることがあります。申し込み前に公式サイトで確認してください。</p>
+  </details>`;
+}
+
+function home(){
+  const g=G();const all=qsOf(g);const s=stat(all);const pct=s.n?Math.round(s.ok/s.n*100):0;
+  const w=wrongIds(g).length,y=yetIds(g).length;
+  app.innerHTML=header()+`
+  <section class="hero">
+    <h1>お金の基本を、<span class="ox">○</span>か<span class="ox">×</span>でひとつずつ。</h1>
+    <p>知識ゼロからでも大丈夫。むずかしい言葉は小学生にもわかるように言いかえ、略語には（フル表記）をつけました。答えると、やさしい解説と「本番ではこう出る」文が見られます。</p>
+  </section>
+  <div class="tabs" role="tablist">${[3,2].map(k=>{const st=stat(qsOf(k));return `<button role="tab" aria-selected="${g===k}" class="tab ${g===k?"on":""}" data-act="grade" data-g="${k}"><b>${GRADES[k].name}</b><small>${GRADES[k].sub}・${st.n}問</small></button>`}).join("")}</div>
+  <section class="hero" style="padding-top:0">
+    <div class="total"><span><strong>${s.ok}</strong> / ${s.n}問 正解ずみ（${GRADES[g].name}）</span><span>${pct}%</span></div>
+    <div class="meter" aria-hidden="true"><i style="width:${pct}%"></i></div>
+  </section>
+  <div class="fields">${Object.entries(FIELDS).map(([k,f],ix)=>{const st=stat(qsOf(g,k));return `
+    <button class="field" style="--fc:${f.color}" data-act="field" data-c="${k}">
+      <span class="tag">分野${ix+1}・${f.tag}</span><h3>${f.name}</h3><p>${f.desc}</p>
+      <div class="meter" aria-hidden="true"><i style="width:${st.n?Math.round(st.ok/st.n*100):0}%"></i></div>
+      <span class="stat"><span>正解 ${st.ok} / ${st.n}問</span><span>${st.done?`${st.done}問やった`:"まだ"}</span></span>
+      <span class="go">はじめる →</span></button>`}).join("")}</div>
+  <div class="row">
+    <button class="btn" data-act="all">${GRADES[g].name}の全${s.n}問をシャッフル</button>
+    <button class="btn sub" data-act="yet" ${y?"":"disabled"}>まだの問題（${y}問）</button>
+    <button class="btn sub" data-act="wrong" ${w?"":"disabled"}>まちがえた問題だけ（${w}問）</button>
+  </div>
+  ${examInfo(g)}
+  <details class="panel">
+    <summary>おすすめの勉強のしかた</summary>
+    <p>① まず<b>3級</b>を、分野ごとに順番どおり解きます（やさしい問題から並んでいます）。<br>② 解説の<b>「覚える」</b>の1行だけは、声に出して読みましょう。<br>③ 全部終わったら<b>「まちがえた問題だけ」</b>をくり返し、ゼロになるまで続けます。<br>④ 3級で8割とれたら<b>2級</b>へ。2級も同じようにくり返します。</p>
+    <p>分野の順番は、身近な <b>ライフプラン → リスク管理（保険）→ 金融 → 税金 → 不動産 → 相続</b> がおすすめ。税金の知識は、ほかの分野にも出てくるので、つまずいたら税金の分野を見直すと理解が進みます。</p>
+  </details>
+  <details class="panel">
+    <summary>略語じてん（${ABBR.length}語）</summary>
+    <dl class="words">${ABBR.slice().sort((a,b)=>a[0].localeCompare(b[0])).map(a=>`<div><dt>${a[0]}</dt><dd>${a[1]}（${a[2]}）</dd></div>`).join("")}</dl>
+  </details>
+  <p class="foot">記録はこの端末のブラウザにだけ保存されます。問題文と解説は、学習用にやさしく書いたオリジナルです。税金や年金のルールは毎年のように変わります。内容は2026年4月時点の制度にもとづいていますが、受験する年の試験の基準日（法令基準日）と最新のテキストでも確認してください。 <button class="ghost" data-act="reset" style="margin-left:4px">記録を消す</button></p>`;
+}
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function start(ids,label){S={view:"quiz",list:ids,i:0,picked:null,results:[],label};render();window.scrollTo(0,0)}
+
+function quiz(){
+  const q=Q.find(x=>x.id===S.list[S.i]);const f=FIELDS[q.c];const answered=S.picked!==null;
+  const ok=answered&&(S.picked===q.a);
+  let out=header()+`<div class="qhead" style="--fc:${f.color}"><span class="gb">${GRADES[q.g].name}</span><span class="fl">${f.short}</span><span>${S.label}</span><span class="n">${S.i+1} / ${S.list.length}</span></div>
+  <div class="meter" aria-hidden="true"><i style="width:${(S.i+(answered?1:0))/S.list.length*100}%;background:${f.color}"></i></div>
+  <article class="qcard" style="--fc:${f.color}">
+    <div class="qno">${GRADES[q.g].name} ${f.short} Q.${q.n}　○か×か？</div>
+    <div class="qtext">${q.q}</div>
+    <div class="choices">
+      <button class="choice o ${answered?(S.picked===true?"picked":"dim"):""}" data-act="pick" data-v="1" ${answered?"disabled":""}><span class="mk">○</span><span class="lb">正しい</span></button>
+      <button class="choice x ${answered?(S.picked===false?"picked":"dim"):""}" data-act="pick" data-v="0" ${answered?"disabled":""}><span class="mk">×</span><span class="lb">まちがい</span></button>
+    </div>`;
+  if(!answered){out+=`<div class="kbd">キーボードなら O / X で答えられます</div></article>`;app.innerHTML=out;return}
+  const fig=q.fig&&FIGS[q.fig];
+  const ab=q.abbr.map(k=>ABBR.find(a=>a[0]===k));
+  out+=`<div class="verdict ${ok?"ok":"ng"}" role="status"><span class="big">${ok?"○":"×"}</span><div><h3>${ok?"正解！":"ざんねん"}</h3><p>この文は「<b>${q.a?"○ 正しい":"× まちがい"}</b>」です</p></div></div>
+    <div class="exp">
+      ${q.ng?`<div class="ngbox"><span class="lbl">どこがちがう？</span>${q.ng}</div>`:""}
+      <div><h4>かんたん解説</h4><div class="body">${q.exp}</div></div>
+      ${fig?`<figure class="fig" style="margin:0">${fig.html()}<figcaption class="cap">${fig.cap}</figcaption></figure>`:""}
+      <div class="point">${q.pt}</div>
+      <div class="hon"><span class="lbl">本番の試験では、こんな書き方で出ます</span>「${q.hon}」<br><b>→ ${(q.ha!==undefined?q.ha:q.a)?"正しい（適切）":"誤り（不適切）"}</b></div>
+      ${q.w?`<div><h4>ことばメモ</h4><dl class="words">${q.w.map(w=>`<div><dt><ruby>${w[0]}<rt>${w[1]}</rt></ruby></dt><dd>${w[2]}</dd></div>`).join("")}</dl></div>`:""}
+      ${ab.length?`<div><h4>略語メモ</h4><dl class="words">${ab.map(a=>`<div><dt>${a[0]}</dt><dd>${a[1]}（${a[2]}）</dd></div>`).join("")}</dl></div>`:""}
+    </div>
+    <div class="qnav"><button class="btn" data-act="next" id="nextBtn">${S.i+1<S.list.length?"次の問題へ":"結果を見る"}</button></div>
+  </article>`;
+  app.innerHTML=out;
+}
+
+function end(){
+  const n=S.results.length,ok=S.results.filter(r=>r.ok).length;
+  const miss=S.results.filter(r=>!r.ok);
+  const msg=ok===n?"全問正解！ この調子で次の分野へ。":ok/n>=.6?"合格ラインの6割をこえています。まちがえた所だけ、もう一度見ておきましょう。":"だいじょうぶ。解説を読んで、もう一度チャレンジすれば必ず覚えられます。";
+  app.innerHTML=header()+`<section class="end">
+    <span class="qhead">${S.label} の結果</span>
+    <div class="score">${ok}<small> / ${n}問</small></div>
+    <p style="margin:0">${msg}</p>
+    ${miss.length?`<div class="miss"><b style="font-size:14px">まちがえた問題</b>${miss.map(r=>{const q=Q.find(x=>x.id===r.id);return `<button data-act="one" data-id="${q.id}"><b>×</b>${q.q.replace(/<[^>]+>/g,"")}</button>`}).join("")}</div>`:""}
+    <div class="row">${miss.length?`<button class="btn" data-act="retry">まちがえた${miss.length}問をやり直す</button>`:""}<button class="btn sub" data-act="home">ホームへ</button></div>
+  </section>`;
+}
+
+function render(){S.view==="home"?home():S.view==="quiz"?quiz():end()}
+
+function pick(v){
+  if(S.picked!==null)return;
+  const q=Q.find(x=>x.id===S.list[S.i]);S.picked=v;
+  const ok=v===q.a;const r=store.res[q.id]||{n:0};
+  store.res[q.id]={ok,n:r.n+1};save();S.results.push({id:q.id,ok});
+  render();
+  const v2=document.querySelector(".verdict");if(v2&&v2.scrollIntoView)v2.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+}
+function next(){if(S.i+1<S.list.length){S.i++;S.picked=null;render();window.scrollTo(0,0)}else{S.view="end";render();window.scrollTo(0,0)}}
+
+app.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;const g=G();
+  if(a==="home"){S.view="home";render();window.scrollTo(0,0)}
+  else if(a==="grade"){store.grade=+b.dataset.g;save();render()}
+  else if(a==="field"){start(qsOf(g,b.dataset.c).map(q=>q.id),GRADES[g].name+"・"+FIELDS[b.dataset.c].short)}
+  else if(a==="all"){start(shuffle(qsOf(g).map(q=>q.id)),GRADES[g].name+"・全問シャッフル")}
+  else if(a==="yet"){const y=yetIds(g);if(y.length)start(y,GRADES[g].name+"・まだの問題")}
+  else if(a==="wrong"){const w=wrongIds(g);if(w.length)start(shuffle(w),GRADES[g].name+"・まちがえた問題")}
+  else if(a==="retry"){start(S.results.filter(r=>!r.ok).map(r=>r.id),"やり直し")}
+  else if(a==="one"){start([b.dataset.id],"1問だけ")}
+  else if(a==="pick"){pick(b.dataset.v==="1")}
+  else if(a==="next"){next()}
+  else if(a==="reset"){
+    if(b.dataset.sure){store={res:{},grade:g};save();render()}
+    else{b.dataset.sure="1";b.textContent="本当に消す？（もう一度押す）"}
+  }
+});
+document.addEventListener("keydown",e=>{
+  if(S.view!=="quiz"||e.metaKey||e.ctrlKey||e.altKey)return;
+  const k=e.key.toLowerCase();
+  if(S.picked===null){if(k==="o"||k==="1")pick(true);else if(k==="x"||k==="2")pick(false)}
+  else if(k==="enter"||k==="n"||k===" "){if(document.activeElement&&document.activeElement.id!=="nextBtn"){e.preventDefault();next()}}
+});
+render();
+
+</script>
+<p class="offline" id="offline">オフライン利用：準備中…</p>
+<script>
+(function(){
+  var el=document.getElementById("offline");
+  function ok(){el.innerHTML="オフライン利用：<b>準備OK</b>（電波がなくても使えます）"}
+  if(!("serviceWorker" in navigator)){el.textContent="オフライン利用：この環境では使えません";return}
+  navigator.serviceWorker.register("sw.js").then(function(){return navigator.serviceWorker.ready}).then(function(){
+    return caches.open("fp-ox-v1").then(function(c){return c.match("index.html")})
+  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v1").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
+  .catch(function(){el.textContent="オフライン利用：準備できませんでした（通信を確認して開き直してください）"});
+})();
+</script>
+</body>
+</html>
