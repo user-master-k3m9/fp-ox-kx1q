@@ -235,6 +235,51 @@ mark{background:linear-gradient(transparent 45%,var(--hl) 45%);color:inherit;pad
 .ft{font-size:13.5px}
 .ft th:not(:first-child),.ft td{min-width:5.2em}
 .ft tbody th.l{min-width:7em;max-width:14em}
+/* 第5版：今日のおすすめ・本番形式 */
+.today{background:var(--card);border:2px solid var(--maru);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.tdhead{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.tdlbl{font-family:var(--display);font-weight:900;font-size:20px}
+.tdsub{font-size:13px;color:var(--muted)}
+.btn.big{font-size:18px;padding:14px 18px;background:var(--maru)}
+.tdstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tdstats div{display:flex;flex-direction:column;align-items:flex-start;gap:0;background:var(--paper);border-radius:10px;padding:8px 10px;min-width:0}
+.tdstats b{font-family:var(--display);font-size:24px;line-height:1.2;font-variant-numeric:tabular-nums}
+.tdstats span{font-size:12px;color:var(--muted);line-height:1.4}
+.tdstats small{display:block;font-size:10px}
+.est{margin:0;font-size:14px}
+.est b{font-family:var(--display);font-size:18px;color:var(--maru)}
+.est small{color:var(--muted)}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.exam h2,.sec{font-size:18px}
+.exam p{margin:0;font-size:14px;color:var(--muted)}
+.hi{color:var(--c3);font-size:13px;letter-spacing:.05em}
+.exhead{font-weight:700;font-size:16px;line-height:1.7}
+.stl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.stl li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-size:15px;line-height:1.75;padding:10px 12px;border-radius:10px;background:var(--paper)}
+.stl li.sf{background:var(--batsu-soft)}
+.stl li.st{background:var(--maru-soft)}
+.stl .sn{font-family:var(--display);font-weight:900;font-size:16px;min-width:1.4em;text-align:center;color:var(--acc)}
+.stl .tx{min-width:0}
+.stl .tv{display:block;font-size:13px;margin-top:2px}
+.stl li.sf .tv{color:var(--batsu)}
+.stl li.st .tv{color:var(--maru)}
+.opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.opt{border:2px solid var(--line);background:var(--paper);border-radius:12px;padding:12px 4px;font-size:16px;font-family:var(--display);font-weight:700}
+.opt:hover{border-color:var(--acc)}
+.opt.right{border-color:var(--maru);background:var(--maru-soft);color:var(--maru)}
+.opt.wrongpick{border-color:var(--batsu);background:var(--batsu-soft)}
+.opt.dim{opacity:.45}
+.opt[disabled]{cursor:default}
+.exexp{display:flex;flex-direction:column;gap:8px}
+.stexp{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card)}
+.stexp summary{cursor:pointer;font-weight:700;font-size:14px;line-height:1.6}
+.stexp summary .y{color:var(--maru)}
+.stexp summary .n{color:var(--batsu)}
+.stexp .exp{margin-top:10px}
+.timer{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.byf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
+.byf div{display:flex;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--fc);border-radius:10px;padding:8px 12px;font-size:14px}
+.byf b{font-variant-numeric:tabular-nums}
 
 .brand .seal{font-size:15px}
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -295,6 +340,8 @@ mark{background:linear-gradient(transparent 45%,var(--hl) 45%);color:inherit;pad
 .pass.ok{background:var(--maru-soft);color:var(--maru)}
 .pass.ng{background:var(--batsu-soft);color:var(--batsu)}
 .end .ft{max-width:100%}
+.qhead .rv{background:var(--hl-fill);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:0 8px;font-size:12px;font-weight:700}
+.qnav .btn.sub{flex:0 1 auto}
 .tower{display:flex;flex-direction:column;gap:4px;font-size:13px;text-align:center;min-width:300px}
 .tower small{display:block;font-size:11px;color:var(--muted);font-weight:400;line-height:1.4}
 .tower .fl2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
@@ -2479,15 +2526,16 @@ if(!store.ses)store.ses={};
 if(!store.mock)store.mock={};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}};
 /* 途中の状態（どこまで解いたか）を、セットごとに保存する */
-function saveSes(){if(!S.key)return;store.ses[S.key]={list:S.list,i:S.i,picked:S.picked,results:S.results,label:S.label,mode:S.mode||null,ts:Date.now()};save()}
+function saveSes(){if(!S.key)return;store.ses[S.key]={list:S.list,i:S.i,picked:S.picked,picks:S.picks||[],results:S.results,label:S.label,mode:S.mode||null,ts:Date.now()};save()}
 function dropSes(key){if(key&&store.ses[key]){delete store.ses[key];save()}}
-const nextNo=v=>v.i+1+(v.picked!==null&&v.i+1<v.list.length?1:0);
-const doneNo=v=>v.i+(v.picked!==null?1:0);
+/* 解答ずみ＝results の数（答えは先頭から順に進むので、results[k] が list[k] の答え） */
+const doneNo=v=>Math.max((v.results||[]).length,v.i+(v.picked!==null?1:0));
+const nextNo=v=>Math.min(doneNo(v)+1,v.list.length);
 const validSes=k=>{const v=store.ses[k];return !!(v&&Array.isArray(v.list)&&v.list.length&&v.list.every(id=>Q.some(q=>q.id===id))&&v.i<v.list.length)};
 
 /* ---------- 画面 ---------- */
 const app=document.getElementById("app");
-let S={view:"home",list:[],i:0,picked:null,results:[],label:"",key:null,mode:null};
+let S={view:"home",list:[],i:0,picked:null,picks:[],results:[],label:"",key:null,mode:null};
 const G=()=>store.grade===2?2:3;
 const qsOf=(g,c,t)=>Q.filter(q=>q.g===g&&(!c||q.c===c)&&(!t||q.t===t));
 const MCN={3:"三択",2:"四択"};
@@ -2572,13 +2620,20 @@ function home(){
 }
 
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function start(ids,label,key,mode){S={view:"quiz",list:ids,i:0,picked:null,results:[],label,key:key||null,mode:mode||null};saveSes();render();window.scrollTo(0,0)}
+function start(ids,label,key,mode){S={view:"quiz",list:ids,i:0,picked:null,picks:[],results:[],label,key:key||null,mode:mode||null};saveSes();render();window.scrollTo(0,0)}
+/* k問目で選んだ答え（古い記録で答えが残っていないときは、正誤から復元する） */
+function pickOf(k){if(S.picks&&S.picks[k]!==undefined&&S.picks[k]!==null)return S.picks[k];const r=S.results[k];if(!r)return null;const q=Q.find(x=>x.id===S.list[k]);if(!q)return null;
+  return r.ok?q.a:(q.t==="mc"?(q.a+1)%q.ch.length:!q.a)}
+/* k問目へ移動（解答ずみなら答えと解説を表示、まだなら解ける状態） */
+function go(k){S.i=k;S.picked=k<S.results.length?pickOf(k):null;saveSes();render();window.scrollTo(0,0)}
+function prev(){if(S.view==="quiz"&&S.i>0)go(S.i-1)}
 /* 保存があれば続きから、なければ最初から */
 function resumeOr(key,make,label,mode){
-  if(validSes(key)){const v=store.ses[key];let i=v.i,picked=v.picked;
-    /* 答えた問題で止まっていたら、次のまだ解いていない問題から */
-    if(picked!==null&&i+1<v.list.length){i++;picked=null}
-    S={view:"quiz",list:v.list,i,picked,results:v.results||[],label:v.label,key,mode:v.mode||null};saveSes();render();window.scrollTo(0,0)}
+  if(validSes(key)){const v=store.ses[key];
+    S={view:"quiz",list:v.list,i:0,picked:null,picks:(v.picks||[]).slice(),results:(v.results||[]).slice(),label:v.label,key,mode:v.mode||null};
+    if(v.picked!==null&&v.i>=S.results.length){S.picks[v.i]=v.picked}
+    /* まだ解いていない最初の問題から（全部解いてあれば最後の問題） */
+    go(Math.min(doneNo(v),v.list.length-1))}
   else{const ids=make();if(ids.length)start(ids,label,key,mode)}
 }
 const keyColor=k=>{const c=k.split(":")[1];return FIELDS[c]?FIELDS[c].color:"var(--acc)"};
@@ -2587,17 +2642,18 @@ const abHtml=q=>{const ab=q.abbr.map(k=>ABBR.find(a=>a[0]===k));return ab.length
 const wHtml=q=>q.w?`<div><h4>ことばメモ</h4><dl class="words">${q.w.map(w=>`<div><dt><ruby>${w[0]}<rt>${w[1]}</rt></ruby></dt><dd>${w[2]}</dd></div>`).join("")}</dl></div>`:"";
 const figHtml=q=>{const fig=q.fig&&FIGS[q.fig];return fig?`<figure class="fig" style="margin:0">${fig.html()}<figcaption class="cap">${fig.cap}</figcaption></figure>`:""};
 
+const prevBtn=()=>S.i>0?`<div class="qnav"><button class="btn sub" data-act="prev">← 前の問題を見る</button></div>`:"";
 function quiz(){
   const q=Q.find(x=>x.id===S.list[S.i]);const f=FIELDS[q.c];const answered=S.picked!==null;
   const ok=answered&&(S.picked===q.a);const mc=q.t==="mc";
-  let out=header()+`<div class="qhead" style="--fc:${f.color}"><span class="gb">${GRADES[q.g].name}</span><span class="fl">${f.short}</span><span>${S.label}</span><span class="n">${S.i+1} / ${S.list.length}</span></div>
+  let out=header()+`<div class="qhead" style="--fc:${f.color}"><span class="gb">${GRADES[q.g].name}</span><span class="fl">${f.short}</span><span>${S.label}</span>${S.i<S.results.length&&S.i+1<S.results.length?'<span class="rv">見直し中</span>':""}<span class="n">${S.i+1} / ${S.list.length}</span></div>
   <div class="meter" aria-hidden="true"><i style="width:${(S.i+(answered?1:0))/S.list.length*100}%;background:${f.color}"></i></div>
   <article class="qcard" style="--fc:${f.color}">
     <div class="qno">${GRADES[q.g].name} ${f.short} ${mc?MCN[q.g]+(q.calc?"・計算":"")+" Q."+q.n:"Q."+q.n+"　○か×か？"}</div>
     <div class="qtext">${q.q}</div>`;
   if(mc){
     out+=`<div class="mcs">${q.ch.map((c,i)=>{const cls=answered?(i===q.a?"right":i===S.picked?"wrongp":"dim"):"";return `<button class="mc ${cls}" data-act="pickc" data-v="${i}" ${answered?"disabled":""}><span class="no">${MK[i]}</span><span class="tx">${c}</span>${answered&&i===q.a?'<span class="tag ok">正解</span>':answered&&i===S.picked?'<span class="tag ng">あなた</span>':""}</button>`}).join("")}</div>`;
-    if(!answered){out+=`<div class="kbd">キーボードなら 1〜${q.ch.length} で答えられます</div></article>`;app.innerHTML=out;return}
+    if(!answered){out+=`<div class="kbd">キーボードなら 1〜${q.ch.length} で答えられます</div>${prevBtn()}</article>`;app.innerHTML=out;return}
     out+=`<div class="verdict ${ok?"ok":"ng"}" role="status"><span class="big">${ok?"○":"×"}</span><div><h3>${ok?"正解！":"ざんねん"}</h3><p>正解は「<b>${MK[q.a]}</b>」です</p></div></div>
     <div class="exp">
       ${q.exp?`<div><h4>${q.calc?"計算のしかた":"かんたん解説"}</h4><div class="body">${q.exp}</div></div>`:""}
@@ -2611,7 +2667,7 @@ function quiz(){
       <button class="choice o ${answered?(S.picked===true?"picked":"dim"):""}" data-act="pick" data-v="1" ${answered?"disabled":""}><span class="mk">○</span><span class="lb">正しい</span></button>
       <button class="choice x ${answered?(S.picked===false?"picked":"dim"):""}" data-act="pick" data-v="0" ${answered?"disabled":""}><span class="mk">×</span><span class="lb">まちがい</span></button>
     </div>`;
-    if(!answered){out+=`<div class="kbd">キーボードなら O / X で答えられます</div></article>`;app.innerHTML=out;return}
+    if(!answered){out+=`<div class="kbd">キーボードなら O / X で答えられます</div>${prevBtn()}</article>`;app.innerHTML=out;return}
     out+=`<div class="verdict ${ok?"ok":"ng"}" role="status"><span class="big">${ok?"○":"×"}</span><div><h3>${ok?"正解！":"ざんねん"}</h3><p>この文は「<b>${q.a?"○ 正しい":"× まちがい"}</b>」です</p></div></div>
     <div class="exp">
       ${q.ng?`<div class="ngbox"><span class="lbl">どこがちがう？</span>${q.ng}</div>`:""}
@@ -2622,7 +2678,7 @@ function quiz(){
       ${wHtml(q)}${abHtml(q)}
     </div>`;
   }
-  out+=`<div class="qnav"><button class="btn" data-act="next" id="nextBtn">${S.i+1<S.list.length?"次の問題へ":"結果を見る"}</button></div>
+  out+=`<div class="qnav">${S.i>0?'<button class="btn sub" data-act="prev">← 前の問題</button>':""}<button class="btn" data-act="next" id="nextBtn">${S.i+1<S.list.length?(S.i+1<S.results.length?"次の問題へ（見直し）":"次の問題へ →"):"結果を見る"}</button></div>
   </article>`;
   app.innerHTML=out;
 }
@@ -2652,16 +2708,16 @@ function end(){
 function render(){S.view==="home"?home():S.view==="quiz"?quiz():end()}
 
 function pick(v){
-  if(S.picked!==null)return;
+  if(S.picked!==null||S.i<S.results.length)return;
   const q=Q.find(x=>x.id===S.list[S.i]);
   if(q.t==="mc"?typeof v!=="number"||v<0||v>=q.ch.length:typeof v!=="boolean")return;
-  S.picked=v;
+  S.picked=v;if(!S.picks)S.picks=[];S.picks[S.i]=v;
   const ok=v===q.a;const r=store.res[q.id]||{n:0};
   store.res[q.id]={ok,n:r.n+1};S.results.push({id:q.id,ok});saveSes();save();
   render();
   const v2=document.querySelector(".verdict");if(v2&&v2.scrollIntoView)v2.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
 }
-function next(){if(S.i+1<S.list.length){S.i++;S.picked=null;saveSes();render();window.scrollTo(0,0)}
+function next(){if(S.picked===null)return;if(S.i+1<S.list.length){go(S.i+1)}
   else{if(S.mode==="mock"){const g=Q.find(q=>q.id===S.list[0]).g;const ok=S.results.filter(r=>r.ok).length;const pv=store.mock[g];store.mock[g]={ok,best:Math.max(ok,pv?pv.best:0),ts:Date.now()};save()}
     dropSes(S.key);S.view="end";render();window.scrollTo(0,0)}}
 
@@ -2681,6 +2737,7 @@ app.addEventListener("click",e=>{
   else if(a==="pick"){pick(b.dataset.v==="1")}
   else if(a==="pickc"){pick(+b.dataset.v)}
   else if(a==="next"){next()}
+  else if(a==="prev"){prev()}
   else if(a==="reset"){
     if(b.dataset.sure){store={res:{},ses:{},mock:{},grade:g};save();render()}
     else{b.dataset.sure="1";b.textContent="本当に消す？（もう一度押す）"}
@@ -2689,15 +2746,17 @@ app.addEventListener("click",e=>{
 document.addEventListener("keydown",e=>{
   if(S.view!=="quiz"||e.metaKey||e.ctrlKey||e.altKey)return;
   const k=e.key.toLowerCase();const q=Q.find(x=>x.id===S.list[S.i]);
+  if(k==="arrowleft"){e.preventDefault();prev();return}
   if(S.picked===null){
     if(q&&q.t==="mc"){if(/^[1-4]$/.test(k))pick(+k-1)}
     else if(k==="o"||k==="1")pick(true);else if(k==="x"||k==="2")pick(false)}
+  else if(k==="arrowright"){e.preventDefault();next()}
   else if(k==="enter"||k==="n"||k===" "){if(document.activeElement&&document.activeElement.id!=="nextBtn"){e.preventDefault();next()}}
 });
 render();
 
 </script>
-<p class="offline">第3版（2026年10月6日更新：三択・四択・計算問題と模擬試験を追加）</p>
+<p class="offline">第4版（2026年10月6日更新：前の問題にもどれるようになりました）</p>
 <p class="offline" id="offline">オフライン利用：準備中…</p>
 <script>
 (function(){
@@ -2705,8 +2764,8 @@ render();
   function ok(){el.innerHTML="オフライン利用：<b>準備OK</b>（電波がなくても使えます）"}
   if(!("serviceWorker" in navigator)){el.textContent="オフライン利用：この環境では使えません";return}
   navigator.serviceWorker.register("sw.js").then(function(){return navigator.serviceWorker.ready}).then(function(){
-    return caches.open("fp-ox-v3").then(function(c){return c.match("index.html")})
-  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v3").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
+    return caches.open("fp-ox-v4").then(function(c){return c.match("index.html")})
+  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v4").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
   .catch(function(){el.textContent="オフライン利用：準備できませんでした（通信を確認して開き直してください）"});
 })();
 </script>
