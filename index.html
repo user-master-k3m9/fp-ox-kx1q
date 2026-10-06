@@ -3900,13 +3900,15 @@ SRS.init("fp-ox-srs");
 Object.keys(store.res).forEach(id=>SRS.seed(id,store.res[id].ok));SRS.flush();
 const todayKey=g=>{const d=new Date();return g+":review:"+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
 Object.keys(store.ses).forEach(k=>{if(/:review:/.test(k)&&k!==todayKey(3)&&k!==todayKey(2))delete store.ses[k]});
+/* ○△×を付けたら「解いた」扱いにする（○＝正解、△・×＝まちがい・要復習） */
+function rate(id,g){SRS.set(id,g);const r=store.res[id]||{n:0};store.res[id]={ok:g==="ok",n:r.n||1};save()}
 const markOf=(id,answered)=>answered||SRS.today(id)?SRS.grade(id):"";
 /* 進み具合のバーで問題を移動・長押しで一覧（共通部品 qnav.js）。
    このアプリは results[k] が k 問目の答え（先頭から順）なので、まだ解いていない先の問題へ飛ぶときは、
    その問題を「次に解く位置」と入れかえてから表示する（記録の順番がずれないように）。 */
 QNav.init({
   state:()=>S.view==="quiz"?{n:S.list.length,cur:S.i,status:S.list.map((id,k)=>markOf(id,k<S.results.length)||(k<S.results.length?(S.results[k].ok?"ok":"ng"):"")),text:k=>{const q=Q.find(x=>x.id===S.list[k]);return q?q.q:""}}:null,
-  mark:(k,g)=>{SRS.set(S.list[k],g);render()},
+  mark:(k,g)=>{rate(S.list[k],g);render()},
   jump:k=>{const f=S.results.length;if(k>f&&k<S.list.length){const t=S.list[f];S.list[f]=S.list[k];S.list[k]=t;k=f}go(k)}
 });
 let S={view:"home",list:[],i:0,picked:null,picks:[],results:[],label:"",key:null,mode:null};
@@ -4157,7 +4159,7 @@ app.addEventListener("click",e=>{
   else if(a==="jmock"){resumeOr(g+":jmock",()=>jmockList(g),GRADES[g].name+"・実技の模擬試験","jmock")}
   else if(a==="jcase"){const c=jCases(g).find(x=>x.ck===b.dataset.k);if(c)resumeOr(g+":jt:"+c.ck,()=>c.ids,GRADES[g].name+"・実技・"+c.t)}
   else if(a==="review"){resumeOr(todayKey(g),()=>SRS.dueIds(qsOf(g).map(q=>q.id)),GRADES[g].name+"・今日の復習")}
-  else if(a==="smark"){SRS.set(S.list[S.i],b.dataset.g);render()}
+  else if(a==="smark"){rate(S.list[S.i],b.dataset.g);render()}
   else if(a==="memo"){const ids=memoIds(g);if(ids.length)start(shuffle(ids),GRADES[g].name+"・メモした問題")}
   else if(a==="all"){resumeOr(g+":all",()=>shuffle(qsOf(g).map(q=>q.id)),GRADES[g].name+"・全問シャッフル")}
   else if(a==="yet"){resumeOr(g+":yet",()=>yetIds(g),GRADES[g].name+"・まだの問題")}
@@ -4189,7 +4191,7 @@ document.addEventListener("keydown",e=>{
 render();
 
 </script>
-<p class="offline">第7版（2026年10月6日更新：ホームに「今日の復習」（エビングハウスの忘却曲線）、問題ごとの○△×の評価、一覧から評価を変更。第6版：進み具合のバーで問題を移動・長押しで問題の一覧。第5版：実技試験と模擬試験、自分メモ・画像）</p>
+<p class="offline">第8版（2026年10月7日更新：○△×の評価を付けた問題は「解いた」扱いに。第7版：ホームに「今日の復習」（エビングハウスの忘却曲線）、問題ごとの○△×の評価、一覧から評価を変更。第6版：進み具合のバーで問題を移動・長押しで問題の一覧。第5版：実技試験と模擬試験、自分メモ・画像）</p>
 <p class="offline" id="offline">オフライン利用：準備中…</p>
 <script>
 (function(){
@@ -4197,8 +4199,8 @@ render();
   function ok(){el.innerHTML="オフライン利用：<b>準備OK</b>（電波がなくても使えます）"}
   if(!("serviceWorker" in navigator)){el.textContent="オフライン利用：この環境では使えません";return}
   navigator.serviceWorker.register("sw.js").then(function(){return navigator.serviceWorker.ready}).then(function(){
-    return caches.open("fp-ox-v7").then(function(c){return c.match("index.html")})
-  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v7").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
+    return caches.open("fp-ox-v8").then(function(c){return c.match("index.html")})
+  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v8").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
   .catch(function(){el.textContent="オフライン利用：準備できませんでした（通信を確認して開き直してください）"});
 })();
 </script>
