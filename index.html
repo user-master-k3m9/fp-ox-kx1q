@@ -280,6 +280,11 @@ mark{background:linear-gradient(transparent 45%,var(--hl) 45%);color:inherit;pad
 .byf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
 .byf div{display:flex;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--fc);border-radius:10px;padding:8px 12px;font-size:14px}
 .byf b{font-variant-numeric:tabular-nums}
+.qtools{justify-content:space-between;align-items:center}
+.qtools .back{font-weight:700}
+.seen{font-size:11px;color:var(--muted);margin-left:8px;letter-spacing:0;font-weight:400}
+.miss b.okm{color:var(--maru)}
+.qnav .btn.sub{flex:0 1 auto}
 
 .brand .seal{font-size:15px}
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -350,6 +355,19 @@ mark{background:linear-gradient(transparent 45%,var(--hl) 45%);color:inherit;pad
 .tower .cell.em{border:1px dashed var(--line);color:var(--muted)}
 .tower .fl1{background:var(--hl-fill);border:2px solid var(--maru);border-radius:8px;padding:8px;font-weight:700}
 .tower .fl0{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
+.case{border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:0;overflow:hidden}
+.case summary{cursor:pointer;padding:10px 14px;font-weight:700;font-size:15px;color:var(--acc);list-style:none}
+.case summary::-webkit-details-marker{display:none}
+.case summary::after{content:"（タップで開く／閉じる）";font-weight:400;font-size:12px;color:var(--muted);margin-left:6px}
+.case .csbody{padding:0 14px 12px;font-size:15px;line-height:1.75;overflow-x:auto}
+.case .csbody p{margin:6px 0}
+.case .csbody table{border-collapse:collapse;font-size:13.5px;margin:6px 0;min-width:0}
+.case .csbody th,.case .csbody td{border:1px solid var(--line);padding:4px 7px;text-align:right;white-space:nowrap}
+.case .csbody th.l,.case .csbody td.l{text-align:left;white-space:normal}
+.case .csbody thead th{background:var(--acc-soft)}
+.jbox{border-color:var(--acc)}
+.jbox .btn{background:var(--acc)}
+.jbox .sets{display:flex;flex-direction:column;gap:6px}
 .tower .fl0 span{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 4px;font-weight:700}
 </style>
 </head>
@@ -469,6 +487,166 @@ hojinHoken:{cap:"法人が払う保険料の経理（主なもの）",html:()=>t
  ["定期保険（最高解約返戻率50%以下）","法人","全額<b>損金</b>"],["終身保険","法人","全額<b>資産</b>"],["養老保険","死亡・満期とも法人","全額<b>資産</b>"],
  ["養老保険（福利厚生プラン）","死亡＝遺族／満期＝法人","<b>1/2資産・1/2損金</b>"]])}
 };
+
+/* ---------- 自分メモ（問題ごとのメモと画像）：3つの学習アプリで共通の部品 ----------
+   使い方：MyNote.init("保存名")。問題の画面に MyNote.slot(問題ID) を入れるだけ。
+   画面を描き直すたびに、空の枠を自動で見つけて中身を入れる（MutationObserver）。
+   保存：文字と画像は IndexedDB（この端末だけ）。メモのある問題の一覧だけ localStorage にも持つ（ホームの件数表示用）。 */
+const MyNote = (() => {
+  let DBN = "", IDXK = "", dbp = null, idx = {};
+  const MAXW = 1600, QUAL = 0.85;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const css = `
+.mynote{border:2px dashed var(--line);border-radius:14px;padding:12px 14px;background:var(--card);display:flex;flex-direction:column;gap:8px}
+.mynote.has{border-style:solid;border-color:var(--acc)}
+.mynote .mn-h{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:700;font-size:14px}
+.mynote .mn-h small{font-weight:400;color:var(--muted);font-size:12px}
+.mynote textarea{width:100%;box-sizing:border-box;min-height:84px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-size:16px;line-height:1.7;background:var(--paper);color:var(--ink)}
+.mynote .mn-imgs{display:flex;flex-wrap:wrap;gap:8px}
+.mynote .mn-im{position:relative;width:96px;height:96px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--paper)}
+.mynote .mn-im img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
+.mynote .mn-im button{position:absolute;top:3px;right:3px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:15px;line-height:26px;padding:0;cursor:pointer}
+.mynote .mn-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mynote .mn-add{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:10px;padding:8px 12px;font-size:14px;font-weight:700;cursor:pointer}
+.mynote .mn-add input{display:none}
+.mynote .mn-st{font-size:12px;color:var(--muted)}
+.mn-zoom{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px;cursor:zoom-out}
+.mn-zoom img{max-width:100%;max-height:100%;object-fit:contain}
+.mn-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mn-tools label{cursor:pointer}
+.mn-tools input{display:none}`;
+
+  function db() {
+    if (!dbp) dbp = new Promise((ok, ng) => {
+      const r = indexedDB.open(DBN, 1);
+      r.onupgradeneeded = () => r.result.createObjectStore("notes");
+      r.onsuccess = () => ok(r.result); r.onerror = () => ng(r.error);
+    });
+    return dbp;
+  }
+  async function tx(mode, fn) {
+    const d = await db();
+    return new Promise((ok, ng) => { const t = d.transaction("notes", mode); const s = t.objectStore("notes"); const p = Promise.resolve(fn(s)); t.oncomplete = () => p.then(ok, ng); t.onerror = () => ng(t.error); t.onabort = () => ng(t.error); });
+  }
+  const req = r => new Promise((ok, ng) => { r.onsuccess = () => ok(r.result); r.onerror = () => ng(r.error); });
+  const get = id => tx("readonly", s => req(s.get(id)));
+  const put = (id, v) => tx("readwrite", s => { s.put(v, id); });
+  const del = id => tx("readwrite", s => { s.delete(id); });
+  /* 2つの読み出しを同時に出す（await をはさむと、途中で取引が閉じるブラウザがある） */
+  const all = () => tx("readonly", s => Promise.all([req(s.getAllKeys()), req(s.getAll())]).then(([ks, vs]) => ks.map((k, i) => [k, vs[i]])));
+
+  const saveIdx = () => { try { localStorage.setItem(IDXK, JSON.stringify(idx)); } catch (e) {} };
+  function setIdx(id, v) { const has = !!(v && ((v.text || "").trim() || (v.imgs || []).length)); if (has) idx[id] = 1; else delete idx[id]; saveIdx(); return has; }
+
+  /* 画像を縮小して JPEG の Blob にする（長い辺を最大1600px） */
+  function shrink(file) {
+    return new Promise((ok, ng) => {
+      const url = URL.createObjectURL(file); const im = new Image();
+      im.onload = () => {
+        const k = Math.min(1, MAXW / Math.max(im.naturalWidth, im.naturalHeight));
+        const c = document.createElement("canvas"); c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+        c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+        c.toBlob(b => b ? ok(b) : ng(new Error("画像を変換できませんでした")), "image/jpeg", QUAL);
+      };
+      im.onerror = () => { URL.revokeObjectURL(url); ng(new Error("この画像は読み込めませんでした")); };
+      im.src = url;
+    });
+  }
+
+  function zoom(src) {
+    const z = document.createElement("div"); z.className = "mn-zoom"; z.innerHTML = `<img src="${src}" alt="メモの画像（拡大）">`;
+    z.addEventListener("click", () => z.remove()); document.body.appendChild(z);
+  }
+
+  async function mount(el) {
+    if (el.dataset.mnOn) return; el.dataset.mnOn = "1";
+    const id = el.dataset.q; let v = { text: "", imgs: [], ts: 0 };
+    try { v = Object.assign(v, await get(id) || {}); } catch (e) {}
+    const urls = [];
+    const draw = () => {
+      urls.forEach(u => URL.revokeObjectURL(u)); urls.length = 0;
+      el.classList.toggle("has", !!((v.text || "").trim() || v.imgs.length));
+      el.innerHTML = `<div class="mn-h"><span>自分メモ</span><small>${v.ts ? "保存：" + new Date(v.ts).toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "この端末にだけ保存されます"}</small></div>
+        <textarea placeholder="覚えたいこと・まちがえた理由・教科書のページなどを書けます" aria-label="この問題の自分メモ">${esc(v.text || "")}</textarea>
+        <div class="mn-imgs">${v.imgs.map((b, i) => { const u = URL.createObjectURL(b); urls.push(u); return `<div class="mn-im"><img src="${u}" alt="メモの画像${i + 1}" data-i="${i}"><button type="button" aria-label="この画像を消す" data-del="${i}">×</button></div>`; }).join("")}</div>
+        <div class="mn-row"><label class="mn-add">＋ 画像を追加<input type="file" accept="image/*" multiple></label><span class="mn-st" aria-live="polite"></span></div>`;
+      const ta = el.querySelector("textarea"), st = el.querySelector(".mn-st");
+      /* メモの入力中に、アプリの答えのキー（1〜4・O・X・Enter など）が反応しないようにする */
+      ta.addEventListener("keydown", e => e.stopPropagation());
+      let tm = null;
+      ta.addEventListener("input", () => { v.text = ta.value; st.textContent = "保存中…"; clearTimeout(tm); tm = setTimeout(save, 500); });
+      ta.addEventListener("blur", () => { if (tm) { clearTimeout(tm); save(); } });
+      async function save() { tm = null; v.ts = Date.now(); try { if (setIdx(id, v)) await put(id, v); else await del(id); st.textContent = "保存しました"; el.classList.toggle("has", !!idx[id]); } catch (e) { st.textContent = "保存できませんでした（空き容量を確認してください）"; } }
+      el.querySelector("input[type=file]").addEventListener("change", async e => {
+        const fs = Array.from(e.target.files || []); if (!fs.length) return; st.textContent = "画像を保存中…";
+        try { for (const f of fs) v.imgs.push(await shrink(f)); v.text = ta.value; v.ts = Date.now(); setIdx(id, v); await put(id, v); draw(); el.querySelector(".mn-st").textContent = fs.length + "枚の画像を保存しました"; }
+        catch (err) { st.textContent = err.message || "画像を保存できませんでした"; }
+      });
+      el.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", async () => {
+        if (!confirm("この画像を消しますか？")) return;
+        v.imgs.splice(+b.dataset.del, 1); v.text = ta.value; v.ts = Date.now();
+        try { if (setIdx(id, v)) await put(id, v); else await del(id); } catch (e) {} draw();
+      }));
+      el.querySelectorAll(".mn-im img").forEach(im => im.addEventListener("click", () => zoom(im.src)));
+    };
+    draw();
+  }
+
+  function scan(root) { (root || document).querySelectorAll(".mynote:not([data-mn-on])").forEach(mount); }
+
+  /* ---- 書き出し・読み込み（機種変更やブラウザのデータ消去に備える） ---- */
+  const b64 = b => new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(b); });
+  async function exportAll() {
+    const rows = await all(); const out = [];
+    for (const [k, v] of rows) out.push({ id: k, text: v.text || "", ts: v.ts || 0, imgs: await Promise.all((v.imgs || []).map(b64)) });
+    const blob = new Blob([JSON.stringify({ app: DBN, v: 1, notes: out })], { type: "application/json" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = DBN + "-" + new Date().toISOString().slice(0, 10) + ".json"; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    return out.length;
+  }
+  async function importFile(file) {
+    const j = JSON.parse(await file.text()); if (!j || !Array.isArray(j.notes)) throw new Error("メモのファイルではありません");
+    let n = 0;
+    for (const r of j.notes) {
+      const imgs = await Promise.all((r.imgs || []).map(u => fetch(u).then(x => x.blob())));
+      const cur = await get(r.id);
+      /* すでにメモがあるときは、新しい方を残す */
+      if (cur && (cur.ts || 0) > (r.ts || 0)) continue;
+      const v = { text: r.text || "", imgs, ts: r.ts || Date.now() };
+      if (setIdx(r.id, v)) { await put(r.id, v); n++; }
+    }
+    return n;
+  }
+  /* ホームに置く道具（件数・書き出し・読み込み）。onChange で画面を描き直す */
+  function tools(onChange) {
+    const wrap = document.createElement("div"); wrap.className = "mn-tools";
+    wrap.innerHTML = `<button type="button" class="btn sub" data-mn="exp">メモを書き出す（保存用ファイル）</button><label class="btn sub">メモを読み込む<input type="file" accept="application/json,.json"></label><span class="mn-st mini"></span>`;
+    const st = wrap.querySelector(".mn-st");
+    wrap.querySelector("[data-mn=exp]").addEventListener("click", async () => { try { const n = await exportAll(); st.textContent = n + "問分のメモを書き出しました"; } catch (e) { st.textContent = "書き出せませんでした"; } });
+    wrap.querySelector("input").addEventListener("change", async e => { const f = e.target.files[0]; if (!f) return; try { const n = await importFile(f); st.textContent = n + "問分のメモを読み込みました"; if (onChange) setTimeout(onChange, 800); } catch (err) { st.textContent = err.message || "読み込めませんでした"; } });
+    return wrap;
+  }
+
+  return {
+    init(name) {
+      DBN = name; IDXK = name + "-idx";
+      try { idx = JSON.parse(localStorage.getItem(IDXK) || "{}") || {}; } catch (e) { idx = {}; }
+      const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+      /* ブラウザに「消さないで」と頼む（ホーム画面のアプリでは通常そのまま残る） */
+      try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
+      new MutationObserver(() => scan()).observe(document.body, { childList: true, subtree: true });
+      /* 記録の一覧を IndexedDB から作り直す（localStorage が消えた場合の保険） */
+      all().then(rows => { idx = {}; rows.forEach(([k, v]) => setIdx(k, v)); }).catch(() => {});
+      scan();
+    },
+    slot: id => `<div class="mynote" data-q="${esc(id)}"></div>`,
+    ids: () => Object.keys(idx),
+    has: id => !!idx[id],
+    count: () => Object.keys(idx).length,
+    tools
+  };
+})();
 
 const GRADES={3:{name:"3級",sub:"はじめの一歩"},2:{name:"2級",sub:"3級の次のステップ"}};
 const FIELDS={
@@ -1489,6 +1667,412 @@ Q.push(...[
  why:["貸宅地（自用地×(1−借地権割合)）の計算をした数字。","借家権割合だけを引いた数字（5,000万×0.7）。","正しい。"],
  pt:"貸家建付地＝自用地×（1−借地権割合×借家権割合×賃貸割合）",fig:"hyoka"}
 ].map(o=>Object.assign({g:3,c:"sozo",t:"mc"},o)));
+/* 3級・実技 */
+[
+{c:"life",t:"FPの仕事のルール（関連法規）",
+ cs:`<p>ファイナンシャル・プランナー（FP）は、お金の相談にのる仕事です。ただし、<b>税理士・弁護士・社会保険労務士・保険募集人・投資助言業者</b>にしかできない仕事があり、資格や登録のないFPがそれをすると法律違反になります。</p><p>次の問題では、資格や登録をもっていないFPの行為として、どれが「不適切（してはいけない）」かを考えます。</p>`,
+ qs:[
+ {q:"税理士資格をもたないFPの行為として、最も不適切なものはどれか。",
+  ch:["顧客の求めに応じて、無償で、顧客の確定申告書を代わりに作成した。","住宅ローン控除のしくみについて、パンフレットを使って一般的に説明した。","税制改正の一般的な内容について、セミナーで解説した。"],a:0,
+  why:["不適切。税理士法では、<b>有償でも無償でも</b>、他人のために税務書類を作ることは税理士にしかできません。","適切。一般的な制度の説明は、だれでもできます。","適切。仮定の事例や一般論の解説は問題ありません。"],
+  pt:"税理士でないFP：税務書類の作成・個別具体的な税務相談はNG（無償でもNG）。一般的な説明はOK"},
+ {q:"弁護士資格をもたないFPの行為として、最も適切なものはどれか。",
+  ch:["顧客から依頼され、公正証書遺言の証人になった。","報酬を得て、顧客の相続争いで相手方と遺産分割の交渉をした。","顧客の遺言書の内容について、法律的な判断をして具体的に書き直した。"],a:0,
+  why:["適切。公正証書遺言の証人は、未成年者や推定相続人などでなければ、<b>資格がなくてもなれます</b>。","不適切。報酬を得て法律事件の交渉をすることは、弁護士にしかできません。","不適切。個別の法律判断にもとづく書類の作成は、弁護士の仕事です。"],
+  pt:"公正証書遺言の証人・任意後見人には、資格なしでもなれる"},
+ {q:"FPの行為として、最も不適切なものはどれか。",
+  ch:["投資助言・代理業の登録をしていないFPが、顧客と投資顧問契約を結び、特定の株式の売り時を有償で助言した。","保険募集人の資格をもたないFPが、生命保険の一般的なしくみを説明した。","社会保険労務士資格をもたないFPが、ねんきん定期便をもとに、年金の受給見込額を計算して説明した。"],a:0,
+  why:["不適切。投資判断の助言を<b>契約にもとづいて</b>するには、金融商品取引業（投資助言・代理業）の登録が必要です。","適切。保険の募集（契約の勧誘）でなく、一般的な説明ならOKです。","適切。年金の見込額の試算・一般的な説明は資格がなくてもできます。年金の請求書類を報酬を得て作成・提出するのは社労士の仕事です。"],
+  pt:"登録なしの投資助言（契約して個別の売買を助言）はNG。保険・年金の一般的な説明はOK"}
+ ]},
+{c:"life",t:"Aさん一家のキャッシュフロー表",
+ cs:`<p>会社員のAさん（40歳）一家のキャッシュフロー表（一部）です。単位は万円。</p>
+<table><thead><tr><th class="l">経過年数</th><th>変動率</th><th>基準年<br>2026年</th><th>1年後<br>2027年</th><th>2年後<br>2028年</th></tr></thead><tbody>
+<tr><td class="l">給与収入（夫）</td><td>1%</td><td>480</td><td>（ア）</td><td>（ウ）</td></tr>
+<tr><td class="l">給与収入（妻）</td><td>－</td><td>100</td><td>100</td><td>100</td></tr>
+<tr><td class="l">基本生活費</td><td>2%</td><td>300</td><td>306</td><td>312</td></tr>
+<tr><td class="l">住居費</td><td>－</td><td>120</td><td>120</td><td>120</td></tr>
+<tr><td class="l">教育費</td><td>－</td><td>40</td><td>45</td><td>50</td></tr>
+<tr><td class="l">保険料</td><td>－</td><td>36</td><td>36</td><td>36</td></tr>
+<tr><td class="l">その他の支出</td><td>－</td><td>30</td><td>30</td><td>30</td></tr>
+<tr><td class="l">年間収支</td><td></td><td>54</td><td>48</td><td>…</td></tr>
+<tr><td class="l">金融資産残高</td><td>1%</td><td>520</td><td>（イ）</td><td>…</td></tr>
+</tbody></table>
+<p>※年間収支は、収入の合計から支出の合計を引いたもの。<br>※金融資産残高は「前年末の残高 ×（1＋運用率）＋ その年の年間収支」で計算する。<br>※計算過程では端数を処理せず、計算結果の<b>万円未満を四捨五入</b>する。</p>`,
+ qs:[
+ {q:"空欄（ア）にあてはまる数値はどれか。",calc:true,
+  ch:["485","484","490"],a:0,
+  exp:`<p>変動率のある項目は「<b>基準年の値 ×（1＋変動率）<sup>経過年数</sup></b>」で計算します。<br>480 × 1.01 ＝ 484.8 → 万円未満を四捨五入して <mark>485</mark></p>`,
+  why:["正しい。","切り捨てた数字。この表は四捨五入です。","2年分の伸びを足しすぎた数字。"],
+  pt:"将来の金額＝今の金額×（1＋変動率）^年数"},
+ {q:"空欄（イ）にあてはまる数値はどれか。",calc:true,
+  ch:["573","568","579"],a:0,
+  exp:`<p>金融資産残高 ＝ 前年末の残高 ×（1＋運用率）＋ その年の年間収支<br>520 × 1.01 ＋ 48 ＝ 525.2 ＋ 48 ＝ 573.2 → <mark>573</mark></p>`,
+  why:["正しい。","運用で増える分（520×1%）を足し忘れた数字。","2027年ではなく2026年の年間収支（54）を足した数字。"],
+  pt:"残高＝前年残高×（1＋運用率）±その年の収支"},
+ {q:"空欄（ウ）にあてはまる数値はどれか。",calc:true,
+  ch:["490","489","485"],a:0,
+  exp:`<p>2年後なので2乗します。<br>480 × 1.01 × 1.01 ＝ 480 × 1.0201 ＝ 489.648 → <mark>490</mark></p>`,
+  why:["正しい。","切り捨てた数字。","1年後のまま、伸ばすのを忘れた数字。"],
+  pt:"2年後は（1＋変動率）を2回かける"}
+ ]},
+{c:"life",t:"係数表を使う計算（年利2%）",
+ cs:`<p>次の係数表（年利2%）を使って答えます。</p>
+<table><thead><tr><th class="l">期間</th><th>終価係数</th><th>現価係数</th><th>年金終価係数</th><th>減債基金係数</th><th>資本回収係数</th><th>年金現価係数</th></tr></thead><tbody>
+<tr><td class="l">5年</td><td>1.104</td><td>0.906</td><td>5.204</td><td>0.192</td><td>0.212</td><td>4.713</td></tr>
+<tr><td class="l">10年</td><td>1.219</td><td>0.820</td><td>10.950</td><td>0.091</td><td>0.111</td><td>8.983</td></tr>
+<tr><td class="l">15年</td><td>1.346</td><td>0.743</td><td>17.293</td><td>0.058</td><td>0.078</td><td>12.849</td></tr>
+<tr><td class="l">20年</td><td>1.486</td><td>0.673</td><td>24.297</td><td>0.041</td><td>0.061</td><td>16.351</td></tr>
+</tbody></table>
+<p>※税金・手数料は考えない。</p>`,
+ qs:[
+ {q:"今ある300万円を、年利2%で複利運用しながら5年間置いておくと、5年後にいくらになるか。",calc:true,
+  ch:["331万2,000円","271万8,000円","63万6,000円"],a:0,
+  exp:`<p>今のお金が将来いくらになるか → <b>終価係数</b>。<br>300万円 × 1.104 ＝ <mark>331万2,000円</mark></p>`,
+  why:["正しい。","現価係数（0.906）を使った数字。","資本回収係数（0.212）を使った数字。"],
+  pt:"今→将来の一括の金額＝終価係数"},
+ {q:"10年後に500万円を貯めたい。年利2%で複利運用しながら、毎年末に同じ額を積み立てるとき、毎年の積立額はいくらか。",calc:true,
+  ch:["45万5,000円","55万5,000円","41万円"],a:0,
+  exp:`<p>将来の目標額のために、毎年いくら積み立てる？ → <b>減債基金係数</b>。<br>500万円 × 0.091 ＝ <mark>45万5,000円</mark></p>`,
+  why:["正しい。","資本回収係数（0.111）を使った数字。","現価係数で今の価値にしてから10で割った数字。"],
+  pt:"将来の目標額→毎年の積立額＝減債基金係数"},
+ {q:"老後に、毎年末120万円を15年間受け取りたい。年利2%で複利運用するとき、受け取り始める時点でいくら用意すればよいか。",calc:true,
+  ch:["1,541万8,800円","2,075万1,600円","1,337万4,000円"],a:0,
+  exp:`<p>毎年受け取りたい額から、いま必要な元本を出す → <b>年金現価係数</b>。<br>120万円 × 12.849 ＝ <mark>1,541万8,800円</mark></p>`,
+  why:["正しい。","年金終価係数（17.293）を使った数字。","120万×15年を現価係数で割り引いた数字。毎年の受け取りには年金現価係数を使います。"],
+  pt:"毎年の受取額→必要な元本＝年金現価係数"},
+ {q:"1,000万円を年利2%、20年の元利均等返済で借りたとき、毎年の返済額はいくらか。",calc:true,
+  ch:["61万円","41万円","50万円"],a:0,
+  exp:`<p>借りた元本（今のお金）から、毎年の返済額を出す → <b>資本回収係数</b>。<br>1,000万円 × 0.061 ＝ <mark>61万円</mark></p>`,
+  why:["正しい。","減債基金係数（0.041）を使った数字。","1,000万÷20年で、利息を考えていない数字。"],
+  pt:"今の元本→毎年の取り崩し・返済額＝資本回収係数"}
+ ]},
+{c:"life",t:"Bさんのバランスシート",
+ cs:`<p>Bさん（45歳）の保有資産と負債（2026年10月時点）です。</p>
+<table><thead><tr><th class="l">資産</th><th>金額</th><th class="l">負債</th><th>金額</th></tr></thead><tbody>
+<tr><td class="l">普通預金</td><td>250万円</td><td class="l">住宅ローン</td><td>1,900万円</td></tr>
+<tr><td class="l">定期預金</td><td>300万円</td><td class="l">自動車ローン</td><td>40万円</td></tr>
+<tr><td class="l">投資信託</td><td>180万円</td><td></td><td></td></tr>
+<tr><td class="l">上場株式</td><td>120万円</td><td></td><td></td></tr>
+<tr><td class="l">生命保険</td><td>（注）</td><td></td><td></td></tr>
+<tr><td class="l">自宅（土地・建物）</td><td>2,800万円</td><td></td><td></td></tr>
+<tr><td class="l">自動車</td><td>80万円</td><td></td><td></td></tr>
+</tbody></table>
+<p>（注）終身保険：保険金額1,000万円、現時点の解約返戻金90万円。</p>`,
+ qs:[
+ {q:"Bさんのバランスシートの純資産の金額はいくらか。",calc:true,
+  ch:["1,880万円","2,790万円","3,820万円"],a:0,
+  exp:`<p>① 生命保険は<b>解約返戻金相当額（90万円）</b>で計上します。<br>② 資産合計：250＋300＋180＋120＋90＋2,800＋80 ＝ 3,820万円<br>③ 負債合計：1,900＋40 ＝ 1,940万円<br>④ 純資産 ＝ 3,820 − 1,940 ＝ <mark>1,880万円</mark></p>`,
+  why:["正しい。","生命保険を保険金額（1,000万円）で計上した数字。","資産の合計のままで、負債を引いていない数字。"],
+  pt:"純資産＝資産合計−負債合計。生命保険は解約返戻金の額で計上"},
+ {q:"個人のバランスシートの作り方として、最も適切なものはどれか。",
+  ch:["生命保険は、その時点の解約返戻金相当額で資産に計上する。","生命保険は、死亡保険金の額で資産に計上する。","住宅ローンは、借りた当初の金額で負債に計上する。"],a:0,
+  why:["適切。いま解約したら戻ってくるお金が、その時点の価値です。","不適切。死亡保険金は、いまの価値ではありません。","不適切。負債は、その時点の残高で計上します。"],
+  pt:"バランスシートは「いま」の価値（時価・残高）で書く"}
+ ]},
+{c:"risk",t:"Cさんの生命保険証券",
+ cs:`<p>Cさん（45歳、契約者＝被保険者、死亡保険金受取人は妻）が加入している定期保険特約付終身保険の内容です。保険料はきちんと払い込まれています。</p>
+<table><tbody>
+<tr><td class="l">終身保険（主契約）</td><td>200万円</td></tr>
+<tr><td class="l">定期保険特約（65歳まで）</td><td>2,000万円</td></tr>
+<tr><td class="l">特定疾病保障定期保険特約（65歳まで）</td><td>300万円</td></tr>
+<tr><td class="l">傷害特約</td><td>500万円</td></tr>
+<tr><td class="l">災害割増特約</td><td>500万円</td></tr>
+<tr><td class="l">疾病入院特約</td><td>入院1日目から日額5,000円</td></tr>
+<tr><td class="l">災害入院特約</td><td>入院1日目から日額5,000円</td></tr>
+<tr><td class="l">手術給付金</td><td>入院中の手術1回につき、入院日額×20倍</td></tr>
+</tbody></table>
+<p>※特定疾病保障定期保険特約：がん（悪性新生物）と初めて診断された、急性心筋梗塞・脳卒中で所定の状態になった、<b>または死亡・高度障害になった</b>ときに300万円（1回だけ。支払うと特約は終わる）。<br>※傷害特約・災害割増特約は、<b>不慮の事故</b>で死亡したときに支払われる。</p>`,
+ qs:[
+ {q:"Cさんが現時点で、急性心筋梗塞で亡くなった場合、支払われる死亡保険金の合計はいくらか（所定の状態になる前に急死したものとする）。",calc:true,
+  ch:["2,500万円","2,200万円","3,500万円"],a:0,
+  exp:`<p>病気で亡くなったので、事故のときだけの特約（傷害・災害割増）は出ません。<br>終身200 ＋ 定期2,000 ＋ 特定疾病300（死亡のときも出る） ＝ <mark>2,500万円</mark></p>`,
+  why:["正しい。","特定疾病保障定期保険特約を足し忘れた数字。この特約は、死亡したときも原因を問わず支払われます。","事故のときだけ出る傷害特約・災害割増特約まで足した数字。"],
+  pt:"病気の死亡：終身＋定期＋特定疾病。事故の死亡なら傷害・災害割増も"},
+ {q:"Cさんが現時点で、交通事故により即死した場合、支払われる死亡保険金の合計はいくらか。",calc:true,
+  ch:["3,500万円","3,000万円","2,500万円"],a:0,
+  exp:`<p>不慮の事故なので、すべての死亡保障が出ます。<br>200 ＋ 2,000 ＋ 300 ＋ 500（傷害） ＋ 500（災害割増） ＝ <mark>3,500万円</mark></p>`,
+  why:["正しい。","事故の特約のうち、どちらか一方（500万円）を足し忘れた数字。傷害特約と災害割増特約は、両方とも支払われます。","事故の特約（傷害・災害割増）を足していない数字。"],
+  pt:"事故の死亡は、傷害特約・災害割増特約も上乗せ"},
+ {q:"Cさんが初めて胃がん（悪性新生物）と診断され、20日間入院し、入院中に手術を1回受けた。支払われる給付金・保険金の合計はいくらか。",calc:true,
+  ch:["320万円","20万円","310万円"],a:0,
+  exp:`<p>① 疾病入院：5,000円 × 20日 ＝ 10万円<br>② 手術：5,000円 × 20倍 ＝ 10万円<br>③ 特定疾病保障定期保険特約：がんと診断 → 300万円<br>合計 ＝ <mark>320万円</mark></p>`,
+  why:["正しい。","特定疾病保障定期保険特約の300万円を足し忘れた数字。","手術給付金を足し忘れた数字。"],
+  pt:"がん診断で特定疾病保険金。入院給付金・手術給付金も別に出る"}
+ ]},
+{c:"risk",t:"Dさんの損害保険（火災・地震・自動車・個人賠償）",
+ cs:`<p>Dさん（会社員）の加入状況です。</p>
+<table><tbody>
+<tr><td class="l">火災保険（自宅）</td><td>建物2,000万円・家財800万円</td></tr>
+<tr><td class="l">自動車保険</td><td>対人賠償：無制限／対物賠償：無制限／人身傷害：3,000万円／車両保険（一般型）：200万円</td></tr>
+<tr><td class="l">個人賠償責任保険</td><td>1億円（家族全員が対象）</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"Dさんが、自宅の火災保険に地震保険を付ける場合、付けられる保険金額の上限の組合せとして正しいものはどれか。",calc:true,
+  ch:["建物1,000万円・家財400万円","建物2,000万円・家財800万円","建物600万円・家財240万円"],a:0,
+  exp:`<p>地震保険の保険金額は、火災保険の保険金額の<b>30〜50%</b>の範囲（建物は5,000万円、家財は1,000万円が上限）。<br>建物：2,000万 × 50% ＝ 1,000万円／家財：800万 × 50% ＝ <mark>400万円</mark></p>`,
+  why:["正しい。","火災保険と同じ額にはできません。上限は50%です。","30%は下限の数字です。"],
+  pt:"地震保険＝火災保険の30〜50%（建物5,000万・家財1,000万まで）"},
+ {q:"Dさんが自動車を運転中、自分の不注意でガードレールにぶつかり、Dさん自身がけがをし、車も壊れた。<b>Dさんのけが</b>と<b>Dさんの車の損害</b>を補償する保険の組合せはどれか。",
+  ch:["人身傷害保険と車両保険","対人賠償保険と車両保険","対人賠償保険と対物賠償保険"],a:0,
+  why:["正しい。人身傷害は、過失の割合に関係なく自分（と同乗者）のけがを補償します。車両保険（一般型）は、単独事故でも自分の車を補償します。","対人賠償は「他人」をけがさせたときの補償で、自分のけがには出ません。","どちらも「他人」への賠償です（ガードレールの損害は対物賠償で補償されます）。"],
+  pt:"自分のけが＝人身傷害、自分の車＝車両、他人の体＝対人、他人の物＝対物"},
+ {q:"Dさんの個人賠償責任保険で補償されるものはどれか。",
+  ch:["Dさんの子が、自転車で歩行者にぶつかり、けがをさせた。","Dさんが、仕事中に会社の機械を壊し、損害を与えた。","Dさんが、自動車を運転中に、他人の車にぶつけた。"],a:0,
+  why:["正しい。日常生活での賠償なので補償されます。家族も対象です。","業務中の賠償は対象外です。","自動車の事故は自動車保険で補償します。個人賠償責任保険は対象外です。"],
+  pt:"個人賠償責任保険：日常生活の賠償。仕事中・自動車事故は対象外"}
+ ]},
+{c:"kin",t:"X社の株式の指標",
+ cs:`<p>上場企業X社の株式に関する資料です。</p>
+<table><tbody>
+<tr><td class="l">株価</td><td>2,400円</td></tr>
+<tr><td class="l">1株当たり純利益（EPS）</td><td>160円</td></tr>
+<tr><td class="l">1株当たり純資産（BPS）</td><td>1,600円</td></tr>
+<tr><td class="l">1株当たり年間配当金</td><td>48円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"X社株式のPER（株価収益率）はいくらか。",calc:true,
+  ch:["15倍","1.5倍","2.0倍"],a:0,
+  exp:`<p>PER ＝ 株価 ÷ 1株当たり純利益 ＝ 2,400 ÷ 160 ＝ <mark>15倍</mark></p>`,
+  why:["正しい。","PBR（株価÷1株当たり純資産）の数字。","配当利回りの数字（2.0%）と取り違え。"],
+  pt:"PER＝株価÷1株当たり純利益（利益の何年分か）"},
+ {q:"X社株式のPBR（株価純資産倍率）はいくらか。",calc:true,
+  ch:["1.5倍","15倍","0.67倍"],a:0,
+  exp:`<p>PBR ＝ 株価 ÷ 1株当たり純資産 ＝ 2,400 ÷ 1,600 ＝ <mark>1.5倍</mark></p>`,
+  why:["正しい。","PERの数字。","分子と分母を逆にした数字。"],
+  pt:"PBR＝株価÷1株当たり純資産。1倍が「解散価値」の目安"},
+ {q:"X社株式の配当利回りはいくらか。",calc:true,
+  ch:["2.0%","30.0%","3.0%"],a:0,
+  exp:`<p>配当利回り ＝ 1株当たり配当金 ÷ 株価 × 100 ＝ 48 ÷ 2,400 × 100 ＝ <mark>2.0%</mark></p>`,
+  why:["正しい。","配当性向（配当÷純利益）の数字。","配当を1株当たり純資産で割った数字。"],
+  pt:"配当利回り＝配当÷株価"},
+ {q:"X社の配当性向はいくらか。",calc:true,
+  ch:["30.0%","2.0%","10.0%"],a:0,
+  exp:`<p>配当性向 ＝ 1株当たり配当金 ÷ 1株当たり純利益 × 100 ＝ 48 ÷ 160 × 100 ＝ <mark>30.0%</mark>（もうけのうち、配当に回した割合）</p>`,
+  why:["正しい。","配当利回りの数字。","ROE（純利益÷純資産）の数字。"],
+  pt:"配当性向＝配当÷純利益（利益の何%を配当に回したか）"}
+ ]},
+{c:"kin",t:"外貨預金・投資信託・NISA",
+ cs:`<p>Eさんが検討している商品の資料です。</p>
+<table><thead><tr><th class="l">米ドル建て定期預金</th><th></th></tr></thead><tbody>
+<tr><td class="l">期間・利率</td><td>1年・年3.0%（税引前）</td></tr>
+<tr><td class="l">為替レート（預入時）</td><td>TTS 151円／TTM 150円／TTB 149円</td></tr>
+</tbody></table>
+<table><thead><tr><th class="l">投資信託Y</th><th></th></tr></thead><tbody>
+<tr><td class="l">基準価額</td><td>12,000円（1万口あたり）</td></tr>
+<tr><td class="l">購入時手数料</td><td>3.3%（税込）</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"Eさんが1万ドルを預け入れるとき、必要な円の金額はいくらか。",calc:true,
+  ch:["151万円","149万円","150万円"],a:0,
+  exp:`<p>円をドルに替える（銀行がドルを<b>売る</b>）ときは<b>TTS</b>。<br>10,000ドル × 151円 ＝ <mark>151万円</mark></p>`,
+  why:["正しい。","TTB（ドルを円に替えるとき）を使った数字。","TTM（仲値）を使った数字。"],
+  pt:"円→外貨＝TTS（高い方）、外貨→円＝TTB（安い方）"},
+ {q:"満期時の為替レートが預入時と同じ（TTS 151円・TTM 150円・TTB 149円）だった場合、満期に受け取る元利金を円に替えた金額はいくらか（税金は考えない）。",calc:true,
+  ch:["1,534,700円","1,555,300円","1,545,000円"],a:0,
+  exp:`<p>① ドルの元利金：10,000 × 1.03 ＝ 10,300ドル<br>② ドルを円に替えるのは<b>TTB</b>：10,300 × 149 ＝ <mark>1,534,700円</mark><br>為替が変わらなくても、TTSとTTBの差（往復2円）だけ損をします。</p>`,
+  why:["正しい。","TTSで円に替えた数字。","TTMで円に替えた数字。"],
+  pt:"外貨預金は、為替が動かなくても往復の手数料（TTSとTTBの差）で目減りする"},
+ {q:"投資信託Yを100万口購入するとき、支払う金額の合計はいくらか。",calc:true,
+  ch:["1,239,600円","1,200,000円","1,236,000円"],a:0,
+  exp:`<p>① 購入代金：12,000円 ×（100万口 ÷ 1万口）＝ 1,200,000円<br>② 購入時手数料：1,200,000 × 3.3% ＝ 39,600円<br>③ 合計 ＝ <mark>1,239,600円</mark></p>`,
+  why:["正しい。","手数料を足していない数字。","手数料を3%（税抜）で計算した数字。"],
+  pt:"基準価額は1万口あたり。口数÷1万をかけて代金を出す"},
+ {q:"2024年からのNISAに関する次の記述のうち、最も不適切なものはどれか。",
+  ch:["NISA口座で生じた損失は、特定口座や一般口座の利益と損益通算できる。","つみたて投資枠の年間投資上限額は120万円、成長投資枠は240万円である。","非課税保有限度額は全体で1,800万円で、このうち成長投資枠は1,200万円までである。"],a:0,
+  why:["不適切。NISAの損失は、<b>なかったもの</b>とされ、損益通算も繰越控除もできません。","適切。合わせて年360万円まで投資できます。","適切。売却すると、その元本の分の枠は翌年以降に復活します。"],
+  pt:"NISAの損失は損益通算できない（非課税のメリットの裏返し）"}
+ ]},
+{c:"tax",t:"会社員Fさんの所得税",
+ cs:`<p>会社員Fさん（50歳）の2026年分の資料です。</p>
+<table><tbody>
+<tr><td class="l">給与収入</td><td>650万円（年末調整ずみ）</td></tr>
+<tr><td class="l">支払った医療費</td><td>32万円（うち、保険金で補てんされた額5万円）</td></tr>
+</tbody></table>
+<p><b>給与所得控除額（2025年分以後）</b></p>
+<table><thead><tr><th class="l">給与の収入金額</th><th class="l">給与所得控除額</th></tr></thead><tbody>
+<tr><td class="l">190万円以下</td><td class="l">65万円</td></tr>
+<tr><td class="l">190万円超 360万円以下</td><td class="l">収入金額×30%＋8万円</td></tr>
+<tr><td class="l">360万円超 660万円以下</td><td class="l">収入金額×20%＋44万円</td></tr>
+<tr><td class="l">660万円超 850万円以下</td><td class="l">収入金額×10%＋110万円</td></tr>
+<tr><td class="l">850万円超</td><td class="l">195万円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"Fさんの2026年分の給与所得の金額はいくらか。",calc:true,
+  ch:["476万円","650万円","520万円"],a:0,
+  exp:`<p>① 給与所得控除額：650万 × 20% ＋ 44万 ＝ 174万円<br>② 給与所得 ＝ 650万 − 174万 ＝ <mark>476万円</mark></p>`,
+  why:["正しい。","収入のままで、給与所得控除を引いていない数字。","収入の8割とした数字。表の計算式を使います。"],
+  pt:"給与所得＝給与収入−給与所得控除"},
+ {q:"Fさんが医療費控除を受ける場合、医療費控除の額はいくらか（総所得金額等は476万円とする）。",calc:true,
+  ch:["17万円","22万円","27万円"],a:0,
+  exp:`<p>医療費控除 ＝（支払った医療費 − 保険金などで補てんされた額）− 10万円<br>（32万 − 5万）− 10万 ＝ <mark>17万円</mark><br>※総所得金額等が200万円未満の人は、10万円の代わりに「総所得金額等×5%」を引きます。</p>`,
+  why:["正しい。","保険金で補てんされた5万円を引き忘れた数字。","10万円を引き忘れた数字。"],
+  pt:"医療費控除＝（医療費−補てん額）−10万円（上限200万円）"},
+ {q:"医療費控除の対象と<b>ならない</b>ものはどれか。",
+  ch:["病気が見つからなかった人間ドックの費用","通院のための電車・バスの運賃","かぜの治療のために薬局で買った市販薬の代金"],a:0,
+  why:["対象にならない。健康診断・人間ドックは「治療」ではないため。ただし重大な病気が見つかって治療に進んだ場合は対象になります。","対象になる。通院の公共交通機関の運賃は対象です（自家用車のガソリン代は対象外）。","対象になる。治療のための薬は、市販薬でも対象です。"],
+  pt:"医療費控除は「治療」の費用。予防・健康診断・美容は対象外"},
+ {q:"会社員で、確定申告を<b>しなければならない</b>人はどれか。",
+  ch:["給与のほかに、副業の雑所得が30万円ある会社員","給与収入が1,800万円で、ほかに所得がない会社員","年末調整を受けた給与収入600万円の会社員で、ほかに所得がない人"],a:0,
+  why:["正しい。給与以外の所得が20万円を超えると、確定申告が必要です。","給与収入が2,000万円以下で、ほかに所得がなければ年末調整で終わります。","年末調整で済みます（医療費控除などを受けたいときは申告できます）。"],
+  pt:"会社員の確定申告：給与2,000万円超、給与以外の所得20万円超、2か所以上から給与など"}
+ ]},
+{c:"tax",t:"退職金・保険の満期金の所得",
+ cs:`<p>Gさん（60歳）の2026年の収入です。</p>
+<table><tbody>
+<tr><td class="l">退職金</td><td>2,500万円（勤続30年ちょうど）</td></tr>
+<tr><td class="l">養老保険の満期保険金</td><td>700万円（契約者＝受取人＝Gさん、払込保険料の総額560万円）</td></tr>
+</tbody></table>
+<p><b>退職所得控除額</b>：勤続20年以下＝40万円×勤続年数（最低80万円）、勤続20年超＝800万円＋70万円×（勤続年数−20年）</p>`,
+ qs:[
+ {q:"Gさんの退職所得の金額はいくらか（「退職所得の受給に関する申告書」は提出ずみ）。",calc:true,
+  ch:["500万円","1,000万円","1,500万円"],a:0,
+  exp:`<p>① 退職所得控除額：800万 ＋ 70万 ×（30 − 20）＝ 1,500万円<br>② 退職所得 ＝（2,500万 − 1,500万）× 1/2 ＝ <mark>500万円</mark></p>`,
+  why:["正しい。","2分の1にするのを忘れた数字。","退職所得控除額の数字。"],
+  pt:"退職所得＝（退職金−退職所得控除）×1/2"},
+ {q:"養老保険の満期保険金について、Gさんの総所得金額に算入される金額はいくらか（ほかに一時所得はない）。",calc:true,
+  ch:["45万円","90万円","140万円"],a:0,
+  exp:`<p>① 一時所得 ＝ 700万 − 560万 − 50万（特別控除）＝ 90万円<br>② 総所得金額に入れるのは、その <b>2分の1</b> → <mark>45万円</mark></p>`,
+  why:["正しい。","2分の1にしていない数字。","特別控除の50万円も、2分の1も忘れた数字。"],
+  pt:"一時所得＝収入−支出−50万円。総所得には1/2を算入"}
+ ]},
+{c:"fudo",t:"Hさんの土地（建築の制限・登記）",
+ cs:`<p>Hさんが所有する土地の資料です。</p>
+<table><tbody>
+<tr><td class="l">面積</td><td>300㎡（間口15m×奥行20m）</td></tr>
+<tr><td class="l">用途地域</td><td>第一種住居地域</td></tr>
+<tr><td class="l">指定建ぺい率・指定容積率</td><td>60%・300%</td></tr>
+<tr><td class="l">前面道路</td><td>幅員6mの市道（この1本だけに接する）</td></tr>
+<tr><td class="l">そのほか</td><td>角地ではない。防火地域・準防火地域ではない</td></tr>
+</tbody></table>
+<p>※前面道路の幅員が12m未満のとき、容積率は「前面道路の幅員×10分の4（住居系の用途地域）」と指定容積率の、<b>小さい方</b>になる。</p>`,
+ qs:[
+ {q:"この土地に建物を建てる場合の、最大の建築面積はいくらか。",calc:true,
+  ch:["180㎡","720㎡","900㎡"],a:0,
+  exp:`<p>建築面積の上限 ＝ 敷地面積 × 建ぺい率 ＝ 300 × 60% ＝ <mark>180㎡</mark></p>`,
+  why:["正しい。","最大の延べ面積（容積率で計算）の数字。","指定容積率（300%）をそのまま使った延べ面積の数字。"],
+  pt:"建築面積（1階の広さ）＝敷地×建ぺい率"},
+ {q:"この土地に建物を建てる場合の、最大の延べ面積（床面積の合計）はいくらか。",calc:true,
+  ch:["720㎡","900㎡","180㎡"],a:0,
+  exp:`<p>① 道路による制限：6m × 4/10 ＝ 240%<br>② 指定容積率300%と比べて小さい方 → 240%<br>③ 延べ面積の上限 ＝ 300 × 240% ＝ <mark>720㎡</mark></p>`,
+  why:["正しい。","前面道路による制限を忘れ、指定容積率300%で計算した数字。","建築面積の数字。"],
+  pt:"道路が12m未満なら、道路幅×4/10（住居系）と指定容積率の小さい方"},
+ {q:"この土地に銀行の抵当権が設定されているかどうかを調べるには、登記事項証明書のどこを見ればよいか。",
+  ch:["権利部（乙区）","権利部（甲区）","表題部"],a:0,
+  why:["正しい。乙区には、抵当権・賃借権など<b>所有権以外</b>の権利が書かれています。","甲区には<b>所有権</b>（だれの物か、差押えなど）が書かれています。","表題部には、所在・地目・面積など、不動産そのものの情報が書かれています。"],
+  pt:"表題部＝物の情報、甲区＝所有権、乙区＝抵当権など所有権以外"},
+ {q:"別の土地について。前面道路が幅員3mの「2項道路」（建築基準法42条2項の道路）で、道路の向かい側は普通の宅地である。この土地に建物を建てるとき、道路の中心線から何m後退（セットバック）した線が道路の境界線とみなされるか。",
+  ch:["2m","1.5m","4m"],a:0,
+  exp:`<p>2項道路では、道路の<b>中心線から2m</b>の線が道路の境界線とみなされます。<br>今の道路の幅は3mなので、中心線から自分の土地側の端までは1.5m。したがって、自分の土地を0.5m下げることになります。セットバックした部分は、建ぺい率・容積率の計算で敷地面積に入れません。</p>`,
+  why:["正しい。","今の道路の半分の幅で、下げる前の位置。","道路全体の幅（4m）と混同した数字。"],
+  pt:"2項道路：中心線から2m下げる。下げた部分は敷地面積に入れない"}
+ ]},
+{c:"fudo",t:"Iさんの自宅の売却",
+ cs:`<p>Iさんは、2026年8月に自宅（土地・建物）を売却した。</p>
+<table><tbody>
+<tr><td class="l">譲渡価額</td><td>5,000万円</td></tr>
+<tr><td class="l">取得費</td><td>1,500万円</td></tr>
+<tr><td class="l">譲渡費用</td><td>200万円</td></tr>
+<tr><td class="l">取得日</td><td>2012年5月</td></tr>
+</tbody></table>
+<p>※居住用財産を譲渡した場合の3,000万円の特別控除の要件を満たしている。</p>`,
+ qs:[
+ {q:"Iさんの課税譲渡所得の金額はいくらか。",calc:true,
+  ch:["300万円","3,300万円","0円"],a:0,
+  exp:`<p>① 譲渡所得 ＝ 5,000 − 1,500 − 200 ＝ 3,300万円<br>② 3,000万円の特別控除 → 3,300 − 3,000 ＝ <mark>300万円</mark></p>`,
+  why:["正しい。","3,000万円の特別控除を引いていない数字。","売却益が3,000万円を超えているので、0円にはなりません。"],
+  pt:"自宅を売った利益から3,000万円を引ける（居住用財産の特別控除）"},
+ {q:"仮に、Iさんの自宅の取得費がわからない場合、取得費として使える金額（概算取得費）はいくらか。",calc:true,
+  ch:["250万円","500万円","0円"],a:0,
+  exp:`<p>取得費がわからないとき、または実際の取得費が少ないときは、<b>譲渡価額の5%</b>を取得費にできます。<br>5,000万 × 5% ＝ <mark>250万円</mark></p>`,
+  why:["正しい。","10%で計算した数字。","概算取得費の制度を使えば、0円にはなりません。"],
+  pt:"取得費がわからない→譲渡価額の5%（概算取得費）"},
+ {q:"別の土地について。2021年3月に取得し、2026年8月に売却した。この土地の譲渡所得は、長期・短期のどちらになるか。",
+  ch:["短期譲渡所得","長期譲渡所得","譲渡所得ではなく雑所得"],a:0,
+  exp:`<p>長期か短期かは、<b>売った年の1月1日</b>時点で所有期間が5年を超えるかで決まります。<br>2021年3月 → 2026年1月1日：4年9か月 → 5年以下なので<mark>短期</mark>。</p>`,
+  why:["正しい。","実際の所有期間は5年を超えていますが、判定は売った年の1月1日時点です。","土地の売却は譲渡所得です（不動産業者が商品として売る場合などを除く）。"],
+  pt:"長期・短期は「売った年の1月1日」で5年超かどうか"}
+ ]},
+{c:"sozo",t:"Jさんの相続（親族関係図）",
+ cs:`<p>2026年9月にJさんが亡くなった。Jさんの親族は次のとおり。</p>
+<ul class="flow"><li>妻K（存命）</li><li>長男L（存命）</li><li>長女M（Jさんより<b>先に</b>死亡）。Mの子N・O（Jさんの孫、2人とも存命）</li><li>Jさんの母P（存命）</li></ul>
+<p>Jさんの遺産は、遺言がなく、法定相続分で分けるものとする。</p>`,
+ qs:[
+ {q:"Jさんの相続における法定相続人の数は何人か。",calc:true,
+  ch:["4人","3人","5人"],a:0,
+  exp:`<p>配偶者は常に相続人。第1順位の子がいるので、母Pは相続人になりません。<br>長女Mは先に亡くなっているので、Mの子N・Oが<b>代襲相続人</b>になります。<br>K・L・N・O ＝ <mark>4人</mark></p>`,
+  why:["正しい。","代襲相続人を1人と数えた数字。代襲相続人は、それぞれ1人と数えます。","母Pまで入れた数字。子（とその代襲相続人）がいると、親は相続人になりません。"],
+  pt:"子が先に死亡→孫が代襲相続。子がいれば親は相続人にならない"},
+ {q:"孫Nの法定相続分はいくらか。",calc:true,
+  ch:["8分の1","4分の1","6分の1"],a:0,
+  exp:`<p>① 配偶者と子：配偶者1/2、子全体で1/2<br>② 子は2人（L・M）なので、それぞれ1/4<br>③ Mの1/4を、代襲相続人N・Oで分ける → それぞれ <mark>1/8</mark></p>`,
+  why:["正しい。","Mの相続分そのまま。N・Oで分けます。","子の1/2を、L・N・Oの3人で頭割りした数字。代襲相続人は、親の分を分けます。"],
+  pt:"代襲相続人は、親（被代襲者）の相続分を分ける"},
+ {q:"Jさんの相続税の計算で、遺産に係る基礎控除額はいくらか。",calc:true,
+  ch:["5,400万円","4,800万円","6,000万円"],a:0,
+  exp:`<p>基礎控除 ＝ 3,000万円 ＋ 600万円 × 法定相続人の数<br>3,000 ＋ 600 × 4 ＝ <mark>5,400万円</mark></p>`,
+  why:["正しい。","法定相続人を3人として計算した数字。","法定相続人を5人として計算した数字。"],
+  pt:"相続税の基礎控除＝3,000万＋600万×法定相続人の数"},
+ {q:"妻Kが受け取ったJさんの死亡保険金（契約者・被保険者はJさん）について、相続税の非課税限度額はいくらか。",calc:true,
+  ch:["2,000万円","1,500万円","2,500万円"],a:0,
+  exp:`<p>死亡保険金の非課税限度額 ＝ 500万円 × 法定相続人の数 ＝ 500 × 4 ＝ <mark>2,000万円</mark></p>`,
+  why:["正しい。","法定相続人を3人とした数字。","母Pまで数えた数字。"],
+  pt:"死亡保険金の非課税＝500万×法定相続人の数"}
+ ]},
+{c:"sozo",t:"Qさんが受けた贈与",
+ cs:`<p>Qさん（30歳）は、2026年に父から現金600万円の贈与を受けた。ほかに贈与は受けていない。</p>
+<p><b>贈与税の速算表（基礎控除110万円を引いた後の金額に使う）</b></p>
+<table><thead><tr><th class="l">基礎控除後の課税価格</th><th>特例税率<br>（18歳以上の人が父母・祖父母から）</th><th>一般税率<br>（それ以外）</th></tr></thead><tbody>
+<tr><td class="l">200万円以下</td><td>10%</td><td>10%</td></tr>
+<tr><td class="l">200万円超 300万円以下</td><td>15%−10万円</td><td>15%−10万円</td></tr>
+<tr><td class="l">300万円超 400万円以下</td><td>15%−10万円</td><td>20%−25万円</td></tr>
+<tr><td class="l">400万円超 600万円以下</td><td>20%−30万円</td><td>30%−65万円</td></tr>
+<tr><td class="l">600万円超 1,000万円以下</td><td>30%−90万円</td><td>40%−125万円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"Qさんが暦年課税を選んだ場合、納める贈与税の額はいくらか。",calc:true,
+  ch:["68万円","82万円","98万円"],a:0,
+  exp:`<p>① 基礎控除後：600万 − 110万 ＝ 490万円<br>② 18歳以上の子が父から → <b>特例税率</b>。400万円超600万円以下の欄：490万 × 20% − 30万 ＝ <mark>68万円</mark></p>`,
+  why:["正しい。","一般税率（30%−65万円）で計算した数字。","控除額（30万円）を引き忘れた数字。"],
+  pt:"18歳以上の子・孫が父母・祖父母から→特例税率"},
+ {q:"相続時精算課税に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["2024年1月以降の贈与では、特別控除（累計2,500万円）とは別に、毎年110万円の基礎控除がある。","贈与者は65歳以上の親でなければならず、受贈者の年齢に条件はない。","一度選んでも、翌年から暦年課税にもどすことができる。"],a:0,
+  why:["適切。基礎控除の110万円の部分は、相続のときに相続財産に足し戻されません。","不適切。贈与者は<b>60歳以上</b>の父母・祖父母、受贈者は<b>18歳以上</b>の子・孫です。","不適切。一度選ぶと、その贈与者からの贈与は、ずっと相続時精算課税になります。"],
+  pt:"相続時精算課税：60歳以上の父母・祖父母→18歳以上の子・孫。撤回できない"},
+ {q:"贈与税の配偶者控除に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["婚姻期間が20年以上の夫婦間で、居住用不動産（またはその購入資金）を贈与したとき、基礎控除とは別に最高2,000万円を控除できる。","婚姻期間が10年以上あれば使える。","現金をそのまま預金として贈与した場合にも使える。"],a:0,
+  why:["適切。基礎控除110万円と合わせて、2,110万円まで贈与税がかかりません。","不適切。20年以上が必要です。","不適切。対象は、住むための家・土地か、それを買うためのお金です。"],
+  pt:"夫婦間の居住用不動産：婚姻20年以上で2,000万円控除"}
+ ]},
+{c:"life",t:"Rさんの社会保険（年金・医療）",
+ cs:`<p>会社員Rさんに関する資料です。</p>
+<table><tbody>
+<tr><td class="l">65歳から受け取る老齢基礎年金の額（仮の数字）</td><td>年80万円</td></tr>
+<tr><td class="l">標準報酬月額（直近12か月の平均）</td><td>30万円</td></tr>
+</tbody></table>
+<p><b>高額療養費の自己負担限度額（70歳未満、標準報酬月額28万〜50万円の人）</b>：80,100円＋（総医療費−267,000円）×1%</p>`,
+ qs:[
+ {q:"Rさんが老齢基礎年金の受け取りを70歳まで繰り下げた（60か月繰下げ）場合、受け取る年金額はいくらか。",calc:true,
+  ch:["113万6,000円","60万8,000円","104万円"],a:0,
+  exp:`<p>繰下げは、1か月につき<b>0.7%増える</b>。<br>60か月 × 0.7% ＝ 42%増 → 80万円 × 1.42 ＝ <mark>113万6,000円</mark></p>`,
+  why:["正しい。","繰上げ（1か月0.4%減）と取り違えた数字（80万×0.76）。","増える割合を30%として計算した数字。"],
+  pt:"繰下げ：1か月0.7%増（最大75歳で84%増）、繰上げ：1か月0.4%減"},
+ {q:"Rさんが1か月の入院で、総医療費100万円（健康保険が使える費用）がかかった。高額療養費の自己負担限度額はいくらか。",calc:true,
+  ch:["87,430円","300,000円","80,100円"],a:0,
+  exp:`<p>80,100円 ＋（1,000,000円 − 267,000円）× 1% ＝ 80,100 ＋ 7,330 ＝ <mark>87,430円</mark><br>窓口で3割（30万円）を払っても、超えた分はあとで戻ってきます（事前に「限度額適用認定証」やマイナ保険証を使えば、窓口の支払いも限度額まで）。</p>`,
+  why:["正しい。","3割の自己負担そのもの。高額療養費で限度額まで下がります。","1%の部分を足し忘れた数字。"],
+  pt:"高額療養費：1か月の自己負担が限度額を超えた分が戻る"},
+ {q:"Rさんが病気で会社を休み、給与が出ない場合、健康保険の傷病手当金の1日あたりの額はいくらか。",calc:true,
+  ch:["6,667円","10,000円","5,000円"],a:0,
+  exp:`<p>① 1日あたりの標準報酬：30万円 ÷ 30 ＝ 10,000円<br>② 傷病手当金はその<b>3分の2</b>：10,000 × 2/3 ＝ 6,666.6… → <mark>6,667円</mark></p>`,
+  why:["正しい。","3分の2にしていない数字。","2分の1で計算した数字。"],
+  pt:"傷病手当金＝標準報酬日額×2/3。休んで4日目から、通算1年6か月"},
+ {q:"傷病手当金に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["連続して3日間休んだ後（待期期間）、4日目以降の休んだ日について支給される。","休んだ1日目から支給される。","国民健康保険の加入者（自営業者）にも、必ず支給される。"],a:0,
+  why:["適切。待期3日間は、有給休暇や土日でもかまいません。","不適切。最初の3日間は支給されません。","不適切。国民健康保険には、原則として傷病手当金はありません。"],
+  pt:"傷病手当金：待期3日・4日目から・会社員の健康保険にある"}
+ ]}
+].forEach((k,ki)=>k.qs.forEach(o=>Q.push(Object.assign({g:3,c:k.c,t:"jt",ct:k.t,cs:k.cs,ck:"3-"+ki},o))));
 /* 2級・life */
 Q.push(...[
 {q:"65歳からの老齢厚生年金は、厚生年金に10年以上入っていなければ受け取れない。",a:false,ha:true,ng:"65歳からの老齢厚生年金は、受給資格期間（10年）を満たしていれば、厚生年金は<b>1か月以上</b>でもらえます。",fig:"nenkin",
@@ -2500,21 +3084,591 @@ Q.push(...[
  why:["加算するのは<b>贈与時</b>の価額。","正しい（贈与時の価額で固定されるため）。","法人が受け取った保険金を死亡退職金の財源にするのは、よく使われる方法。","特例措置は<b>100%</b>猶予（80%は一般措置）。"],
  pt:"相続時精算課税は贈与時の価額で加算 → 値上がりする財産を早めに贈与すると有利"}
 ].map(o=>Object.assign({g:2,c:"sozo",t:"mc"},o)));
+/* 2級・実技 */
+[
+{c:"life",t:"FPの仕事のルール（関連法規）",
+ cs:`<p>資格や登録をもっていないFPが、してよいこと・してはいけないことを考えます。</p>`,
+ qs:[
+ {q:"FPの行為に関する次の記述のうち、最も不適切なものはどれか。",
+  ch:["税理士資格をもたないFPが、顧客から依頼され、無償で顧客の確定申告書を作成した。","弁護士資格をもたないFPが、顧客の任意後見契約の受任者（任意後見人）になった。","社会保険労務士資格をもたないFPが、顧客の公的年金の受給見込額を、ねんきん定期便の情報をもとに試算した。","金融商品取引業の登録をもたないFPが、資産運用セミナーで、一般的な景気動向と株価の関係を説明した。"],a:0,
+  why:["不適切。税務書類の作成は、無償でも税理士にしかできません。","適切。任意後見人には、資格がなくてもなれます。","適切。年金額の試算は、資格がなくてもできます。","適切。一般的な説明なら、登録はいりません。"],
+  pt:"税理士以外：税務書類の作成・個別具体的な税務相談は無償でもNG"},
+ {q:"FPの職業倫理・関連法規に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["顧客の個人情報は、顧客の同意を得たうえで、保険の提案のために保険会社に伝えた。","顧客に有利だと考えたので、顧客の同意を得ずに、顧客の資産状況を家族に伝えた。","保険募集人の登録をもたないFPが、顧客から依頼され、生命保険契約の締結の代理をした。","投資助言・代理業の登録をもたないFPが、顧客と顧問契約を結び、個別銘柄の売買時期を助言した。"],a:0,
+  why:["適切。本人の同意があれば、第三者に伝えられます。","不適切。家族でも、本人の同意なく個人情報を伝えてはいけません。","不適切。保険の募集（勧誘・契約の代理・媒介）は、保険募集人の登録が必要です。","不適切。投資助言・代理業の登録が必要です。"],
+  pt:"個人情報の第三者提供は本人の同意が原則。保険の募集・投資助言は登録が必要"}
+ ]},
+{c:"life",t:"Aさん一家のキャッシュフロー表",
+ cs:`<p>会社員Aさん一家のキャッシュフロー表（一部）。単位は万円。計算過程では端数を処理せず、計算結果の<b>万円未満を四捨五入</b>する。</p>
+<table><thead><tr><th class="l">経過年数</th><th>変動率</th><th>基準年<br>2026年</th><th>…</th><th>2年後<br>2028年</th><th>3年後<br>2029年</th></tr></thead><tbody>
+<tr><td class="l">給与収入（夫）</td><td>1%</td><td>600</td><td>…</td><td>612</td><td>（ア）</td></tr>
+<tr><td class="l">基本生活費</td><td>2%</td><td>320</td><td>…</td><td>333</td><td>（イ）</td></tr>
+<tr><td class="l">年間収支</td><td></td><td>…</td><td>…</td><td>…</td><td>−40</td></tr>
+<tr><td class="l">金融資産残高</td><td>1%</td><td>…</td><td>…</td><td>900</td><td>（ウ）</td></tr>
+</tbody></table>
+<p>※金融資産残高＝前年末の残高×（1＋運用率）＋その年の年間収支</p>`,
+ qs:[
+ {q:"空欄（ア）にあてはまる数値はどれか。",calc:true,
+  ch:["618","612","606","624"],a:0,
+  exp:`<p>基準年から3年後なので、600 × 1.01³ ＝ 600 × 1.030301 ＝ 618.18… → <mark>618</mark></p>`,
+  why:["正しい。","2年後の数字。","1年後の数字。","4年後の数字。"],
+  pt:"将来の金額＝基準年の金額×（1＋変動率）^経過年数（基準年から計算する）"},
+ {q:"空欄（イ）にあてはまる数値はどれか。",calc:true,
+  ch:["340","339","326","346"],a:0,
+  exp:`<p>320 × 1.02³ ＝ 320 × 1.061208 ＝ 339.58… → <mark>340</mark></p>`,
+  why:["正しい。","切り捨てた数字。","1年後の数字。","4年後の数字。"],
+  pt:"2年後の表の数字（端数処理後）にかけるのではなく、基準年から計算する"},
+ {q:"空欄（ウ）にあてはまる数値はどれか。",calc:true,
+  ch:["869","860","949","909"],a:0,
+  exp:`<p>900 × 1.01 ＋（−40）＝ 909 − 40 ＝ <mark>869</mark></p>`,
+  why:["正しい。","運用で増える分（9万円）を足し忘れた数字。","マイナスの収支を足してしまった数字。","年間収支を反映していない数字。"],
+  pt:"年間収支がマイナスなら、残高から引く"}
+ ]},
+{c:"life",t:"係数表を使う計算（年利1%）",
+ cs:`<p>次の係数表（年利1%）を使って答える。税金・手数料は考えない。</p>
+<table><thead><tr><th class="l">期間</th><th>終価</th><th>現価</th><th>年金終価</th><th>減債基金</th><th>資本回収</th><th>年金現価</th></tr></thead><tbody>
+<tr><td class="l">10年</td><td>1.105</td><td>0.905</td><td>10.462</td><td>0.096</td><td>0.106</td><td>9.471</td></tr>
+<tr><td class="l">20年</td><td>1.220</td><td>0.820</td><td>22.019</td><td>0.045</td><td>0.055</td><td>18.046</td></tr>
+<tr><td class="l">25年</td><td>1.282</td><td>0.780</td><td>28.243</td><td>0.035</td><td>0.045</td><td>22.023</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"3,000万円を年利1%、25年の元利均等返済で借りた場合の、毎年の返済額はいくらか。",calc:true,
+  ch:["135万円","105万円","120万円","165万円"],a:0,
+  exp:`<p>借りた元本から毎年の返済額 → <b>資本回収係数</b>。3,000万 × 0.045 ＝ <mark>135万円</mark></p>`,
+  why:["正しい。","減債基金係数（0.035）を使った数字。","3,000万÷25年で、利息を考えていない数字。","資本回収係数の数字の読み違い。"],
+  pt:"借入額→毎年の返済額＝資本回収係数"},
+ {q:"退職後20年間、毎年末240万円を受け取りたい。年利1%で運用しながら取り崩すとき、退職時に必要な額はいくらか。",calc:true,
+  ch:["4,331万400円","5,284万5,600円","4,800万円","3,933万6,000円"],a:0,
+  exp:`<p>毎年の受取額から、いま必要な元本 → <b>年金現価係数</b>。240万 × 18.046 ＝ <mark>4,331万400円</mark></p>`,
+  why:["正しい。","年金終価係数（22.019）を使った数字。","240万×20年で、運用を考えていない数字。","240万×20年に現価係数（0.820）をかけた数字。"],
+  pt:"毎年の受取額→必要な元本＝年金現価係数"},
+ {q:"10年後に1,000万円を用意したい。年利1%で運用しながら、毎年末に積み立てる額はいくらか。",calc:true,
+  ch:["96万円","106万円","90万5,000円","100万円"],a:0,
+  exp:`<p>将来の目標額から毎年の積立額 → <b>減債基金係数</b>。1,000万 × 0.096 ＝ <mark>96万円</mark></p>`,
+  why:["正しい。","資本回収係数を使った数字。","現価係数で割り引いてから10で割った数字。","1,000万÷10年で、運用を考えていない数字。"],
+  pt:"目標額→毎年の積立額＝減債基金係数"}
+ ]},
+{c:"life",t:"住宅ローンの返済と見直し",
+ cs:`<p>Bさんは、住宅ローン（全期間固定金利・元利均等返済・残高2,000万円・残り20年）の一部繰上げ返済を考えている。</p>`,
+ qs:[
+ {q:"一部繰上げ返済に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["同じ金額・同じ時期に繰上げ返済するなら、「期間短縮型」の方が「返済額軽減型」より、減る利息の総額は多い。","「返済額軽減型」は、毎回の返済額は変わらず、返済期間が短くなる。","繰上げ返済は、返済期間の後半に行うほど、利息を減らす効果が大きい。","繰上げ返済したお金は、すべて利息の支払いに充てられる。"],a:0,
+  why:["適切。期間短縮型は、利息がつく期間そのものを短くするので、効果が大きくなります。","不適切。それは期間短縮型の説明。返済額軽減型は、期間は変わらず毎回の返済額が減ります。","不適切。残高が多い<b>早い時期</b>ほど効果が大きくなります。","不適切。繰上げ返済したお金は、すべて<b>元金</b>の返済に充てられます。"],
+  pt:"繰上げ返済は早いほど・期間短縮型ほど利息が減る"},
+ {q:"元利均等返済と元金均等返済に関する次の記述のうち、最も不適切なものはどれか。",
+  ch:["元利均等返済は、元金均等返済より、総返済額が少ない。","元利均等返済は、毎回の返済額（元金＋利息）が一定である。","元金均等返済は、返済の初めの頃の返済額が多く、だんだん減っていく。","元利均等返済は、返済の初めの頃ほど、返済額のうち利息の割合が大きい。"],a:0,
+  why:["不適切。同じ条件なら、元金が早く減る<b>元金均等返済</b>の方が総返済額は少なくなります。","適切。","適切。元金を毎回同じだけ返し、利息が減っていくためです。","適切。最初は残高が多いので利息が多くなります。"],
+  pt:"総返済額：元金均等＜元利均等。元利均等は毎回の返済額が一定"}
+ ]},
+{c:"life",t:"会社員Cさんが亡くなった場合の遺族年金",
+ cs:`<p>会社員Cさん（45歳、厚生年金の被保険者）が亡くなった場合を考える。Cさんに生計を維持されている家族は、妻D（42歳）、長男E（15歳）、長女F（12歳）。子はどちらも障害の状態ではない。</p>
+<table><tbody>
+<tr><td class="l">遺族基礎年金の基本額（仮の数字）</td><td>年83万円</td></tr>
+<tr><td class="l">子の加算額（第1子・第2子、仮の数字）</td><td>1人につき年24万円</td></tr>
+<tr><td class="l">Cさんの老齢厚生年金の報酬比例部分（被保険者期間を300月とみなして計算、仮の数字）</td><td>年60万円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"Cさんが現時点で亡くなった場合、妻Dが受け取る遺族基礎年金の年額はいくらか。",calc:true,
+  ch:["131万円","107万円","83万円","155万円"],a:0,
+  exp:`<p>遺族基礎年金 ＝ 基本額 ＋ 子の加算。83 ＋ 24 ＋ 24 ＝ <mark>131万円</mark></p>`,
+  why:["正しい。","子の加算を1人分しか足していない数字。","子の加算を足していない数字。","子の加算を3人分足した数字。"],
+  pt:"遺族基礎年金は「子のある配偶者」か「子」が受け取る。子の人数で加算"},
+ {q:"妻Dが受け取る遺族厚生年金の年額はいくらか。",calc:true,
+  ch:["45万円","60万円","30万円","80万円"],a:0,
+  exp:`<p>遺族厚生年金 ＝ 老齢厚生年金の報酬比例部分 × <b>4分の3</b>（被保険者期間が300月未満なら300月とみなす）。<br>60万 × 3/4 ＝ <mark>45万円</mark></p>`,
+  why:["正しい。","4分の3にしていない数字。","2分の1で計算した数字。","4分の3で割った数字。"],
+  pt:"遺族厚生年金＝報酬比例部分×3/4（300月みなし）"},
+ {q:"その後の遺族年金に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["長女Fが18歳になった年度末を過ぎると、遺族基礎年金は支給されなくなり、妻Dが65歳になるまで遺族厚生年金に中高齢寡婦加算が加わる。","長女Fが18歳になっても、遺族基礎年金は妻Dが65歳になるまで支給される。","中高齢寡婦加算は、妻が30歳未満でも支給される。","妻Dが再婚しても、遺族厚生年金はそのまま支給される。"],a:0,
+  why:["適切。子の要件がなくなった時点で妻が40歳以上なので、中高齢寡婦加算がつきます。","不適切。遺族基礎年金は、18歳到達年度末までの子がいる間だけです。","不適切。夫の死亡時（または子の要件がなくなった時）に、妻が40歳以上65歳未満であることが条件です。","不適切。再婚すると遺族年金を受ける権利はなくなります。"],
+  pt:"子が18歳年度末を過ぎる→遺族基礎年金は終了→40歳以上なら中高齢寡婦加算"}
+ ]},
+{c:"life",t:"Gさんの退職後の健康保険・雇用保険",
+ cs:`<p>Gさん（58歳）は、勤続22年（雇用保険の被保険者期間も22年）の会社を、<b>自己都合</b>で退職した。退職後は再就職を目指している。</p>`,
+ qs:[
+ {q:"健康保険の任意継続被保険者に関する次の記述のうち、最も不適切なものはどれか。",
+  ch:["保険料は、在職中と同じく、会社が半分を負担する。","退職日の翌日（資格喪失日）から20日以内に申し出る必要がある。","加入できる期間は、最長2年間である。","退職日までに、継続して2か月以上の被保険者期間が必要である。"],a:0,
+  why:["不適切。任意継続では会社の負担がなくなり、<b>全額を自分で</b>払います。","適切。","適切。","適切。"],
+  pt:"任意継続：2か月以上加入・20日以内に申出・最長2年・保険料は全額自己負担"},
+ {q:"Gさんが受け取れる雇用保険の基本手当の所定給付日数はどれか（特定受給資格者などには当たらないものとする）。",
+  ch:["150日","120日","90日","330日"],a:0,
+  exp:`<p>自己都合退職などの一般の離職者は、<b>被保険者期間</b>で決まります（年齢は関係ありません）。<br>10年未満：90日、10年以上20年未満：120日、20年以上：<mark>150日</mark></p>`,
+  why:["正しい。","被保険者期間10年以上20年未満の日数。","10年未満の日数。","倒産・解雇などの特定受給資格者（45歳以上60歳未満・20年以上）の日数。"],
+  pt:"自己都合の基本手当：90日・120日・150日（被保険者期間で決まる）"}
+ ]},
+{c:"life",t:"Hさんの老齢年金",
+ cs:`<p>Hさん（1962年5月生まれ、会社員を定年退職）の年金の見込み（仮の数字）。</p>
+<table><tbody>
+<tr><td class="l">65歳からの老齢基礎年金</td><td>年80万円</td></tr>
+<tr><td class="l">65歳からの老齢厚生年金</td><td>年120万円（厚生年金の加入期間は38年）</td></tr>
+<tr><td class="l">加給年金額（仮の数字）</td><td>年40万円</td></tr>
+<tr><td class="l">家族</td><td>妻（60歳・Hさんに生計を維持され、厚生年金の加入期間は5年）</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"Hさんが65歳から受け取る年金の合計（年額）はいくらか。",calc:true,
+  ch:["240万円","200万円","280万円","160万円"],a:0,
+  exp:`<p>厚生年金の加入期間が20年以上あり、65歳未満の配偶者を扶養しているので、<b>加給年金</b>がつきます。<br>80 ＋ 120 ＋ 40 ＝ <mark>240万円</mark></p>`,
+  why:["正しい。","加給年金を足していない数字。","加給年金を2回足した数字。","老齢厚生年金を足していない数字。"],
+  pt:"加給年金：厚生年金20年以上＋65歳未満の配偶者（や子）を扶養"},
+ {q:"Hさんが老齢基礎年金を64歳から繰り上げて受け取る（12か月の繰上げ）場合、年金額は何%減るか。",calc:true,
+  ch:["4.8%","6.0%","8.4%","0.4%"],a:0,
+  exp:`<p>1962年4月2日以降に生まれた人の繰上げは、<b>1か月につき0.4%</b>減ります。12か月 × 0.4% ＝ <mark>4.8%</mark>（一生、減ったまま）</p>`,
+  why:["正しい。","1か月0.5%（以前の率）で計算した数字。","繰下げの率（0.7%）で計算した数字。","1か月分だけの数字。"],
+  pt:"繰上げ：1か月0.4%減（一生続く）"}
+ ]},
+{c:"risk",t:"生命保険の契約形態と税金",
+ cs:`<p>Iさん一家が加入している生命保険です（保険料は契約者が負担している）。</p>
+<table><thead><tr><th class="l">契約</th><th class="l">保険の種類</th><th class="l">契約者</th><th class="l">被保険者</th><th class="l">受取人</th></tr></thead><tbody>
+<tr><td class="l">契約X</td><td class="l">終身保険（死亡保険金3,000万円）</td><td class="l">夫I</td><td class="l">夫I</td><td class="l">妻</td></tr>
+<tr><td class="l">契約Y</td><td class="l">定期保険（死亡保険金1,000万円）</td><td class="l">妻</td><td class="l">夫I</td><td class="l">妻</td></tr>
+<tr><td class="l">契約Z</td><td class="l">養老保険（満期保険金500万円）</td><td class="l">夫I</td><td class="l">妻</td><td class="l">子（満期受取人）</td></tr>
+</tbody></table>
+<p>夫Iの法定相続人は、妻と子2人の計3人。</p>`,
+ qs:[
+ {q:"課税関係の組合せとして、正しいものはどれか。",
+  ch:["X：相続税　Y：所得税（一時所得）　Z：贈与税","X：相続税　Y：相続税　Z：所得税（一時所得）","X：所得税（一時所得）　Y：相続税　Z：贈与税","X：相続税　Y：贈与税　Z：相続税"],a:0,
+  why:["正しい。X：契約者＝被保険者 → 相続税。Y：契約者＝受取人（自分で払って自分が受取） → 一時所得。Z：契約者と受取人が別人で、被保険者も違う → 贈与税。","Yは、保険料を払った妻自身が受け取るので所得税です。","Xは、保険料を払った夫が亡くなって妻が受け取るので相続税です。","Yは所得税、Zは贈与税です。"],
+  pt:"契約者＝被保険者→相続税、契約者＝受取人→所得税、3人ばらばら→贈与税"},
+ {q:"夫Iが亡くなり、妻が契約Xの死亡保険金3,000万円を受け取った。妻の相続税の課税価格に算入される金額はいくらか（ほかに死亡保険金はない）。",calc:true,
+  ch:["1,500万円","3,000万円","0円","1,000万円"],a:0,
+  exp:`<p>非課税限度額 ＝ 500万円 × 法定相続人3人 ＝ 1,500万円<br>3,000万 − 1,500万 ＝ <mark>1,500万円</mark></p>`,
+  why:["正しい。","非課税限度額を引いていない数字。","非課税限度額を超えています。","非課税限度額を4人分で計算した数字。"],
+  pt:"死亡保険金の非課税＝500万×法定相続人（相続人が受け取る場合）"}
+ ]},
+{c:"risk",t:"J社（法人）が契約する生命保険の経理",
+ cs:`<p>J社は、次の生命保険に加入している（年払保険料は毎年同じ）。</p>
+<table><thead><tr><th class="l">契約</th><th class="l">内容</th><th>年払保険料</th></tr></thead><tbody>
+<tr><td class="l">養老保険</td><td class="l">被保険者：役員・従業員全員／死亡保険金受取人：被保険者の遺族／満期保険金受取人：J社</td><td>200万円</td></tr>
+<tr><td class="l">定期保険</td><td class="l">被保険者：社長／受取人：J社／保険期間30年／最高解約返戻率60%／現在は保険期間の前半4割の期間内</td><td>300万円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"養老保険の年払保険料200万円の経理処理として、正しいものはどれか。",
+  ch:["100万円を保険料積立金として資産計上し、100万円を福利厚生費として損金算入する。","200万円全額を福利厚生費として損金算入する。","200万円全額を保険料積立金として資産計上する。","200万円全額を役員・従業員への給与とする。"],a:0,
+  why:["正しい。いわゆる「ハーフタックスプラン」。全員加入・死亡は遺族・満期は会社、の形なら半分を損金にできます。","満期保険金は会社が受け取るので、全額を損金にはできません。","死亡保険金は遺族が受け取るので、半分は福利厚生費になります。","全員加入で福利厚生の目的があれば、給与にはなりません。"],
+  pt:"ハーフタックスプラン：1/2資産計上・1/2福利厚生費"},
+ {q:"定期保険の年払保険料300万円について、現在の期間の経理処理として正しいものはどれか。",calc:true,
+  ch:["120万円を前払保険料として資産計上し、180万円を損金算入する。","300万円全額を損金算入する。","180万円を前払保険料として資産計上し、120万円を損金算入する。","150万円を資産計上し、150万円を損金算入する。"],a:0,
+  exp:`<p>最高解約返戻率が<b>50%超70%以下</b>の定期保険は、保険期間の前半4割の期間、保険料の<b>40%</b>を資産計上し、60%を損金にします。<br>資産：300 × 40% ＝ 120万円、損金：300 × 60% ＝ <mark>180万円</mark></p>`,
+  why:["正しい。","全額損金にできるのは、最高解約返戻率が50%以下の場合など。","資産と損金を逆にした数字。","2分の1は養老保険のハーフタックスプランの扱い。"],
+  pt:"定期保険：返戻率50%以下→全額損金、50%超70%以下→前半4割は40%資産計上"}
+ ]},
+{c:"risk",t:"Kさんの医療保険・がん保険",
+ cs:`<p>Kさん（契約者＝被保険者＝受取人）が加入している保険です。</p>
+<table><thead><tr><th class="l">医療保険</th><th></th></tr></thead><tbody>
+<tr><td class="l">入院給付金</td><td>日額10,000円（1入院60日まで）</td></tr>
+<tr><td class="l">手術給付金</td><td>入院中の手術：入院日額×20倍／外来の手術：入院日額×5倍</td></tr>
+<tr><td class="l">先進医療特約</td><td>先進医療の技術料と同額（通算2,000万円まで）</td></tr>
+</tbody></table>
+<table><thead><tr><th class="l">がん保険</th><th></th></tr></thead><tbody>
+<tr><td class="l">がん診断給付金</td><td>初めてがん（悪性新生物）と診断されたとき100万円</td></tr>
+<tr><td class="l">がん入院給付金</td><td>日額10,000円（日数無制限）</td></tr>
+</tbody></table>
+<p>Kさんは、初めて大腸がん（悪性新生物）と診断され、<b>70日間</b>入院し、入院中に手術を1回受けた。退院後に、先進医療（技術料120万円）を受けた。</p>`,
+ qs:[
+ {q:"医療保険から支払われる給付金の合計はいくらか。",calc:true,
+  ch:["200万円","210万円","80万円","220万円"],a:0,
+  exp:`<p>① 入院：1入院60日が限度 → 10,000 × 60日 ＝ 60万円<br>② 手術（入院中）：10,000 × 20倍 ＝ 20万円<br>③ 先進医療：120万円<br>合計 ＝ <mark>200万円</mark></p>`,
+  why:["正しい。","入院日数を70日で計算した数字。60日が限度です。","先進医療特約を足していない数字。","70日分の入院に加えて、手術の倍率も取り違えた数字。"],
+  pt:"入院給付金は「1入院の限度日数」に注意"},
+ {q:"がん保険から支払われる給付金の合計はいくらか。",calc:true,
+  ch:["170万円","160万円","100万円","70万円"],a:0,
+  exp:`<p>① 診断給付金：100万円<br>② がん入院：日数無制限 → 10,000 × 70日 ＝ 70万円<br>合計 ＝ <mark>170万円</mark></p>`,
+  why:["正しい。","がん入院を60日で計算した数字。がん保険は日数無制限です。","診断給付金だけの数字。","入院給付金だけの数字。"],
+  pt:"がん保険の入院給付金は日数無制限が多い"},
+ {q:"Kさんが受け取った入院給付金・手術給付金・がん診断給付金の税金の扱いとして、正しいものはどれか。",
+  ch:["すべて非課税である。","一時所得として所得税がかかる。","雑所得として所得税がかかる。","相続税がかかる。"],a:0,
+  why:["正しい。被保険者本人（や配偶者・直系血族など）が受け取る、病気やけがの給付金は非課税です。","非課税です。","非課税です。","本人が生きて受け取るので、相続税は関係ありません。"],
+  pt:"入院・手術・診断給付金（本人受取）は非課税"}
+ ]},
+{c:"risk",t:"Lさんの保険料控除",
+ cs:`<p>会社員Lさんが2026年に支払った保険料です（どれも2012年以降の契約。Lさんに23歳未満の扶養親族はいない）。</p>
+<table><tbody>
+<tr><td class="l">終身保険（一般の生命保険料）</td><td>年12万円</td></tr>
+<tr><td class="l">地震保険料</td><td>年6万円</td></tr>
+</tbody></table>
+<p><b>生命保険料控除（新制度・所得税）</b>：年間保険料2万円以下＝全額、2万円超4万円以下＝×1/2＋1万円、4万円超8万円以下＝×1/4＋2万円、8万円超＝<b>一律4万円</b></p>`,
+ qs:[
+ {q:"Lさんの所得税の一般の生命保険料控除の額はいくらか。",calc:true,
+  ch:["4万円","12万円","5万円","3万円"],a:0,
+  exp:`<p>年間保険料が8万円を超えるので、一律 <mark>4万円</mark>。</p>`,
+  why:["正しい。","払った保険料がそのまま控除されるわけではありません。","地震保険料控除の上限の数字。","表の読み違い。"],
+  pt:"生命保険料控除（新制度）：一般・介護医療・個人年金で各4万円、合計12万円まで"},
+ {q:"Lさんの所得税の地震保険料控除の額はいくらか。",calc:true,
+  ch:["5万円","6万円","2万5,000円","3万円"],a:0,
+  exp:`<p>地震保険料控除（所得税）は、払った保険料の全額で、<b>上限5万円</b>。→ <mark>5万円</mark><br>（住民税は保険料の1/2、上限2万5,000円）</p>`,
+  why:["正しい。","上限5万円を超えています。","住民税の上限の数字。","半分にする必要はありません（所得税）。"],
+  pt:"地震保険料控除：所得税は上限5万円、住民税は上限2.5万円"}
+ ]},
+{c:"kin",t:"固定利付債の利回り",
+ cs:`<p>次の固定利付債券について考える。税金・手数料は考えず、利回りは<b>小数点以下第4位を四捨五入</b>する。</p>
+<table><tbody>
+<tr><td class="l">表面利率</td><td>年1.2%</td></tr>
+<tr><td class="l">額面</td><td>100円</td></tr>
+<tr><td class="l">購入価格</td><td>98.00円</td></tr>
+<tr><td class="l">残存期間</td><td>4年</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"この債券を購入し、満期まで保有した場合の最終利回り（年率・単利）はいくらか。",calc:true,
+  ch:["1.735%","1.700%","1.224%","3.265%"],a:0,
+  exp:`<p>最終利回り ＝ {表面利率 ＋（額面 − 購入価格）÷ 残存年数} ÷ 購入価格 × 100<br>＝ {1.2 ＋（100 − 98）÷ 4} ÷ 98 × 100 ＝ 1.7 ÷ 98 × 100 ＝ 1.7346… → <mark>1.735%</mark></p>`,
+  why:["正しい。","購入価格ではなく額面（100）で割った数字。","差益（償還差益）を足していない数字。","差益を年数で割り忘れた数字。"],
+  pt:"利回り＝（1年分の利子＋1年分の差益）÷買った値段"},
+ {q:"この債券を98.00円で購入し、2年後に99.50円で売却した場合の所有期間利回り（年率・単利）はいくらか。",calc:true,
+  ch:["1.990%","1.960%","2.755%","1.224%"],a:0,
+  exp:`<p>{1.2 ＋（99.50 − 98.00）÷ 2} ÷ 98 × 100 ＝ 1.95 ÷ 98 × 100 ＝ 1.9897… → <mark>1.990%</mark></p>`,
+  why:["正しい。","売却価格（99.50）で割った数字。","差益を年数で割り忘れた数字。","差益を足していない数字。"],
+  pt:"所有期間利回りは、売却価格と保有年数で計算する"},
+ {q:"債券に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["市場金利が上がると、すでに発行されている固定利付債の価格は下がる。","市場金利が上がると、すでに発行されている固定利付債の価格は上がる。","残存期間が短い債券ほど、金利の変動による価格の変動は大きい。","発行体の信用度が下がると、債券の価格は上がり、利回りは下がる。"],a:0,
+  why:["適切。新しい債券の利率が高くなるので、古い債券は値下がりして利回りが釣り合います。","不適切。逆です。","不適切。残存期間が<b>長い</b>ほど、価格の変動は大きくなります。","不適切。信用度が下がると価格は下がり、利回りは上がります。"],
+  pt:"金利↑→債券価格↓。期間が長いほど値動きが大きい"}
+ ]},
+{c:"kin",t:"ポートフォリオの期待収益率とリスク",
+ cs:`<p>Mさんのポートフォリオです。</p>
+<table><thead><tr><th class="l">資産</th><th>期待収益率</th><th>組入比率</th></tr></thead><tbody>
+<tr><td class="l">資産A（株式）</td><td>6.0%</td><td>40%</td></tr>
+<tr><td class="l">資産B（債券）</td><td>3.0%</td><td>40%</td></tr>
+<tr><td class="l">資産C（預金）</td><td>1.0%</td><td>20%</td></tr>
+</tbody></table>
+<p>また、投資信託XとYの過去の実績は次のとおり（無リスク資産の利子率は1.0%）。</p>
+<table><thead><tr><th class="l">投資信託</th><th>収益率</th><th>標準偏差</th></tr></thead><tbody>
+<tr><td class="l">X</td><td>8.0%</td><td>10.0%</td></tr>
+<tr><td class="l">Y</td><td>6.0%</td><td>5.0%</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"Mさんのポートフォリオの期待収益率はいくらか。",calc:true,
+  ch:["3.8%","3.3%","10.0%","4.2%"],a:0,
+  exp:`<p>期待収益率 ＝ 各資産の期待収益率 × 組入比率 の合計<br>6.0×0.4 ＋ 3.0×0.4 ＋ 1.0×0.2 ＝ 2.4 ＋ 1.2 ＋ 0.2 ＝ <mark>3.8%</mark></p>`,
+  why:["正しい。","3つの単純平均の数字。組入比率で重みをつけます。","足しただけの数字。","比率の取り違え。"],
+  pt:"期待収益率＝収益率×組入比率の合計（加重平均）"},
+ {q:"シャープ・レシオで、投資信託XとYの運用効率を比べたとき、正しいものはどれか。",calc:true,
+  ch:["Xは0.7、Yは1.0で、Yの方が効率がよい。","Xは0.8、Yは1.2で、Yの方が効率がよい。","Xは0.7、Yは1.0で、Xの方が効率がよい。","XとYは同じ効率である。"],a:0,
+  exp:`<p>シャープ・レシオ ＝（収益率 − 無リスク資産の利子率）÷ 標準偏差<br>X：（8 − 1）÷ 10 ＝ 0.7、Y：（6 − 1）÷ 5 ＝ <mark>1.0</mark><br>数字が大きいほど、とったリスクのわりに効率よく稼いでいます。</p>`,
+  why:["正しい。","無リスク資産の利子率を引いていない数字。","数字が大きい方が効率がよいので、Yです。","計算すると違います。"],
+  pt:"シャープ・レシオ＝（収益率−無リスク利子率）÷標準偏差。大きいほど効率がよい"},
+ {q:"ポートフォリオのリスクに関する次の記述のうち、最も適切なものはどれか。",
+  ch:["組み合わせる2つの資産の相関係数が−1のとき、リスクを減らす効果が最も大きい。","相関係数が＋1のとき、リスクを減らす効果が最も大きい。","相関係数が0のとき、リスクを減らす効果はまったくない。","ポートフォリオのリスクは、各資産の標準偏差を組入比率で加重平均した値より、常に大きい。"],a:0,
+  why:["適切。逆の動きをする資産を組み合わせると、値動きが打ち消し合います。","不適切。＋1（同じ動き）では、リスクを減らす効果はありません。","不適切。0でも効果はあります。","不適切。相関係数が1未満なら、加重平均より<b>小さく</b>なります。"],
+  pt:"相関係数−1でリスク低減効果が最大、＋1で効果なし"}
+ ]},
+{c:"kin",t:"投資信託の分配金と個別元本",
+ cs:`<p>Nさんは、追加型の株式投資信託を、1万口あたり<b>10,000円</b>（個別元本）で購入した。その後の決算の内容は次のとおり。</p>
+<table><tbody>
+<tr><td class="l">分配前の基準価額</td><td>10,300円</td></tr>
+<tr><td class="l">分配金</td><td>600円</td></tr>
+<tr><td class="l">分配後の基準価額</td><td>9,700円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"この分配金のうち、普通分配金はいくらか（1万口あたり）。",calc:true,
+  ch:["300円","600円","0円","200円"],a:0,
+  exp:`<p>分配後の基準価額（9,700円）が個別元本（10,000円）を下回ったので、下回った分（300円）は<b>元本払戻金（特別分配金）</b>。<br>残りの 600 − 300 ＝ <mark>300円</mark> が普通分配金（もうけからの分配）です。</p>`,
+  why:["正しい。","全額が普通分配金になるのは、分配後の基準価額が個別元本以上のとき。","一部はもうけからの分配です。","計算の誤り。"],
+  pt:"分配後の基準価額＜個別元本 → 下回った分は元本払戻金"},
+ {q:"分配後のNさんの個別元本はいくらか（1万口あたり）。",calc:true,
+  ch:["9,700円","10,000円","9,400円","10,300円"],a:0,
+  exp:`<p>元本払戻金を受け取った分だけ、個別元本は下がります。10,000 − 300 ＝ <mark>9,700円</mark></p>`,
+  why:["正しい。","元本払戻金の分、個別元本は下がります。","分配金の全額を引いた数字。","分配前の基準価額。"],
+  pt:"元本払戻金を受け取ると、個別元本はその分下がる"},
+ {q:"分配金の税金に関する次の記述のうち、正しいものはどれか（特定口座・NISAではない口座）。",
+  ch:["普通分配金は課税され、元本払戻金（特別分配金）は非課税である。","普通分配金も元本払戻金も、どちらも課税される。","普通分配金は非課税で、元本払戻金は課税される。","どちらも非課税である。"],a:0,
+  why:["正しい。元本払戻金は「自分が出したお金が返ってきた」だけなので非課税です。","元本払戻金は非課税です。","逆です。","普通分配金は課税されます（20.315%）。"],
+  pt:"普通分配金＝課税、元本払戻金（特別分配金）＝非課税"}
+ ]},
+{c:"kin",t:"Z社の株式と配当",
+ cs:`<p>Z社の資料です。</p>
+<table><tbody>
+<tr><td class="l">株価</td><td>3,000円</td></tr>
+<tr><td class="l">当期純利益</td><td>120億円</td></tr>
+<tr><td class="l">自己資本（純資産）</td><td>1,500億円</td></tr>
+<tr><td class="l">発行済株式数</td><td>1億株</td></tr>
+<tr><td class="l">1株当たり年間配当金</td><td>60円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"Z社株式のPER（株価収益率）はいくらか。",calc:true,
+  ch:["25倍","2倍","20倍","12.5倍"],a:0,
+  exp:`<p>1株当たり純利益（EPS）＝ 120億 ÷ 1億株 ＝ 120円<br>PER ＝ 3,000 ÷ 120 ＝ <mark>25倍</mark></p>`,
+  why:["正しい。","PBR（3,000÷1,500）の数字。","計算の誤り。","計算の誤り。"],
+  pt:"EPS＝純利益÷株数、PER＝株価÷EPS"},
+ {q:"Z社のROE（自己資本利益率）はいくらか。",calc:true,
+  ch:["8.0%","2.0%","4.0%","12.5%"],a:0,
+  exp:`<p>ROE ＝ 当期純利益 ÷ 自己資本 × 100 ＝ 120億 ÷ 1,500億 × 100 ＝ <mark>8.0%</mark></p>`,
+  why:["正しい。","配当利回り（60÷3,000）の数字。","PER の逆数（1÷25）の数字。","自己資本÷純利益の計算の誤り。"],
+  pt:"ROE＝純利益÷自己資本（株主のお金でどれだけ稼いだか）"},
+ {q:"Z社株式を100株保有している。1年分の配当金の手取り額はいくらか（上場株式の配当、源泉徴収税率20.315%、1円未満切り捨て、NISAではない）。",calc:true,
+  ch:["4,782円","6,000円","4,800円","5,082円"],a:0,
+  exp:`<p>① 配当金：60円 × 100株 ＝ 6,000円<br>② 源泉徴収税：6,000 × 20.315% ＝ 1,218.9 → 1,218円<br>③ 手取り ＝ 6,000 − 1,218 ＝ <mark>4,782円</mark></p>`,
+  why:["正しい。","税金を引いていない数字。","税率を20%で計算した数字。","所得税（15.315%）だけを引き、住民税（5%）を引いていない数字。"],
+  pt:"上場株式の配当：20.315%（所得税15.315%＋住民税5%）"}
+ ]},
+{c:"kin",t:"外貨預金の利回り",
+ cs:`<p>Oさんは、米ドル建て定期預金（1年・年利4.0%、税引前）に1万ドルを預け入れた。税金は考えない。</p>
+<table><thead><tr><th class="l"></th><th>TTS</th><th>TTM</th><th>TTB</th></tr></thead><tbody>
+<tr><td class="l">預入時</td><td>150.50円</td><td>150.00円</td><td>149.50円</td></tr>
+<tr><td class="l">満期時</td><td>152.50円</td><td>152.00円</td><td>151.50円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"この外貨預金の円ベースでの利回り（単利・年率）はいくらか（小数点以下第3位を四捨五入）。",calc:true,
+  ch:["4.69%","4.00%","5.39%","1.00%"],a:0,
+  exp:`<p>① 預入時の円：10,000ドル × 150.50（TTS）＝ 1,505,000円<br>② 満期のドル：10,000 × 1.04 ＝ 10,400ドル<br>③ 満期の円：10,400 × 151.50（TTB）＝ 1,575,600円<br>④ 利回り：（1,575,600 − 1,505,000）÷ 1,505,000 × 100 ＝ 4.690… → <mark>4.69%</mark></p>`,
+  why:["正しい。","外貨の利率のままの数字。為替の変化と手数料が反映されていません。","預入・満期ともTTMで計算した数字。","為替の差益だけを見た数字。"],
+  pt:"円→外貨はTTS、外貨→円はTTB。円で比べて利回りを出す"},
+ {q:"外貨預金の税金に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["外貨預金の利息は源泉分離課税（20.315%）、満期時の為替差益は雑所得として総合課税の対象である。","外貨預金の為替差益は、上場株式の譲渡損失と損益通算できる。","外貨預金の利息は、申告分離課税で、株式の損失と損益通算できる。","外貨預金の為替差益は、すべて非課税である。"],a:0,
+  why:["適切。為替差益は雑所得です（為替予約を付けた場合などは扱いが異なります）。","不適切。雑所得は、上場株式の損失と通算できません。","不適切。預金の利息は源泉分離課税で、通算できません。","不適切。雑所得として課税されます。"],
+  pt:"外貨預金：利息＝源泉分離、為替差益＝雑所得（総合課税）"}
+ ]},
+{c:"tax",t:"Pさんの総所得金額（損益通算）",
+ cs:`<p>会社員Pさんの2026年分の所得の資料です。</p>
+<table><tbody>
+<tr><td class="l">給与収入</td><td>1,000万円（給与所得控除額は195万円）</td></tr>
+<tr><td class="l">不動産所得</td><td>損失120万円（このうち、土地を取得するための借入金の利子が30万円）</td></tr>
+<tr><td class="l">一時所得</td><td>生命保険の解約返戻金300万円（払込保険料の総額180万円）</td></tr>
+<tr><td class="l">雑所得</td><td>副業による損失10万円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"Pさんの給与所得の金額はいくらか。",calc:true,
+  ch:["805万円","1,000万円","790万円","810万円"],a:0,
+  exp:`<p>給与収入が850万円を超えるので、給与所得控除は上限の195万円。1,000 − 195 ＝ <mark>805万円</mark></p>`,
+  why:["正しい。","給与所得控除を引いていない数字。","収入×10%＋110万円（660万〜850万円の欄）で計算した数字。","計算の誤り。"],
+  pt:"給与所得控除の上限は195万円（給与収入850万円超）"},
+ {q:"不動産所得の損失のうち、給与所得と損益通算できる金額はいくらか。",calc:true,
+  ch:["90万円","120万円","30万円","0円"],a:0,
+  exp:`<p>不動産所得の損失のうち、<b>土地を取得するための借入金の利子</b>の部分は、損益通算できません。<br>120 − 30 ＝ <mark>90万円</mark></p>`,
+  why:["正しい。","土地の借入金利子の部分は通算できません。","通算できない部分の金額です。","不動産所得の損失は、原則として通算できます。"],
+  pt:"不動産所得の損失のうち、土地取得の借入金利子は損益通算できない"},
+ {q:"Pさんの2026年分の総所得金額はいくらか。",calc:true,
+  ch:["750万円","785万円","740万円","720万円"],a:0,
+  exp:`<p>① 一時所得：300 − 180 − 50 ＝ 70万円 → 総所得には1/2の35万円<br>② 雑所得の損失（10万円）は、損益通算できません。<br>③ 805（給与）− 90（不動産の損失）＋ 35（一時所得）＝ <mark>750万円</mark></p>`,
+  why:["正しい。","一時所得を2分の1にしていない数字。","雑所得の損失を通算してしまった数字。","不動産所得の損失を全額（120万円）通算した数字。"],
+  pt:"損益通算できる損失：不動産・事業・山林・譲渡（の一部）。雑所得の損失はできない"}
+ ]},
+{c:"tax",t:"個人事業主Qさんの事業所得",
+ cs:`<p>個人事業主のQさんは、2026年6月10日に業務用の車両（新品）を300万円で購入し、すぐに使い始めた。</p>
+<table><tbody>
+<tr><td class="l">法定耐用年数</td><td>6年</td></tr>
+<tr><td class="l">定額法の償却率（耐用年数6年）</td><td>0.167</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"この車両の2026年分の減価償却費（定額法）はいくらか。",calc:true,
+  ch:["292,250円","501,000円","250,500円","334,000円"],a:0,
+  exp:`<p>年の途中で使い始めたときは、使った月数で按分します（6月〜12月の<b>7か月</b>）。<br>300万円 × 0.167 × 7/12 ＝ 501,000 × 7/12 ＝ <mark>292,250円</mark></p>`,
+  why:["正しい。","1年分（12か月）で計算した数字。","6か月で計算した数字。6月も1か月と数えます。","8か月で計算した数字。"],
+  pt:"減価償却費＝取得価額×償却率×使った月数/12"},
+ {q:"青色申告特別控除（最高65万円）に関する次の記述のうち、最も不適切なものはどれか。",
+  ch:["申告期限を過ぎて確定申告書を提出しても、65万円の控除を受けられる。","事業所得（または事業的規模の不動産所得）があることが必要である。","正規の簿記の原則（複式簿記）で記帳し、貸借対照表と損益計算書を添付する。","e-Taxで申告する（または優良な電子帳簿を保存する）ことが必要である。"],a:0,
+  why:["不適切。期限内の申告が必要です。期限後だと、控除は10万円になります。","適切。","適切。","適切。紙の申告書だと55万円になります。"],
+  pt:"青色申告特別控除65万円：事業的規模・複式簿記・期限内申告・e-Taxなど"}
+ ]},
+{c:"tax",t:"Rさんの医療費控除とセルフメディケーション税制",
+ cs:`<p>会社員Rさん（総所得金額等400万円）が2026年に支払った医療費（保険金などの補てんはない）。</p>
+<table><tbody>
+<tr><td class="l">支払った医療費の合計</td><td>15万円</td></tr>
+<tr><td class="l">うち、セルフメディケーション税制の対象となる市販薬（スイッチOTC医薬品など）</td><td>3万円</td></tr>
+</tbody></table>
+<p>※Rさんは、健康診断を受けており、セルフメディケーション税制の要件を満たしている。</p>`,
+ qs:[
+ {q:"通常の医療費控除を選んだ場合の控除額はいくらか。",calc:true,
+  ch:["5万円","15万円","1万8,000円","3万円"],a:0,
+  exp:`<p>（15万 − 0）− 10万 ＝ <mark>5万円</mark></p>`,
+  why:["正しい。","10万円を引いていない数字。","セルフメディケーション税制の控除額。","対象の市販薬の金額。"],
+  pt:"医療費控除＝医療費−補てん額−10万円"},
+ {q:"セルフメディケーション税制を選んだ場合の控除額はいくらか。",calc:true,
+  ch:["1万8,000円","3万円","2万円","5万円"],a:0,
+  exp:`<p>（対象の市販薬の購入額 − <b>1万2,000円</b>）。上限8万8,000円。<br>3万 − 1万2,000 ＝ <mark>1万8,000円</mark></p>`,
+  why:["正しい。","1万2,000円を引いていない数字。","1万円を引いた数字。","通常の医療費控除の額。"],
+  pt:"セルフメディケーション税制＝（対象の市販薬−1.2万円）、上限8.8万円"},
+ {q:"Rさんの医療費控除について、最も適切なものはどれか。",
+  ch:["通常の医療費控除（5万円）とセルフメディケーション税制（1万8,000円）は同時に使えないので、控除額の多い通常の医療費控除を選ぶ方が有利である。","両方を合わせて、6万8,000円の控除を受けられる。","セルフメディケーション税制は、確定申告しなくても年末調整で受けられる。","通常の医療費控除は、会社の年末調整で受けられる。"],a:0,
+  why:["適切。どちらか一方を選びます。","不適切。同時には使えません。","不適切。確定申告が必要です。","不適切。医療費控除は確定申告が必要です。"],
+  pt:"医療費控除とセルフメディケーション税制は選択制。どちらも確定申告が必要"}
+ ]},
+{c:"tax",t:"Sさんの退職所得",
+ cs:`<p>Sさん（60歳）は、勤続<b>22年4か月</b>で定年退職し、退職金2,200万円を受け取った（役員ではない）。</p>
+<p><b>退職所得控除額</b>：勤続20年以下＝40万円×勤続年数（最低80万円）、20年超＝800万円＋70万円×（勤続年数−20年）。勤続年数の1年未満の端数は1年に<b>切り上げ</b>る。</p>`,
+ qs:[
+ {q:"Sさんの退職所得の金額はいくらか。",calc:true,
+  ch:["595万円","1,190万円","630万円","1,010万円"],a:0,
+  exp:`<p>① 勤続年数：22年4か月 → 切り上げて23年<br>② 退職所得控除：800 ＋ 70 ×（23 − 20）＝ 1,010万円<br>③ 退職所得 ＝（2,200 − 1,010）× 1/2 ＝ <mark>595万円</mark></p>`,
+  why:["正しい。","2分の1にしていない数字。","勤続年数を切り捨てて22年（控除940万円）で計算した数字。","退職所得控除の額。"],
+  pt:"勤続年数の端数は切り上げ。退職所得は1/2"},
+ {q:"Sさんが「退職所得の受給に関する申告書」を会社に提出しなかった場合の扱いとして、正しいものはどれか。",
+  ch:["退職金の支払金額に対して、20.42%の税率で所得税・復興特別所得税が源泉徴収される（確定申告で精算できる）。","退職所得控除が受けられず、確定申告もできない。","源泉徴収されず、必ず確定申告が必要になる。","提出しなくても、提出した場合と同じ金額が源泉徴収される。"],a:0,
+  why:["正しい。控除を考えずに一律20.42%が引かれるので、多すぎる分は確定申告で取り戻します。","確定申告をすれば、退職所得控除を受けられます。","源泉徴収されます。","提出しないと、20.42%で多めに引かれます。"],
+  pt:"申告書を提出すれば源泉で完結。未提出なら20.42%で源泉→確定申告で精算"}
+ ]},
+{c:"fudo",t:"Tさんの土地（2つの用途地域にまたがる敷地）",
+ cs:`<p>Tさんの土地の資料です。前面道路は、近隣商業地域側の幅員8mの道路1本だけ（角地ではない。防火地域・準防火地域ではない）。</p>
+<table><thead><tr><th class="l">部分</th><th>面積</th><th>用途地域</th><th>指定建ぺい率</th><th>指定容積率</th></tr></thead><tbody>
+<tr><td class="l">甲</td><td>240㎡</td><td>近隣商業地域</td><td>80%</td><td>400%</td></tr>
+<tr><td class="l">乙</td><td>160㎡</td><td>第一種住居地域</td><td>60%</td><td>200%</td></tr>
+</tbody></table>
+<p>※前面道路の幅員が12m未満のとき、容積率は「幅員×10分の4（住居系）／10分の6（住居系以外）」と指定容積率の小さい方。</p>`,
+ qs:[
+ {q:"この土地に建てられる建物の、最大の建築面積はいくらか。",calc:true,
+  ch:["288㎡","320㎡","240㎡","280㎡"],a:0,
+  exp:`<p>用途地域ごとに計算して足します（加重平均）。<br>240 × 80% ＋ 160 × 60% ＝ 192 ＋ 96 ＝ <mark>288㎡</mark></p>`,
+  why:["正しい。","全体（400㎡）に80%をかけた数字。広い方の地域の率を全体に使うことはできません。","全体に60%をかけた数字。","全体に70%（単純平均）をかけた数字。"],
+  pt:"用途地域がまたがる敷地：それぞれの面積×率を足す"},
+ {q:"この土地に建てられる建物の、最大の延べ面積はいくらか。",calc:true,
+  ch:["1,280㎡","1,600㎡","1,120㎡","1,920㎡"],a:0,
+  exp:`<p>① 甲（住居系以外）：8 × 6/10 ＝ 480% → 指定400%と比べて400%。240 × 400% ＝ 960㎡<br>② 乙（住居系）：8 × 4/10 ＝ 320% → 指定200%と比べて200%。160 × 200% ＝ 320㎡<br>③ 合計 ＝ <mark>1,280㎡</mark></p>`,
+  why:["正しい。","全体（400㎡）に400%をかけた数字。","乙の容積率を道路の4/10で（指定200%より大きいのに）計算するなどの誤り。","全体に480%をかけた数字。"],
+  pt:"容積率も用途地域ごとに、道路による制限と指定の小さい方で計算して足す"},
+ {q:"建ぺい率の緩和に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["特定行政庁が指定する角地は、建ぺい率が10%加算される。","準防火地域内では、どんな建物でも建ぺい率が10%加算される。","建ぺい率80%の地域の防火地域内に耐火建築物を建てても、加算はない。","建ぺい率の緩和は、容積率にも同じように適用される。"],a:0,
+  why:["適切。","不適切。準防火地域内で加算されるのは、耐火建築物・準耐火建築物（またはそれと同等以上）の場合です。","不適切。建ぺい率80%の地域の防火地域内の耐火建築物などは、建ぺい率の制限がなくなります（100%）。","不適切。角地・防火の緩和は建ぺい率の話です。"],
+  pt:"建ぺい率＋10%：角地、防火地域の耐火・準防火地域の耐火/準耐火。80%地域の防火地域内耐火→制限なし"}
+ ]},
+{c:"fudo",t:"賃貸マンションへの投資",
+ cs:`<p>Uさんが購入を考えている投資用マンションの資料です。</p>
+<table><tbody>
+<tr><td class="l">購入価格（諸費用込み）</td><td>5,000万円</td></tr>
+<tr><td class="l">年間の賃料収入</td><td>400万円</td></tr>
+<tr><td class="l">年間の実際の費用（管理費・修繕費・固定資産税など）</td><td>100万円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"この物件のNOI利回り（純利回り）はいくらか。",calc:true,
+  ch:["6.0%","8.0%","7.5%","2.0%"],a:0,
+  exp:`<p>NOI利回り ＝（年間賃料 − 年間の実際の費用）÷ 購入価格 × 100<br>＝（400 − 100）÷ 5,000 × 100 ＝ <mark>6.0%</mark></p>`,
+  why:["正しい。","表面利回り（費用を引かない）の数字。","計算の誤り。","費用だけを購入価格で割った数字。"],
+  pt:"表面利回り＝賃料÷価格、NOI利回り＝（賃料−費用）÷価格"},
+ {q:"不動産の投資判断の手法に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["DCF法は、将来の純収益と最後の売却価格を、それぞれ現在の価値に割り引いて合計し、収益価格を求める方法である。","NPV（正味現在価値）がマイナスなら、投資する価値があると判断する。","表面利回りは、費用を差し引いているので、NOI利回りより正確に収益性を表す。","IRR（内部収益率）が、投資家が求める利回りより低ければ、投資する価値があると判断する。"],a:0,
+  why:["適切。","不適切。NPVがプラスなら投資価値ありと判断します。","不適切。表面利回りは費用を引いていません。","不適切。IRRが求める利回りより<b>高ければ</b>、投資価値ありです。"],
+  pt:"NPV＞0、IRR＞期待利回り なら投資価値あり"}
+ ]},
+{c:"fudo",t:"Vさんの自宅の売却と税金",
+ cs:`<p>Vさんは、2026年に自宅（土地・建物）を売却した。売却した年の1月1日時点で、所有期間は15年。</p>
+<table><tbody>
+<tr><td class="l">譲渡価額</td><td>8,000万円</td></tr>
+<tr><td class="l">取得費</td><td>2,000万円</td></tr>
+<tr><td class="l">譲渡費用</td><td>300万円</td></tr>
+</tbody></table>
+<p>※居住用財産の3,000万円特別控除と、軽減税率の特例（所有期間10年超の居住用財産：課税長期譲渡所得6,000万円以下の部分は14.21%（所得税・復興特別所得税10.21%、住民税4%））の要件を満たしている。</p>`,
+ qs:[
+ {q:"Vさんの課税長期譲渡所得の金額はいくらか。",calc:true,
+  ch:["2,700万円","5,700万円","3,000万円","6,000万円"],a:0,
+  exp:`<p>8,000 − 2,000 − 300 − 3,000（特別控除）＝ <mark>2,700万円</mark></p>`,
+  why:["正しい。","3,000万円の特別控除を引いていない数字。","特別控除の額。","譲渡費用と取得費の一部を引き忘れた数字。"],
+  pt:"課税譲渡所得＝譲渡価額−取得費−譲渡費用−特別控除"},
+ {q:"Vさんが納める所得税・復興特別所得税・住民税の合計額はいくらか。",calc:true,
+  ch:["3,836,700円","5,485,050円","8,099,700円","11,579,550円"],a:0,
+  exp:`<p>軽減税率の特例を使う：2,700万円 × 14.21% ＝ <mark>3,836,700円</mark></p>`,
+  why:["正しい。","通常の長期の税率（20.315%）で計算した数字。","特別控除を引く前の5,700万円に14.21%をかけた数字。","特別控除も軽減税率も使わない数字。"],
+  pt:"10年超の自宅の売却：3,000万円控除と軽減税率（6,000万円以下は14.21%）を併用できる"}
+ ]},
+{c:"fudo",t:"借地・借家と登記のルール",
+ cs:`<p>Wさんは、所有する土地・建物の貸し方を考えている。</p>`,
+ qs:[
+ {q:"借地借家法に関する次の記述のうち、最も不適切なものはどれか。",
+  ch:["事業用定期借地権は、口頭の約束だけでも設定できる。","普通借地権の存続期間は、最初は30年以上である。","定期建物賃貸借契約（定期借家）は、書面（または電磁的記録）で契約し、更新がないことを事前に書面で説明する必要がある。","一般定期借地権の存続期間は50年以上で、契約の更新はない。"],a:0,
+  why:["不適切。事業用定期借地権は、<b>公正証書</b>で契約しなければなりません。","適切。","適切。","適切。"],
+  pt:"事業用定期借地権：10年以上50年未満・公正証書が必要"},
+ {q:"不動産登記に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["登記には公信力がないので、登記を信じて取引しても、真の所有者から権利を主張されることがある。","登記事項証明書は、所有者本人でなければ取得できない。","抵当権に関する事項は、権利部の甲区に記録される。","登記には公信力があるので、登記の内容は必ず正しい。"],a:0,
+  why:["適切。登記簿だけでなく、現地や本人の確認も大切です。","不適切。だれでも手数料を払えば取得できます。","不適切。抵当権は乙区です。","不適切。日本の登記に公信力はありません。"],
+  pt:"登記に公信力はない。登記事項証明書はだれでも取れる"}
+ ]},
+{c:"sozo",t:"Xさんの相続税の総額",
+ cs:`<p>Xさんが亡くなった。相続人は、妻・長男・長女の3人。課税価格の合計額は<b>2億円</b>。</p>
+<p><b>相続税の速算表</b></p>
+<table><thead><tr><th class="l">法定相続分に応ずる取得金額</th><th>税率</th><th>控除額</th></tr></thead><tbody>
+<tr><td class="l">1,000万円以下</td><td>10%</td><td>－</td></tr>
+<tr><td class="l">3,000万円以下</td><td>15%</td><td>50万円</td></tr>
+<tr><td class="l">5,000万円以下</td><td>20%</td><td>200万円</td></tr>
+<tr><td class="l">1億円以下</td><td>30%</td><td>700万円</td></tr>
+<tr><td class="l">2億円以下</td><td>40%</td><td>1,700万円</td></tr>
+<tr><td class="l">3億円以下</td><td>45%</td><td>2,700万円</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"遺産に係る基礎控除額はいくらか。",calc:true,
+  ch:["4,800万円","5,400万円","4,200万円","3,600万円"],a:0,
+  exp:`<p>3,000万 ＋ 600万 × 3人 ＝ <mark>4,800万円</mark></p>`,
+  why:["正しい。","4人で計算した数字。","2人で計算した数字。","1人で計算した数字。"],
+  pt:"基礎控除＝3,000万＋600万×法定相続人の数"},
+ {q:"相続税の総額はいくらか。",calc:true,
+  ch:["2,700万円","4,380万円","1,580万円","3,240万円"],a:0,
+  exp:`<p>① 課税遺産総額：2億 − 4,800万 ＝ 1億5,200万円<br>② 法定相続分で分けたと仮定：妻 1/2 ＝ 7,600万円、長男・長女 各1/4 ＝ 3,800万円<br>③ 妻：7,600 × 30% − 700 ＝ 1,580万円<br>④ 子：3,800 × 20% − 200 ＝ 560万円（2人で1,120万円）<br>⑤ 総額 ＝ 1,580 ＋ 1,120 ＝ <mark>2,700万円</mark></p>`,
+  why:["正しい。","課税遺産総額（1億5,200万円）に、そのまま速算表を当てはめた数字。法定相続分で分けてから計算します。","妻の分だけの数字。","子の分を1人分しか足していないなどの誤り。"],
+  pt:"相続税の総額：課税遺産総額を法定相続分で分け、それぞれに速算表→合計"},
+ {q:"配偶者に対する相続税額の軽減に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["配偶者が取得した財産が、1億6,000万円と配偶者の法定相続分相当額のどちらか多い方までなら、配偶者の相続税はかからない。","婚姻期間が20年以上ないと使えない。","申告しなくても、自動的に適用される。","内縁の配偶者にも適用される。"],a:0,
+  why:["適切。","不適切。婚姻期間の条件はありません（贈与税の配偶者控除と混同しないように）。","不適切。税額が0になる場合でも、申告書の提出が必要です。","不適切。法律上の婚姻をしている配偶者だけです。"],
+  pt:"配偶者の税額軽減：1億6,000万円か法定相続分の多い方まで非課税（申告は必要）"}
+ ]},
+{c:"sozo",t:"Yさんの宅地の評価",
+ cs:`<p>Yさんが所有する宅地（200㎡）の資料です。</p>
+<table><tbody>
+<tr><td class="l">路線価</td><td>300千円（記号D：借地権割合60%）</td></tr>
+<tr><td class="l">奥行価格補正率</td><td>1.00</td></tr>
+<tr><td class="l">借家権割合</td><td>30%</td></tr>
+<tr><td class="l">賃貸割合</td><td>100%</td></tr>
+</tbody></table>`,
+ qs:[
+ {q:"この宅地に、Yさんが賃貸アパートを建てて全室を貸している場合、この宅地（貸家建付地）の相続税評価額はいくらか。",calc:true,
+  ch:["4,920万円","2,400万円","6,000万円","4,200万円"],a:0,
+  exp:`<p>① 自用地評価額：300,000円 × 1.00 × 200㎡ ＝ 6,000万円<br>② 貸家建付地：自用地評価額 ×（1 − 借地権割合 × 借家権割合 × 賃貸割合）<br>＝ 6,000万 ×（1 − 0.6 × 0.3 × 1）＝ 6,000万 × 0.82 ＝ <mark>4,920万円</mark></p>`,
+  why:["正しい。","貸宅地（底地）の評価額。","自用地の評価額。","借家権割合を引いただけの数字。"],
+  pt:"貸家建付地＝自用地×（1−借地権割合×借家権割合×賃貸割合）"},
+ {q:"この宅地を、他人に借地として貸している（借地人が自分の家を建てている）場合、この宅地（貸宅地）の相続税評価額はいくらか。",calc:true,
+  ch:["2,400万円","3,600万円","4,920万円","6,000万円"],a:0,
+  exp:`<p>貸宅地 ＝ 自用地評価額 ×（1 − 借地権割合）＝ 6,000万 × 0.4 ＝ <mark>2,400万円</mark></p>`,
+  why:["正しい。","借地権の評価額（6,000万×0.6）。","貸家建付地の評価額。","自用地の評価額。"],
+  pt:"貸宅地（底地）＝自用地×（1−借地権割合）"},
+ {q:"この宅地が、Yさんの自宅の敷地（自用地評価額6,000万円）で、同居の妻が相続して住み続ける場合、小規模宅地等の特例を使った後の評価額はいくらか。",calc:true,
+  ch:["1,200万円","4,800万円","3,000万円","6,000万円"],a:0,
+  exp:`<p>特定居住用宅地等：<b>330㎡まで80%減額</b>。200㎡なので全体が対象。<br>減額：6,000万 × 80% ＝ 4,800万円 → 評価額：6,000 − 4,800 ＝ <mark>1,200万円</mark></p>`,
+  why:["正しい。","減額される金額。","50%減額（貸付事業用）で計算した数字。","特例を使っていない数字。"],
+  pt:"小規模宅地：特定居住用330㎡・80%減、特定事業用400㎡・80%減、貸付事業用200㎡・50%減"}
+ ]},
+{c:"sozo",t:"Zさんの遺言と遺留分",
+ cs:`<p>Zさんの相続人は、妻・長男・二男の3人。遺産は1億2,000万円。Zさんは「全財産を長男に相続させる」という遺言を残した。</p>`,
+ qs:[
+ {q:"二男の遺留分の額はいくらか。",calc:true,
+  ch:["1,500万円","3,000万円","2,000万円","1,000万円"],a:0,
+  exp:`<p>① 全体の遺留分：相続人に配偶者や子がいるので、遺産の<b>2分の1</b><br>② 二男の法定相続分：1/4<br>③ 二男の遺留分：1/2 × 1/4 ＝ 1/8 → 1億2,000万 × 1/8 ＝ <mark>1,500万円</mark></p>`,
+  why:["正しい。","二男の法定相続分（1/4）そのものの額。","3人で頭割りした額（1/2÷3）。","計算の誤り。"],
+  pt:"遺留分＝遺産×1/2（直系尊属だけなら1/3）×法定相続分。兄弟姉妹にはない"},
+ {q:"遺言に関する次の記述のうち、最も適切なものはどれか。",
+  ch:["法務局に保管された自筆証書遺言は、家庭裁判所の検認が不要である。","自筆証書遺言の財産目録も、すべて自筆で書かなければならない。","公正証書遺言は、家庭裁判所の検認が必要である。","遺言は、一度書くと取り消したり書き直したりできない。"],a:0,
+  why:["適切。","不適切。財産目録はパソコンで作ってもよい（各ページに署名・押印）。","不適切。公正証書遺言は検認不要です。","不適切。いつでも新しい遺言で取り消せます。"],
+  pt:"検認不要：公正証書遺言、法務局保管の自筆証書遺言"},
+ {q:"遺留分に関する次の記述のうち、最も不適切なものはどれか。",
+  ch:["被相続人の兄弟姉妹にも、遺留分がある。","遺留分を侵害された相続人は、侵害した人に、遺留分侵害額に相当する金銭を請求できる。","遺留分は、家庭裁判所の許可を得れば、相続が始まる前に放棄できる。","遺留分侵害額請求権は、相続の開始と遺留分の侵害を知った時から1年で時効になる。"],a:0,
+  why:["不適切。兄弟姉妹には遺留分がありません。","適切。金銭で請求します。","適切。","適切（相続開始から10年でも消滅）。"],
+  pt:"兄弟姉妹に遺留分はない。遺留分の請求は金銭で、知ってから1年"}
+ ]},
+{c:"sozo",t:"相続時精算課税での贈与",
+ cs:`<p>Aさん（35歳）は、2026年に父（65歳）から現金3,000万円の贈与を受け、初めて相続時精算課税を選んだ。ほかに贈与は受けていない。</p>`,
+ qs:[
+ {q:"Aさんが納める贈与税の額はいくらか。",calc:true,
+  ch:["78万円","100万円","600万円","0円"],a:0,
+  exp:`<p>① 基礎控除（年110万円）：3,000 − 110 ＝ 2,890万円<br>② 特別控除（累計2,500万円）：2,890 − 2,500 ＝ 390万円<br>③ 税率は一律<b>20%</b>：390 × 20% ＝ <mark>78万円</mark></p>`,
+  why:["正しい。","年110万円の基礎控除を引いていない数字。","控除を何も引いていない数字。","2,500万円を超えた部分には課税されます。"],
+  pt:"相続時精算課税：年110万円の基礎控除→累計2,500万円の特別控除→超えた分に20%"},
+ {q:"その後、父が亡くなった。この贈与について、相続税の課税価格に加算される金額はいくらか。",calc:true,
+  ch:["2,890万円","3,000万円","500万円","390万円"],a:0,
+  exp:`<p>相続時精算課税の贈与は、贈与時の価額で相続財産に加算します。ただし、年110万円の<b>基礎控除の部分は加算しません</b>。<br>3,000 − 110 ＝ <mark>2,890万円</mark>（すでに払った贈与税78万円は、相続税から差し引きます）</p>`,
+  why:["正しい。","基礎控除の部分（110万円）は加算されません。","特別控除を超えた部分ではなく、贈与財産全体（基礎控除部分を除く）を加算します。","課税された部分だけではありません。"],
+  pt:"相続時精算課税の贈与は、110万円の基礎控除部分を除いて相続財産に加算"}
+ ]}
+].forEach((k,ki)=>k.qs.forEach(o=>Q.push(Object.assign({g:2,c:k.c,t:"jt",ct:k.t,cs:k.cs,ck:"2-"+ki},o))));
 const cnt={};
 const MK=["①","②","③","④"];
+const isMC=q=>q.t==="mc"||q.t==="jt";
 Q.forEach(q=>{
   q.t=q.t||"ox";
-  const k=q.g+"-"+q.c+(q.t==="mc"?"-s":"");cnt[k]=(cnt[k]||0)+1;q.n=cnt[k];
-  q.id=q.t==="mc"?q.g+"-"+q.c+"-s"+q.n:q.g+"-"+q.c+"-"+q.n;
+  const k=q.t==="jt"?q.g+"-jt":q.g+"-"+q.c+(q.t==="mc"?"-s":"");cnt[k]=(cnt[k]||0)+1;q.n=cnt[k];
+  q.id=q.t==="jt"?q.g+"-jt"+q.n:q.t==="mc"?q.g+"-"+q.c+"-s"+q.n:q.g+"-"+q.c+"-"+q.n;
   const seen=new Set(),found=[];const X=t=>t?expandAbbr(t,seen,found):t;
   q.q=X(q.q);
-  if(q.t==="mc"){
+  if(isMC(q)){
     /* 正解の位置がかたよらないよう、問題ごとに決まった順番で選択肢を並べかえる（毎回同じ順） */
     let h=0;for(const c of q.id)h=(h*31+c.charCodeAt(0))>>>0;
     const rest=q.ch.map((_,i)=>i).filter(i=>i!==q.a);for(let i=rest.length-1;i>0;i--){h=(h*1103515245+12345)>>>0;const j=(h>>>16)%(i+1);[rest[i],rest[j]]=[rest[j],rest[i]]}
     const tgt=(q.n+Object.keys(FIELDS).indexOf(q.c))%q.ch.length;const idx=rest.slice();idx.splice(tgt,0,q.a);
     q.ch=idx.map(i=>q.ch[i]);q.why=idx.map(i=>q.why[i]);q.a=idx.indexOf(q.a);
-    q.ch=q.ch.map(X);q.why=q.why.map(X);q.exp=X(q.exp)}
+    q.ch=q.ch.map(X);q.why=q.why.map(X);q.exp=X(q.exp);if(q.cs)q.cs=X(q.cs)}
   else{q.exp=X(q.exp);q.hon=X(q.hon);if(q.ng)q.ng=X(q.ng)}
   q.pt=expandAbbr(q.pt,new Set(found),found);q.abbr=found});
 
@@ -2524,6 +3678,7 @@ let store={res:{},grade:3};
 try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.res)store=Object.assign({grade:3},s)}catch(e){}
 if(!store.ses)store.ses={};
 if(!store.mock)store.mock={};
+if(!store.jmock)store.jmock={};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}};
 /* 途中の状態（どこまで解いたか）を、セットごとに保存する */
 function saveSes(){if(!S.key)return;store.ses[S.key]={list:S.list,i:S.i,picked:S.picked,picks:S.picks||[],results:S.results,label:S.label,mode:S.mode||null,ts:Date.now()};save()}
@@ -2535,6 +3690,7 @@ const validSes=k=>{const v=store.ses[k];return !!(v&&Array.isArray(v.list)&&v.li
 
 /* ---------- 画面 ---------- */
 const app=document.getElementById("app");
+MyNote.init("fp-ox-notes");
 let S={view:"home",list:[],i:0,picked:null,picks:[],results:[],label:"",key:null,mode:null};
 const G=()=>store.grade===2?2:3;
 const qsOf=(g,c,t)=>Q.filter(q=>q.g===g&&(!c||q.c===c)&&(!t||q.t===t));
@@ -2543,6 +3699,7 @@ const MCN={3:"三択",2:"四択"};
 const header=()=>`<div class="top"><button class="brand" data-act="home" aria-label="ホームへ"><span class="seal">FP</span><span><b>はじめてのFP○×</b><small>3級・2級 超基礎から合格レベルまで</small></span></button>${S.view!=="home"?`<button class="ghost" data-act="home">ホーム</button>`:""}</div>`;
 
 function stat(qs){const ok=qs.filter(q=>store.res[q.id]&&store.res[q.id].ok).length;const done=qs.filter(q=>store.res[q.id]).length;return{n:qs.length,ok,done}}
+const memoIds=g=>MyNote.ids().filter(id=>{const q=Q.find(x=>x.id===id);return q&&q.g===g});
 const wrongIds=g=>qsOf(g).filter(q=>store.res[q.id]&&!store.res[q.id].ok).map(q=>q.id);
 const yetIds=g=>qsOf(g).filter(q=>!store.res[q.id]).map(q=>q.id);
 
@@ -2552,6 +3709,16 @@ function mockList(g){let ids=[];Object.keys(FIELDS).forEach(c=>{
   else{ids=ids.concat(shuffle(qsOf(2,c,"mc").map(q=>q.id)).slice(0,10))}});
   if(g===3){const ox=ids.filter(id=>!/-s\d+$/.test(id)),mc=ids.filter(id=>/-s\d+$/.test(id));return shuffle(ox).concat(shuffle(mc))}
   return shuffle(ids)}
+
+/* 実技：事例ごとのまとまり（ck）と、本番と同じ問題数の模擬試験 */
+const JN={3:20,2:40};
+const jCases=g=>{const m=new Map();Q.filter(q=>q.g===g&&q.t==="jt").forEach(q=>{if(!m.has(q.ck))m.set(q.ck,{ck:q.ck,c:q.c,t:q.ct,ids:[]});m.get(q.ck).ids.push(q.id)});return Array.from(m.values())};
+function jmockList(g){const cs=shuffle(jCases(g));const pick=[];let n=0;
+  /* 6分野がなるべくそろうように、分野ごとに1事例ずつ順に取る */
+  const by={};cs.forEach(c=>{(by[c.c]=by[c.c]||[]).push(c)});const order=Object.keys(FIELDS);
+  while(n<JN[g]&&order.some(f=>by[f]&&by[f].length)){for(const f of order){if(n>=JN[g])break;const c=by[f]&&by[f].shift();if(c){pick.push(c);n+=c.ids.length}}}
+  pick.sort((a,b)=>order.indexOf(a.c)-order.indexOf(b.c));
+  return pick.flatMap(c=>c.ids).slice(0,JN[g])}
 
 function examInfo(g){
   if(g===3)return `<details class="panel">
@@ -2600,30 +3767,45 @@ function home(){
     <div><h2>③ 模擬試験（本番と同じ60問）</h2><p>${g===3?"○×30問＋三択30問":"四択60問"}・6分野から10問ずつ。<b>36点以上で合格ライン</b>。${mk?`<br>前回：<b>${mk.ok}点</b>（${mk.ok>=36?"合格ライン到達":"あと"+(36-mk.ok)+"点"}）・最高：<b>${mk.best}点</b>`:""}</p></div>
     <button class="btn" data-act="mock">${validSes(g+":mock")?"模擬試験の続きから":"模擬試験をはじめる"}</button>
   </section>
+  ${(()=>{const cs=jCases(g);if(!cs.length)return"";const jm=store.jmock[g];const nj=cs.reduce((a,c)=>a+c.ids.length,0);return `
+  <section class="mockbox jbox">
+    <div><h2>④ 実技試験（日本FP協会「資産設計提案業務」）</h2><p>家族の情報や、保険証券・キャッシュフロー表・登記簿などの<b>資料（事例）を読んで答える</b>、本番の実技と同じ形の問題です（${cs.length}事例・${nj}問）。本番は${JN[g]}問・100点満点で<b>60点以上が合格</b>。学科と実技の<b>両方</b>の合格が必要です。${jm?`<br>前回：<b>${jm.pt}点</b>（${jm.pt>=60?"合格ライン到達":"あと"+(60-jm.pt)+"点"}）・最高：<b>${jm.best}点</b>`:""}</p></div>
+    <div class="sets">${cs.map(c=>{const ss=stat(c.ids.map(id=>Q.find(q=>q.id===id)));const sk=g+":jt:"+c.ck;return `<button class="setbtn" style="--fc:${FIELDS[c.c].color}" data-act="jcase" data-k="${c.ck}"><span class="nm">${FIELDS[c.c].short}｜${c.t}<small>${c.ids.length}問</small></span><span class="sc">${validSes(sk)?`<b class="cont">続きは${nextNo(store.ses[sk])}問目から</b>`:ss.ok===ss.n?'<b class="cont">クリア</b>':ss.done?`${ss.ok}/${ss.n}`:"まだ"}</span></button>`}).join("")}</div>
+    <button class="btn" data-act="jmock">${validSes(g+":jmock")?"実技の模擬試験の続きから":"実技の模擬試験（"+JN[g]+"問）をはじめる"}</button>
+  </section>`})()}
   <div class="row">
     <button class="btn sub" data-act="all">${GRADES[g].name}の全${s.n}問をシャッフル</button>
     <button class="btn sub" data-act="yet" ${y||validSes(g+":yet")?"":"disabled"}>まだの問題（${y}問）</button>
     <button class="btn sub" data-act="wrong" ${w||validSes(g+":wrong")?"":"disabled"}>まちがえた問題だけ（${w}問）</button>
+    <button class="btn sub" data-act="memo" ${memoIds(g).length?"":"disabled"}>メモした問題だけ（${memoIds(g).length}問）</button>
   </div>
   ${examInfo(g)}
   <details class="panel">
     <summary>合格までの勉強のしかた</summary>
     <p>① 分野ごとに<b>「○×で覚える」</b>を解きます（やさしい問題から並んでいます）。解説の<b>「覚える」</b>の1行は声に出して読みましょう。<br>② 同じ分野の<b>「${MCN[g]}・計算」</b>で、本番の形に慣れます。計算問題は、解説を見ながら紙に書いてもう一度解き直すと身につきます。<br>③ 6分野が終わったら<b>模擬試験</b>。<b>36点以上を3回続けて</b>とれたら、学科は本番でも合格ラインに届く力がついています。<br>④ まちがえた問題は<b>「まちがえた問題だけ」</b>でゼロになるまでくり返します。</p>
     <p>分野の順番は、身近な <b>ライフプラン → リスク管理（保険）→ 金融 → 税金 → 不動産 → 相続</b> がおすすめ。税金の知識はほかの分野にも出てくるので、つまずいたら税金の分野を見直すと理解が進みます。</p>
-    <p class="mini">※実技試験（事例を読んで答える試験）は、このアプリの知識がそのまま土台になりますが、資料の読み取りの練習も必要です。</p>
+    <p>⑤ 学科の模擬試験が安定したら、<b>④ 実技</b>へ。事例を1つずつ解き、まちがえた問題は「計算のしかた」を見ながら紙に書いて解き直します。最後に<b>実技の模擬試験で60点以上を3回続けて</b>とれたら、実技も合格ラインです。</p>
+    <p class="mini">※実技は、申し込みのときに日本FP協会の「資産設計提案業務」を選んでください（このアプリはこの科目に合わせています。きんざいの実技は出題の形が違います）。</p>
+  </details>
+  <details class="panel">
+    <summary>自分メモ（問題ごとのメモ・画像）</summary>
+    <p>どの問題でも、下の「自分メモ」に文字を書いたり、写真・スクリーンショット（教科書のページなど）を追加したりできます。自動で保存されます（この端末の中だけ）。</p>
+    <p>機種変更やデータの消去に備えて、ときどき「メモを書き出す」でファイルを作り、ファイルアプリやiCloud Driveに保存しておくと安心です。</p>
+    <div id="mnTools"></div>
   </details>
   <details class="panel">
     <summary>略語じてん（${ABBR.length}語）</summary>
     <dl class="words">${ABBR.slice().sort((a,b)=>a[0].localeCompare(b[0])).map(a=>`<div><dt>${a[0]}</dt><dd>${a[1]}（${a[2]}）</dd></div>`).join("")}</dl>
   </details>
   <p class="foot">記録はこの端末のブラウザにだけ保存されます。問題文と解説は、学習用にやさしく書いたオリジナルです。税金や年金のルールは毎年のように変わります。内容は2026年4月時点の制度にもとづいていますが、受験する年の試験の基準日（法令基準日）と最新のテキストでも確認してください。 <button class="ghost" data-act="reset" style="margin-left:4px">記録を消す</button></p>`;
+  const mt=document.getElementById("mnTools");if(mt)mt.appendChild(MyNote.tools(()=>{if(S.view==="home")render()}));
 }
 
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function start(ids,label,key,mode){S={view:"quiz",list:ids,i:0,picked:null,picks:[],results:[],label,key:key||null,mode:mode||null};saveSes();render();window.scrollTo(0,0)}
 /* k問目で選んだ答え（古い記録で答えが残っていないときは、正誤から復元する） */
 function pickOf(k){if(S.picks&&S.picks[k]!==undefined&&S.picks[k]!==null)return S.picks[k];const r=S.results[k];if(!r)return null;const q=Q.find(x=>x.id===S.list[k]);if(!q)return null;
-  return r.ok?q.a:(q.t==="mc"?(q.a+1)%q.ch.length:!q.a)}
+  return r.ok?q.a:(isMC(q)?(q.a+1)%q.ch.length:!q.a)}
 /* k問目へ移動（解答ずみなら答えと解説を表示、まだなら解ける状態） */
 function go(k){S.i=k;S.picked=k<S.results.length?pickOf(k):null;saveSes();render();window.scrollTo(0,0)}
 function prev(){if(S.view==="quiz"&&S.i>0)go(S.i-1)}
@@ -2645,15 +3827,16 @@ const figHtml=q=>{const fig=q.fig&&FIGS[q.fig];return fig?`<figure class="fig" s
 const prevBtn=()=>S.i>0?`<div class="qnav"><button class="btn sub" data-act="prev">← 前の問題を見る</button></div>`:"";
 function quiz(){
   const q=Q.find(x=>x.id===S.list[S.i]);const f=FIELDS[q.c];const answered=S.picked!==null;
-  const ok=answered&&(S.picked===q.a);const mc=q.t==="mc";
+  const ok=answered&&(S.picked===q.a);const mc=isMC(q);const jt=q.t==="jt";
   let out=header()+`<div class="qhead" style="--fc:${f.color}"><span class="gb">${GRADES[q.g].name}</span><span class="fl">${f.short}</span><span>${S.label}</span>${S.i<S.results.length&&S.i+1<S.results.length?'<span class="rv">見直し中</span>':""}<span class="n">${S.i+1} / ${S.list.length}</span></div>
   <div class="meter" aria-hidden="true"><i style="width:${(S.i+(answered?1:0))/S.list.length*100}%;background:${f.color}"></i></div>
   <article class="qcard" style="--fc:${f.color}">
-    <div class="qno">${GRADES[q.g].name} ${f.short} ${mc?MCN[q.g]+(q.calc?"・計算":"")+" Q."+q.n:"Q."+q.n+"　○か×か？"}</div>
+    <div class="qno">${GRADES[q.g].name} ${jt?"実技・"+f.short+(q.calc?"・計算":""):f.short+" "+(mc?MCN[q.g]+(q.calc?"・計算":"")+" Q."+q.n:"Q."+q.n+"　○か×か？")}</div>
+    ${jt?`<details class="case" ${answered?"":"open"}><summary>【事例】${q.ct}</summary><div class="csbody">${q.cs}</div></details>`:""}
     <div class="qtext">${q.q}</div>`;
   if(mc){
     out+=`<div class="mcs">${q.ch.map((c,i)=>{const cls=answered?(i===q.a?"right":i===S.picked?"wrongp":"dim"):"";return `<button class="mc ${cls}" data-act="pickc" data-v="${i}" ${answered?"disabled":""}><span class="no">${MK[i]}</span><span class="tx">${c}</span>${answered&&i===q.a?'<span class="tag ok">正解</span>':answered&&i===S.picked?'<span class="tag ng">あなた</span>':""}</button>`}).join("")}</div>`;
-    if(!answered){out+=`<div class="kbd">キーボードなら 1〜${q.ch.length} で答えられます</div>${prevBtn()}</article>`;app.innerHTML=out;return}
+    if(!answered){out+=`<div class="kbd">キーボードなら 1〜${q.ch.length} で答えられます</div>${prevBtn()}${MyNote.slot(q.id)}</article>`;app.innerHTML=out;return}
     out+=`<div class="verdict ${ok?"ok":"ng"}" role="status"><span class="big">${ok?"○":"×"}</span><div><h3>${ok?"正解！":"ざんねん"}</h3><p>正解は「<b>${MK[q.a]}</b>」です</p></div></div>
     <div class="exp">
       ${q.exp?`<div><h4>${q.calc?"計算のしかた":"かんたん解説"}</h4><div class="body">${q.exp}</div></div>`:""}
@@ -2661,13 +3844,14 @@ function quiz(){
       ${figHtml(q)}
       <div class="point">${q.pt}</div>
       ${wHtml(q)}${abHtml(q)}
+      ${MyNote.slot(q.id)}
     </div>`;
   }else{
     out+=`<div class="choices">
       <button class="choice o ${answered?(S.picked===true?"picked":"dim"):""}" data-act="pick" data-v="1" ${answered?"disabled":""}><span class="mk">○</span><span class="lb">正しい</span></button>
       <button class="choice x ${answered?(S.picked===false?"picked":"dim"):""}" data-act="pick" data-v="0" ${answered?"disabled":""}><span class="mk">×</span><span class="lb">まちがい</span></button>
     </div>`;
-    if(!answered){out+=`<div class="kbd">キーボードなら O / X で答えられます</div>${prevBtn()}</article>`;app.innerHTML=out;return}
+    if(!answered){out+=`<div class="kbd">キーボードなら O / X で答えられます</div>${prevBtn()}${MyNote.slot(q.id)}</article>`;app.innerHTML=out;return}
     out+=`<div class="verdict ${ok?"ok":"ng"}" role="status"><span class="big">${ok?"○":"×"}</span><div><h3>${ok?"正解！":"ざんねん"}</h3><p>この文は「<b>${q.a?"○ 正しい":"× まちがい"}</b>」です</p></div></div>
     <div class="exp">
       ${q.ng?`<div class="ngbox"><span class="lbl">どこがちがう？</span>${q.ng}</div>`:""}
@@ -2676,6 +3860,7 @@ function quiz(){
       <div class="point">${q.pt}</div>
       <div class="hon"><span class="lbl">本番の試験では、こんな書き方で出ます</span>「${q.hon}」<br><b>→ ${(q.ha!==undefined?q.ha:q.a)?"正しい（適切）":"誤り（不適切）"}</b></div>
       ${wHtml(q)}${abHtml(q)}
+      ${MyNote.slot(q.id)}
     </div>`;
   }
   out+=`<div class="qnav">${S.i>0?'<button class="btn sub" data-act="prev">← 前の問題</button>':""}<button class="btn" data-act="next" id="nextBtn">${S.i+1<S.list.length?(S.i+1<S.results.length?"次の問題へ（見直し）":"次の問題へ →"):"結果を見る"}</button></div>
@@ -2695,10 +3880,17 @@ function end(){
     <table class="ft"><thead><tr><th class="l">分野</th><th>点数</th><th>6割</th></tr></thead><tbody>${by.map(b=>`<tr><th class="l">${FIELDS[b.c].name}</th><td>${b.ok} / ${b.n}</td><td>${b.ok>=b.n*.6?'<span class="y">○</span>':'<span class="n">×</span>'}</td></tr>`).join("")}</tbody></table>
     <p class="mini" style="margin:0">×の分野は、その分野の「○×で覚える」と「${MCN[G()]}・計算」をもう一度。36点以上を3回続けてとれるまで、模擬試験をくり返しましょう。</p>`;
   }
+  if(S.mode==="jmock"){
+    const pt=Math.round(ok/n*100);const pass=pt>=60;
+    const by=Object.keys(FIELDS).map(c=>{const rs=S.results.filter(r=>Q.find(q=>q.id===r.id).c===c);return{c,n:rs.length,ok:rs.filter(r=>r.ok).length}}).filter(b=>b.n);
+    body=`<div class="pass ${pass?"ok":"ng"}">${pass?"実技 合格ライン到達！":"あと"+(60-pt)+"点で合格ライン"}<small>100点満点に換算：${pt}点（合格ラインは60点）</small></div>
+    <table class="ft"><thead><tr><th class="l">分野</th><th>正解</th><th>6割</th></tr></thead><tbody>${by.map(b=>`<tr><th class="l">${FIELDS[b.c].name}</th><td>${b.ok} / ${b.n}</td><td>${b.ok>=b.n*.6?'<span class="y">○</span>':'<span class="n">×</span>'}</td></tr>`).join("")}</tbody></table>
+    <p class="mini" style="margin:0">×の分野は、その分野の事例を解き直し、学科の「${MCN[G()]}・計算」も見直しましょう。60点以上を3回続けてとれるまで、くり返します。</p>`;
+  }
   const msg=ok===n?"全問正解！ この調子で次へ。":ok/n>=.6?"合格ラインの6割をこえています。まちがえた所だけ、もう一度見ておきましょう。":"だいじょうぶ。解説を読んで、もう一度チャレンジすれば必ず覚えられます。";
   app.innerHTML=header()+`<section class="end">
     <span class="qhead">${S.label} の結果</span>
-    <div class="score">${ok}<small> / ${n}${S.mode==="mock"?"点":"問"}</small></div>
+    <div class="score">${S.mode==="jmock"?Math.round(ok/n*100):ok}<small> / ${S.mode==="jmock"?"100点":n+(S.mode==="mock"?"点":"問")}</small></div>
     ${body||`<p style="margin:0">${msg}</p>`}
     ${miss.length?`<div class="miss"><b style="font-size:14px">まちがえた問題</b>${miss.map(r=>{const q=Q.find(x=>x.id===r.id);return `<button data-act="one" data-id="${q.id}"><b>×</b>${plain(q.q)}</button>`}).join("")}</div>`:""}
     <div class="row">${miss.length?`<button class="btn" data-act="retry">まちがえた${miss.length}問をやり直す</button>`:""}<button class="btn sub" data-act="home">ホームへ</button></div>
@@ -2710,7 +3902,7 @@ function render(){S.view==="home"?home():S.view==="quiz"?quiz():end()}
 function pick(v){
   if(S.picked!==null||S.i<S.results.length)return;
   const q=Q.find(x=>x.id===S.list[S.i]);
-  if(q.t==="mc"?typeof v!=="number"||v<0||v>=q.ch.length:typeof v!=="boolean")return;
+  if(isMC(q)?typeof v!=="number"||v<0||v>=q.ch.length:typeof v!=="boolean")return;
   S.picked=v;if(!S.picks)S.picks=[];S.picks[S.i]=v;
   const ok=v===q.a;const r=store.res[q.id]||{n:0};
   store.res[q.id]={ok,n:r.n+1};S.results.push({id:q.id,ok});saveSes();save();
@@ -2719,6 +3911,7 @@ function pick(v){
 }
 function next(){if(S.picked===null)return;if(S.i+1<S.list.length){go(S.i+1)}
   else{if(S.mode==="mock"){const g=Q.find(q=>q.id===S.list[0]).g;const ok=S.results.filter(r=>r.ok).length;const pv=store.mock[g];store.mock[g]={ok,best:Math.max(ok,pv?pv.best:0),ts:Date.now()};save()}
+    if(S.mode==="jmock"){const g=Q.find(q=>q.id===S.list[0]).g;const pt=Math.round(S.results.filter(r=>r.ok).length/S.results.length*100);const pv=store.jmock[g];store.jmock[g]={pt,best:Math.max(pt,pv?pv.best:0),ts:Date.now()};save()}
     dropSes(S.key);S.view="end";render();window.scrollTo(0,0)}}
 
 app.addEventListener("click",e=>{
@@ -2727,6 +3920,9 @@ app.addEventListener("click",e=>{
   else if(a==="grade"){store.grade=+b.dataset.g;save();render()}
   else if(a==="set"){const c=b.dataset.c,t=b.dataset.t;resumeOr(g+":"+c+":"+t,()=>qsOf(g,c,t).map(q=>q.id),GRADES[g].name+"・"+FIELDS[c].short+"・"+(t==="ox"?"○×":MCN[g]+"・計算"))}
   else if(a==="mock"){resumeOr(g+":mock",()=>mockList(g),GRADES[g].name+"・模擬試験","mock")}
+  else if(a==="jmock"){resumeOr(g+":jmock",()=>jmockList(g),GRADES[g].name+"・実技の模擬試験","jmock")}
+  else if(a==="jcase"){const c=jCases(g).find(x=>x.ck===b.dataset.k);if(c)resumeOr(g+":jt:"+c.ck,()=>c.ids,GRADES[g].name+"・実技・"+c.t)}
+  else if(a==="memo"){const ids=memoIds(g);if(ids.length)start(shuffle(ids),GRADES[g].name+"・メモした問題")}
   else if(a==="all"){resumeOr(g+":all",()=>shuffle(qsOf(g).map(q=>q.id)),GRADES[g].name+"・全問シャッフル")}
   else if(a==="yet"){resumeOr(g+":yet",()=>yetIds(g),GRADES[g].name+"・まだの問題")}
   else if(a==="wrong"){resumeOr(g+":wrong",()=>shuffle(wrongIds(g)),GRADES[g].name+"・まちがえた問題")}
@@ -2739,16 +3935,17 @@ app.addEventListener("click",e=>{
   else if(a==="next"){next()}
   else if(a==="prev"){prev()}
   else if(a==="reset"){
-    if(b.dataset.sure){store={res:{},ses:{},mock:{},grade:g};save();render()}
+    if(b.dataset.sure){store={res:{},ses:{},mock:{},jmock:{},grade:g};save();render()}
     else{b.dataset.sure="1";b.textContent="本当に消す？（もう一度押す）"}
   }
 });
 document.addEventListener("keydown",e=>{
   if(S.view!=="quiz"||e.metaKey||e.ctrlKey||e.altKey)return;
+  if(e.target&&/^(TEXTAREA|INPUT)$/.test(e.target.tagName))return;
   const k=e.key.toLowerCase();const q=Q.find(x=>x.id===S.list[S.i]);
   if(k==="arrowleft"){e.preventDefault();prev();return}
   if(S.picked===null){
-    if(q&&q.t==="mc"){if(/^[1-4]$/.test(k))pick(+k-1)}
+    if(q&&isMC(q)){if(/^[1-4]$/.test(k)&&+k<=q.ch.length)pick(+k-1)}
     else if(k==="o"||k==="1")pick(true);else if(k==="x"||k==="2")pick(false)}
   else if(k==="arrowright"){e.preventDefault();next()}
   else if(k==="enter"||k==="n"||k===" "){if(document.activeElement&&document.activeElement.id!=="nextBtn"){e.preventDefault();next()}}
@@ -2756,7 +3953,7 @@ document.addEventListener("keydown",e=>{
 render();
 
 </script>
-<p class="offline">第4版（2026年10月6日更新：前の問題にもどれるようになりました）</p>
+<p class="offline">第5版（2026年10月6日更新：実技試験（日本FP協会・資産設計提案業務）と模擬試験、問題ごとの自分メモ・画像を追加しました）</p>
 <p class="offline" id="offline">オフライン利用：準備中…</p>
 <script>
 (function(){
@@ -2764,8 +3961,8 @@ render();
   function ok(){el.innerHTML="オフライン利用：<b>準備OK</b>（電波がなくても使えます）"}
   if(!("serviceWorker" in navigator)){el.textContent="オフライン利用：この環境では使えません";return}
   navigator.serviceWorker.register("sw.js").then(function(){return navigator.serviceWorker.ready}).then(function(){
-    return caches.open("fp-ox-v4").then(function(c){return c.match("index.html")})
-  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v4").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
+    return caches.open("fp-ox-v5").then(function(c){return c.match("index.html")})
+  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v5").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
   .catch(function(){el.textContent="オフライン利用：準備できませんでした（通信を確認して開き直してください）"});
 })();
 </script>
