@@ -434,6 +434,7 @@ details.more[open]>summary{margin-bottom:8px}
 .case summary{cursor:pointer;padding:10px 14px;font-weight:700;font-size:15px;color:var(--acc);list-style:none}
 .case summary::-webkit-details-marker{display:none}
 .case summary::after{content:"（タップで開く／閉じる）";font-weight:400;font-size:12px;color:var(--muted);margin-left:6px}
+.case .casehead{padding:10px 14px;font-weight:700;font-size:15px;color:var(--acc)}
 .case .csbody{padding:0 14px 12px;font-size:15px;line-height:1.75;overflow-x:auto}
 .case .csbody p{margin:6px 0}
 .case .csbody table{border-collapse:collapse;font-size:13.5px;margin:6px 0;min-width:0}
@@ -5044,7 +5045,7 @@ function quiz(){
   <div class="meter" aria-hidden="true"><i style="width:${(S.i+(answered?1:0))/S.list.length*100}%;background:${f.color}"></i></div>
   <article class="qcard" style="--fc:${f.color}">
     <div class="qno">${GRADES[q.g].name} ${jt?"実技・"+f.short+(q.calc?"・計算":""):q.fx?f.short+"　"+(FXS[q.s]?FXS[q.s].name:"")+" 問"+q.n+"と同じ論点"+(mc?"":"　○か×か？"):f.short+" "+(mc?MCN[q.g]+(q.calc?"・計算":"")+" Q."+q.n:"Q."+q.n+"　○か×か？")}</div>
-    ${jt?`<details class="case" ${answered?"":"open"}><summary>【事例】${q.ct}</summary><div class="csbody">${q.cs}</div></details>`:""}
+    ${jt?`<div class="case"><div class="casehead">【事例】${q.ct}</div><div class="csbody">${q.cs}</div></div>`:""}
     <div class="qtext">${q.q}</div>`;
   if(mc){
     out+=`<div class="mcs">${q.ch.map((c,i)=>{const cls=answered?(i===q.a?"right":i===S.picked?"wrongp":"dim"):"";return `<button class="mc ${cls}" data-act="pickc" data-v="${i}" ${answered?"disabled":""}><span class="no">${MK[i]}</span><span class="tx">${c}</span>${answered&&i===q.a?'<span class="tag ok">正解</span>':answered&&i===S.picked?'<span class="tag ng">あなた</span>':""}</button>`}).join("")}</div>`;
@@ -5207,7 +5208,7 @@ document.addEventListener("keydown",e=>{
 render();
 
 </script>
-<p class="offline">第15版（2026年10月13日更新：解説・図・本番での書き方を「周辺知識」としてはじめから表示。第14版：問題を作り直し。同じ論点の問題をまとめ、過去問と同じ論点の問題を「基本から順に」のステップ3に組み込み（模擬試験はやめました）、答えのすぐ下に「ここだけ読めば大丈夫」とむずかしい言葉のやさしい意味。第13版：日本FP協会の過去問（3級3回・2級5回）と同じ論点の問題480問、解説を「核心→どこがちがう→詳しく」の形に、基本から順に進む道筋（8割で次へ）。第12版：解説を自分で編集できるように、ホームの下で書き出し・読み込み。第11版：ホームのいちばん下に「共有」ボタン。第10版：文字検索、問題画面の下の「リセット」（この問題／この単元を選ぶ）。第9版：分野ごと・1問ごとに記録を消せるように（確認つき）。第8版：○△×の評価を付けた問題は「解いた」扱いに。第7版：ホームに「今日の復習」（エビングハウスの忘却曲線）、問題ごとの○△×の評価、一覧から評価を変更。第6版：進み具合のバーで問題を移動・長押しで問題の一覧。第5版：実技試験と模擬試験、自分メモ・画像）</p>
+<p class="offline">第16版（2026年10月13日更新：答えの画面の折りたたみをなくし、実技の事例もいつも表示。第15版：解説・図・本番での書き方を「周辺知識」としてはじめから表示。第14版：問題を作り直し。同じ論点の問題をまとめ、過去問と同じ論点の問題を「基本から順に」のステップ3に組み込み（模擬試験はやめました）、答えのすぐ下に「ここだけ読めば大丈夫」とむずかしい言葉のやさしい意味。第13版：日本FP協会の過去問（3級3回・2級5回）と同じ論点の問題480問、解説を「核心→どこがちがう→詳しく」の形に、基本から順に進む道筋（8割で次へ）。第12版：解説を自分で編集できるように、ホームの下で書き出し・読み込み。第11版：ホームのいちばん下に「共有」ボタン。第10版：文字検索、問題画面の下の「リセット」（この問題／この単元を選ぶ）。第9版：分野ごと・1問ごとに記録を消せるように（確認つき）。第8版：○△×の評価を付けた問題は「解いた」扱いに。第7版：ホームに「今日の復習」（エビングハウスの忘却曲線）、問題ごとの○△×の評価、一覧から評価を変更。第6版：進み具合のバーで問題を移動・長押しで問題の一覧。第5版：実技試験と模擬試験、自分メモ・画像）</p>
 <p class="offline" id="offline">オフライン利用：準備中…</p>
 <script>
 (function(){
@@ -5215,8 +5216,8 @@ render();
   function ok(){el.innerHTML="オフライン利用：<b>準備OK</b>（電波がなくても使えます）"}
   if(!("serviceWorker" in navigator)){el.textContent="オフライン利用：この環境では使えません";return}
   navigator.serviceWorker.register("sw.js").then(function(){return navigator.serviceWorker.ready}).then(function(){
-    return caches.open("fp-ox-v15").then(function(c){return c.match("index.html")})
-  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v15").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
+    return caches.open("fp-ox-v16").then(function(c){return c.match("index.html")})
+  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v16").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
   .catch(function(){el.textContent="オフライン利用：準備できませんでした（通信を確認して開き直してください）"});
 })();
 </script>
