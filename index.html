@@ -338,6 +338,10 @@ details.more[open]>summary{margin-bottom:8px}
 .kotoba dt{font-weight:700;margin:0;white-space:nowrap}
 .kotoba dt rt{font-size:10px;color:var(--muted);font-weight:400}
 .kotoba dd{margin:0;color:var(--muted)}
+/* 2026-10-13 ユーザー「周辺知識等は折り畳まないで」：解説・図・本番での書き方を、はじめから開いて見せる */
+.around{display:flex;flex-direction:column;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.around>.lbl{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.around h4{margin:4px 0 0;font-size:14px}
 
 .brand .seal{font-size:15px}
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -5050,7 +5054,7 @@ function quiz(){
       <div class="corebox"><span class="lbl">ここだけ読めば大丈夫</span>${q.pt}${kotobaHtml(q.pt)}</div>
       <div><h4>選択肢ごとの解説</h4><ol class="whys">${q.why.map((w,i)=>`<li class="${i===q.a?"r":""}"><span class="no">${MK[i]}</span><span>${w}</span></li>`).join("")}</ol></div>
       ${q.calc&&q.exp?`<div><h4>計算のしかた</h4>${Edit.box(q.id,q.exp)}</div>`:""}
-      ${(!q.calc&&q.exp)||q.w||q.abbr.length||figHtml(q)?`<details class="more"><summary>もっと詳しく（読まなくても合格できます：${[figHtml(q)?"図":"",!q.calc&&q.exp?"解説":"",q.w?"ことば":"",q.abbr.length?"略語":""].filter(Boolean).join("・")}）</summary>${figHtml(q)}${!q.calc&&q.exp?Edit.box(q.id,q.exp):""}${wHtml(q)}${abHtml(q)}</details>`:""}
+      ${(!q.calc&&q.exp)||q.w||q.abbr.length||figHtml(q)?`<div class="around"><span class="lbl">周辺知識（${[!q.calc&&q.exp?"解説":"",figHtml(q)?"図":"",q.w?"ことば":"",q.abbr.length?"略語":""].filter(Boolean).join("・")}）</span>${!q.calc&&q.exp?Edit.box(q.id,q.exp):""}${figHtml(q)}${wHtml(q)}${abHtml(q)}</div>`:""}
       ${MyNote.slot(q.id)}
     </div>`;
   }else{
@@ -5063,9 +5067,9 @@ function quiz(){
     <div class="exp">
       <div class="corebox"><span class="lbl">ここだけ読めば大丈夫</span>${q.pt}${kotobaHtml(q.pt+(q.ng||""))}</div>
       ${q.ng?`<div class="ngbox"><span class="lbl">どこがちがう</span>${q.ng}</div>`:""}
-      ${q.fx?`<div class="body">${Edit.box(q.id,q.exp)}</div>`:`<details class="more"><summary>もっと詳しく（読まなくても合格できます：${["解説",q.hon?"本番での書き方":"",figHtml(q)?"図":"",q.w?"ことば":"",q.abbr.length?"略語":""].filter(Boolean).join("・")}）</summary>
+      ${q.fx?`<div class="body">${Edit.box(q.id,q.exp)}</div>`:`<div class="around"><span class="lbl">周辺知識（${["解説",q.hon?"本番での書き方":"",figHtml(q)?"図":"",q.w?"ことば":"",q.abbr.length?"略語":""].filter(Boolean).join("・")}）</span>
       ${q.hon?`<div class="hon"><span class="lbl">本番の試験では、こんな書き方で出ます</span>「${q.hon}」<br><b>→ ${(q.ha!==undefined?q.ha:q.a)?"正しい（適切）":"誤り（不適切）"}</b></div>`:""}
-      ${figHtml(q)}${Edit.box(q.id,q.exp)}${wHtml(q)}${abHtml(q)}</details>`}
+      ${Edit.box(q.id,q.exp)}${figHtml(q)}${wHtml(q)}${abHtml(q)}</div>`}
       ${MyNote.slot(q.id)}
     </div>`;
   }
@@ -5203,7 +5207,7 @@ document.addEventListener("keydown",e=>{
 render();
 
 </script>
-<p class="offline">第14版（2026年10月13日更新：問題を作り直し。同じ論点の問題をまとめ、過去問と同じ論点の問題を「基本から順に」のステップ3に組み込み（模擬試験はやめました）、答えのすぐ下に「ここだけ読めば大丈夫」とむずかしい言葉のやさしい意味。第13版：日本FP協会の過去問（3級3回・2級5回）と同じ論点の問題480問、解説を「核心→どこがちがう→詳しく」の形に、基本から順に進む道筋（8割で次へ）。第12版：解説を自分で編集できるように、ホームの下で書き出し・読み込み。第11版：ホームのいちばん下に「共有」ボタン。第10版：文字検索、問題画面の下の「リセット」（この問題／この単元を選ぶ）。第9版：分野ごと・1問ごとに記録を消せるように（確認つき）。第8版：○△×の評価を付けた問題は「解いた」扱いに。第7版：ホームに「今日の復習」（エビングハウスの忘却曲線）、問題ごとの○△×の評価、一覧から評価を変更。第6版：進み具合のバーで問題を移動・長押しで問題の一覧。第5版：実技試験と模擬試験、自分メモ・画像）</p>
+<p class="offline">第15版（2026年10月13日更新：解説・図・本番での書き方を「周辺知識」としてはじめから表示。第14版：問題を作り直し。同じ論点の問題をまとめ、過去問と同じ論点の問題を「基本から順に」のステップ3に組み込み（模擬試験はやめました）、答えのすぐ下に「ここだけ読めば大丈夫」とむずかしい言葉のやさしい意味。第13版：日本FP協会の過去問（3級3回・2級5回）と同じ論点の問題480問、解説を「核心→どこがちがう→詳しく」の形に、基本から順に進む道筋（8割で次へ）。第12版：解説を自分で編集できるように、ホームの下で書き出し・読み込み。第11版：ホームのいちばん下に「共有」ボタン。第10版：文字検索、問題画面の下の「リセット」（この問題／この単元を選ぶ）。第9版：分野ごと・1問ごとに記録を消せるように（確認つき）。第8版：○△×の評価を付けた問題は「解いた」扱いに。第7版：ホームに「今日の復習」（エビングハウスの忘却曲線）、問題ごとの○△×の評価、一覧から評価を変更。第6版：進み具合のバーで問題を移動・長押しで問題の一覧。第5版：実技試験と模擬試験、自分メモ・画像）</p>
 <p class="offline" id="offline">オフライン利用：準備中…</p>
 <script>
 (function(){
@@ -5211,8 +5215,8 @@ render();
   function ok(){el.innerHTML="オフライン利用：<b>準備OK</b>（電波がなくても使えます）"}
   if(!("serviceWorker" in navigator)){el.textContent="オフライン利用：この環境では使えません";return}
   navigator.serviceWorker.register("sw.js").then(function(){return navigator.serviceWorker.ready}).then(function(){
-    return caches.open("fp-ox-v14").then(function(c){return c.match("index.html")})
-  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v14").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
+    return caches.open("fp-ox-v15").then(function(c){return c.match("index.html")})
+  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v15").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
   .catch(function(){el.textContent="オフライン利用：準備できませんでした（通信を確認して開き直してください）"});
 })();
 </script>
