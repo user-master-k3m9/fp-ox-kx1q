@@ -4765,6 +4765,8 @@ const fxOf=s=>FX.filter(p=>p.s===s).sort((a,b)=>a.n-b.n);
    ・過去問は模試にせず、一問一答の「ステップ3 本番形式」に組み込む
    ・答えのすぐ下は「ここだけ読めば大丈夫」、むずかしい言葉にはやさしい意味（kotoba_fp.js） */
 const DEL=new Set("2-fudo-11 2-fudo-12 2-fudo-16 2-fudo-2 2-fudo-6 2-kin-12 2-kin-14 2-kin-15 2-kin-16 2-kin-18 2-kin-19 2-kin-22 2-kin-5 2-kin-6 2-kin-7 2-life-12 2-life-17 2-life-20 2-life-23 2-life-25 2-life-4 2-life-9 2-risk-1 2-risk-12 2-risk-15 2-risk-16 2-risk-17 2-risk-19 2-risk-21 2-risk-3 2-risk-5 2-risk-6 2-risk-9 2-sozo-10 2-sozo-17 2-sozo-18 2-sozo-20 2-tax-13 2-tax-16 2-tax-19 2-tax-20 2-tax-7 3-fudo-10 3-fudo-13 3-fudo-14 3-fudo-17 3-fudo-21 3-fudo-22 3-fudo-3 3-fudo-7 3-kin-10 3-kin-12 3-kin-20 3-kin-25 3-kin-27 3-kin-4 3-kin-8 3-kin-9 3-life-10 3-life-14 3-life-19 3-life-2 3-life-20 3-life-24 3-life-26 3-life-27 3-life-29 3-life-7 3-life-8 3-risk-10 3-risk-12 3-risk-13 3-risk-15 3-risk-16 3-risk-22 3-risk-26 3-risk-3 3-risk-9 3-sozo-10 3-sozo-13 3-sozo-14 3-sozo-2 3-sozo-22 3-sozo-4 3-sozo-7 3-sozo-9 3-tax-11 3-tax-13 3-tax-17 3-tax-19 3-tax-21 3-tax-23 3-tax-25 3-tax-6 3-tax-7 3-tax-8 fx-2-2405-1 fx-2-2405-13 fx-2-2405-14 fx-2-2405-15 fx-2-2405-16 fx-2-2405-17 fx-2-2405-18 fx-2-2405-24 fx-2-2405-27 fx-2-2405-29 fx-2-2405-3 fx-2-2405-31 fx-2-2405-36 fx-2-2405-41 fx-2-2405-44 fx-2-2405-48 fx-2-2405-59 fx-2-2405-9 fx-2-2409-10 fx-2-2409-11 fx-2-2409-12 fx-2-2409-14 fx-2-2409-18 fx-2-2409-25 fx-2-2409-26 fx-2-2409-27 fx-2-2409-29 fx-2-2409-30 fx-2-2409-36 fx-2-2409-39 fx-2-2409-48 fx-2-2409-52 fx-2-2409-55 fx-2-2409-57 fx-2-2501-1 fx-2-2501-12 fx-2-2501-18 fx-2-2501-20 fx-2-2501-22 fx-2-2501-26 fx-2-2501-33 fx-2-2501-4 fx-2-2501-53 fx-2-2505-28 fx-2-2505-30 fx-3-2405-19 fx-3-2405-22 fx-3-2405-29 fx-3-2405-38 fx-3-2405-45 fx-3-2405-59 fx-3-2405-60 fx-3-2405-7 fx-3-2505-1 fx-3-2505-10 fx-3-2505-20 fx-3-2505-21 fx-3-2505-22 fx-3-2505-27 fx-3-2505-28 fx-3-2505-29 fx-3-2505-31 fx-3-2505-32 fx-3-2505-38 fx-3-2505-39 fx-3-2505-43 fx-3-2505-45 fx-3-2505-52 fx-3-2505-60 fx-3-2605-14 fx-3-2605-17 fx-3-2605-30 fx-3-2605-41 fx-3-2605-48 fx-3-2605-7".split(" "));
+/* 2026-10-14 ユーザー「重複は減らして、なるべく問題数は絞って」：選択肢のほとんどがほかの問題で覚えられる過去問と、四択・過去問の選択肢と同じ論点の2級の○×を外す（3級の○×は入口として残す） */
+"fx-2-2405-4 fx-2-2405-19 fx-2-2405-32 fx-2-2405-34 fx-2-2405-35 fx-2-2405-38 fx-2-2405-39 fx-2-2405-42 fx-2-2405-43 fx-2-2405-45 fx-2-2405-46 fx-2-2405-49 fx-2-2405-50 fx-2-2409-32 fx-2-2409-42 fx-2-2409-43 fx-2-2409-44 fx-2-2409-45 fx-2-2409-50 fx-2-2409-51 fx-2-2501-7 fx-2-2501-15 fx-2-2501-34 fx-2-2501-47 fx-2-2501-49 fx-2-2505-6 fx-2-2505-13 fx-2-2505-14 fx-2-2505-15 fx-2-2505-50 fx-2-2605-19 fx-2-2605-26 fx-2-2605-49 fx-2-2605-55 fx-3-2405-4 fx-3-2405-11 fx-3-2405-27 fx-3-2505-3 fx-3-2505-4 fx-3-2505-9 fx-3-2605-1 fx-3-2605-2 fx-3-2605-19 fx-3-2605-21 2-kin-11 2-tax-12 2-fudo-15 2-fudo-8 2-life-15 2-life-2 2-fudo-1 2-risk-10 2-risk-14 2-kin-17 2-life-7 2-tax-14 2-tax-10 2-risk-4 2-life-5 2-kin-10 2-risk-13 2-fudo-5 2-kin-8 2-fudo-9 2-sozo-8 2-risk-2 2-tax-11 2-fudo-14 2-risk-7 2-life-13 2-fudo-22 2-sozo-23 2-sozo-5 2-tax-18 2-life-11 2-tax-17 2-sozo-11 2-kin-9 2-sozo-14 2-tax-3 2-sozo-21 2-sozo-9 2-life-22 2-life-6 2-fudo-4 2-life-14 2-sozo-3 2-kin-23 2-sozo-12 2-kin-2 2-tax-21 2-tax-22 2-sozo-19 2-risk-8 2-risk-11 2-fudo-23 2-kin-3 2-fudo-19 2-fudo-18 2-sozo-4 2-fudo-21 2-sozo-2".split(" ").forEach(id=>DEL.add(id));
 (function(){const nq=Q.length,nf=FX.length;
   const keep=Q.filter(q=>!DEL.has(q.id)),fk=FX.filter(p=>!DEL.has(p.id));
   if(nq-keep.length+nf-fk.length!==DEL.size)throw new Error("DEL に見つからない問題があります");
@@ -5208,7 +5210,7 @@ document.addEventListener("keydown",e=>{
 render();
 
 </script>
-<p class="offline">第16版（2026年10月13日更新：答えの画面の折りたたみをなくし、実技の事例もいつも表示。第15版：解説・図・本番での書き方を「周辺知識」としてはじめから表示。第14版：問題を作り直し。同じ論点の問題をまとめ、過去問と同じ論点の問題を「基本から順に」のステップ3に組み込み（模擬試験はやめました）、答えのすぐ下に「ここだけ読めば大丈夫」とむずかしい言葉のやさしい意味。第13版：日本FP協会の過去問（3級3回・2級5回）と同じ論点の問題480問、解説を「核心→どこがちがう→詳しく」の形に、基本から順に進む道筋（8割で次へ）。第12版：解説を自分で編集できるように、ホームの下で書き出し・読み込み。第11版：ホームのいちばん下に「共有」ボタン。第10版：文字検索、問題画面の下の「リセット」（この問題／この単元を選ぶ）。第9版：分野ごと・1問ごとに記録を消せるように（確認つき）。第8版：○△×の評価を付けた問題は「解いた」扱いに。第7版：ホームに「今日の復習」（エビングハウスの忘却曲線）、問題ごとの○△×の評価、一覧から評価を変更。第6版：進み具合のバーで問題を移動・長押しで問題の一覧。第5版：実技試験と模擬試験、自分メモ・画像）</p>
+<p class="offline">第17版（2026年10月14日更新：同じ論点の問題をさらにまとめ、問題数を783問に。第16版：答えの画面の折りたたみをなくし、実技の事例もいつも表示。第15版：解説・図・本番での書き方を「周辺知識」としてはじめから表示。第14版：問題を作り直し。同じ論点の問題をまとめ、過去問と同じ論点の問題を「基本から順に」のステップ3に組み込み（模擬試験はやめました）、答えのすぐ下に「ここだけ読めば大丈夫」とむずかしい言葉のやさしい意味。第13版：日本FP協会の過去問（3級3回・2級5回）と同じ論点の問題480問、解説を「核心→どこがちがう→詳しく」の形に、基本から順に進む道筋（8割で次へ）。第12版：解説を自分で編集できるように、ホームの下で書き出し・読み込み。第11版：ホームのいちばん下に「共有」ボタン。第10版：文字検索、問題画面の下の「リセット」（この問題／この単元を選ぶ）。第9版：分野ごと・1問ごとに記録を消せるように（確認つき）。第8版：○△×の評価を付けた問題は「解いた」扱いに。第7版：ホームに「今日の復習」（エビングハウスの忘却曲線）、問題ごとの○△×の評価、一覧から評価を変更。第6版：進み具合のバーで問題を移動・長押しで問題の一覧。第5版：実技試験と模擬試験、自分メモ・画像）</p>
 <p class="offline" id="offline">オフライン利用：準備中…</p>
 <script>
 (function(){
@@ -5216,8 +5218,8 @@ render();
   function ok(){el.innerHTML="オフライン利用：<b>準備OK</b>（電波がなくても使えます）"}
   if(!("serviceWorker" in navigator)){el.textContent="オフライン利用：この環境では使えません";return}
   navigator.serviceWorker.register("sw.js").then(function(){return navigator.serviceWorker.ready}).then(function(){
-    return caches.open("fp-ox-v16").then(function(c){return c.match("index.html")})
-  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v16").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
+    return caches.open("fp-ox-v17").then(function(c){return c.match("index.html")})
+  }).then(function(hit){if(hit)ok();else setTimeout(function(){caches.open("fp-ox-v17").then(function(c){return c.match("index.html")}).then(function(h){h?ok():el.textContent="オフライン利用：もう一度開くと準備されます"})},2500)})
   .catch(function(){el.textContent="オフライン利用：準備できませんでした（通信を確認して開き直してください）"});
 })();
 </script>
